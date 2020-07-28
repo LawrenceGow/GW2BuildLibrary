@@ -9,6 +9,11 @@ namespace GW2BuildLibrary
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Profession profession = (Profession)value;
+
+            // Show no icon for a blank profession
+            if (profession == Profession.None)
+                return null;
+
             return $"..\\Icons\\{profession}.png";
         }
 
