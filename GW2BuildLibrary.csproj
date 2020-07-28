@@ -58,7 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="UI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -66,20 +66,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BuildTemplate.cs" />
-    <Compile Include="BuildLibrary.cs" />
-    <Compile Include="BuildTemplateItemsControl.cs" />
-    <Compile Include="BuildTemplateViewModel.cs" />
-    <Compile Include="MultiEqualityConverter.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="BuildLibrary\BuildTemplate.cs" />
+    <Compile Include="BuildLibrary\BuildLibrary.cs" />
+    <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
+    <Compile Include="UI\ViewModels\BuildTemplateViewModel.cs" />
+    <Compile Include="UI\Converters\MultiEqualityConverter.cs" />
+    <Compile Include="UI\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Profession.cs" />
-    <Compile Include="ProfessionHelper.cs" />
-    <Compile Include="ProfessionToIconUriConverter.cs" />
+    <Compile Include="BuildLibrary\Profession.cs" />
+    <Compile Include="BuildLibrary\ProfessionHelper.cs" />
+    <Compile Include="UI\Converters\ProfessionToIconUriConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
