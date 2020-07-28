@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="BuildLibrary\BuildTemplate.cs" />
     <Compile Include="BuildLibrary\BuildLibrary.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
     <Compile Include="UI\ViewModels\BuildTemplateViewModel.cs" />
     <Compile Include="UI\Converters\MultiEqualityConverter.cs" />

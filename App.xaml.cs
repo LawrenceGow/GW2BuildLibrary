@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Mono.Options;
+using System;
+using System.Windows;
 
 namespace GW2BuildLibrary
 {
@@ -19,7 +21,23 @@ namespace GW2BuildLibrary
         /// <param name="e">A System.Windows.StartupEventArgs that contains the event data.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
+            bool overlayMode = false;
+            OptionSet options = new OptionSet()
+            {
+                { "o|overlay", "Overlay Mode", s => overlayMode = true }
+            };
+            try
+            {
+                options.Parse(e.Args);
+            }
+            catch (OptionException ex)
+            {
+                Console.Write("Error: ");
+                Console.WriteLine(ex.Message);
+                return;
+            }
             BuildLibrary = new BuildLibrary();
+            Console.WriteLine(overlayMode.ToString());
             BuildLibrary.Load();
             base.OnStartup(e);
         }
