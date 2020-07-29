@@ -34,11 +34,10 @@ namespace GW2BuildLibrary
                 {
                     XPathDocument doc = new XPathDocument(reader);
                     XPathNavigator nav = doc.CreateNavigator();
-                    nav = nav.SelectSingleNode("BuildTemplates");
-                    double d;
+                    nav = nav.SelectSingleNode(nameof(BuildTemplates));
                     if (Enum.TryParse(nav.GetAttribute("WindowState", string.Empty), out WindowState windowState))
                         WindowState = windowState;
-                    if (double.TryParse(nav.GetAttribute("Width", string.Empty), out d))
+                    if (double.TryParse(nav.GetAttribute("Width", string.Empty), out double d))
                         Width = d;
                     if (double.TryParse(nav.GetAttribute("Height", string.Empty), out d))
                         Height = d;
@@ -70,16 +69,22 @@ namespace GW2BuildLibrary
         public void Save()
         {
 #if DEBUG
-            if (MessageBox.Show("Save changes?", "Save changes?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) != MessageBoxResult.Yes)
+            if (MessageBox.Show("Save changes?",
+                                "Save changes?",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Question,
+                                MessageBoxResult.Yes) != MessageBoxResult.Yes)
                 return;
 #endif
             try
             {
                 File.Delete(saveLocation);
-                using (XmlWriter writer = XmlWriter.Create(saveLocation, new XmlWriterSettings() { Indent = true, NewLineChars = "\n" }))
+                using (XmlWriter writer = XmlWriter.Create(saveLocation,
+                                                           new XmlWriterSettings()
+                                                           { Indent = true, NewLineChars = "\n" }))
                 {
                     writer.WriteStartDocument();
-                    writer.WriteStartElement("BuildTemplates");
+                    writer.WriteStartElement(nameof(BuildTemplates));
                     writer.WriteAttributeString("WindowState", WindowState.ToString());
                     writer.WriteAttributeString("Width", Width.ToString());
                     writer.WriteAttributeString("Height", Height.ToString());
@@ -162,7 +167,9 @@ namespace GW2BuildLibrary
         /// <returns></returns>
         public IEnumerable<BuildTemplate> GetAllBuildTemplates(Profession professionFilter)
         {
-            return BuildTemplates.Values.Where(b => b.Profession.IsBasedOn(professionFilter));
+            return BuildTemplates.Values
+                .Where(b => b.Profession.IsBasedOn(professionFilter)
+                            || b.Profession == professionFilter);
         }
 
         /// <summary>
