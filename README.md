@@ -18,10 +18,14 @@ To get a build back out of GW2BuildLibrary simply click on its slot, this will p
 
 Builds can be deleted by clicking the 'X' button on their respective slot.
 
+Builds are saved automatically upon the application closing.
+
 ### Command-Line Arguments
 - o|overlay : `-o` or `--overlay`
   - Opens GW2BuildLibrary with no window furniture.
   - GW2BuildLibrary will be placed on top of all other windows.
+- ~~f|full-screen: `-f` or `--full-screen`~~
+  - GW2BuildLibrary will open full screen, regardless of the previous state.
 - q|quick: `-q` or `--quick`
   - GW2BuildLibrary will close after copying a build into the clipboard or after storing a build.
 - profession=VALUE: `--profession="Warrior"`
@@ -31,6 +35,8 @@ Builds can be deleted by clicking the 'X' button on their respective slot.
   - Exports the builds to the file specified in the XML format then exits.
 - ~~import~~
   - Imports builds from the file specified.
+- ~~no-save-state: `--nosave-state`~~
+  - GW2BuildLibrary will not save the window state.
 - h|?|help: `-h` or `-?` or `--help`
   - Displays a message with all possible command line arguments with the option to open this file.
 
