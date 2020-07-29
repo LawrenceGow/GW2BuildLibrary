@@ -17,6 +17,41 @@ namespace GW2BuildLibrary
     {
         private readonly string saveLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BuildLibrary.xml");
 
+        #region Settings
+
+        /// <summary>
+        /// Whether or not the library is in overlay mode.
+        /// </summary>
+        public bool OverlayMode { get; private set; } = false;
+
+        /// <summary>
+        /// Whether or not the library is in quick mode.
+        /// </summary>
+        public bool QuickMode { get; private set; } = false;
+
+        /// <summary>
+        /// The library profession filter.
+        /// </summary>
+        public Profession ProfessionFilter { get; private set; } = Profession.None;
+
+        #endregion
+
+        /// <summary>
+        /// Initialises a new <see cref="BuildLibrary"/> instance.
+        /// </summary>
+        /// <param name="overlayMode"><c>True</c> if the library should be in overlay mode, otherwise <c>false</c>.</param>
+        /// <param name="quickMode"><c>True</c> if the library should be in quick mode, otherwise <c>false</c>.</param>
+        /// <param name="professionFilter">The profession filter to apply to the templates.</param>
+        public BuildLibrary(bool overlayMode, bool quickMode, Profession professionFilter)
+        {
+            OverlayMode = overlayMode;
+            QuickMode = quickMode;
+            ProfessionFilter = professionFilter;
+
+            // Load the library
+            Load();
+        }
+
         /// <summary>
         /// Map of all the build templates in the library.
         /// </summary>

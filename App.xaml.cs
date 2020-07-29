@@ -24,20 +24,25 @@ namespace GW2BuildLibrary
         /// <param name="e">A System.Windows.StartupEventArgs that contains the event data.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
+            bool overlayMode = false;
+            bool quickMode = false;
+            string exportLocation = null;
+            Profession professionFilter = Profession.None;
+
             options = new OptionSet()
             {
                 // Overlay Mode
                 {
                     "o|overlay",
                     "Overlay Mode",
-                    v => OverlayMode = v != null
+                    v => overlayMode = v != null
                 },
 
                 // Quick Mode
                 {
                     "q|quick",
                     "Quick Mode",
-                    v => QuickMode = v != null
+                    v => quickMode = v != null
                 },
 
                 // Export Builds
@@ -53,7 +58,7 @@ namespace GW2BuildLibrary
                 {
                     "profession=",
                     "Profession Filter",
-                    v => SetProfessionFilter(v)
+                    v => professionFilter = ParseProfessionFilter(v)
                 },
 
                 // Help
@@ -70,9 +75,9 @@ namespace GW2BuildLibrary
 #if DEBUG
                 using (StringWriter text = new StringWriter())
                 {
-                    text.WriteLine($"Overlay Mode: {OverlayMode}");
-                    text.WriteLine($"Quick Mode: {QuickMode}");
-                    text.WriteLine($"Profession Filter: {ProfessionFilter}");
+                    text.WriteLine($"Overlay Mode: {overlayMode}");
+                    text.WriteLine($"Quick Mode: {quickMode}");
+                    text.WriteLine($"Profession Filter: {professionFilter}");
                     text.WriteLine($"Help: {ShowHelp}");
 
                     MessageBox.Show(text.ToString(),
@@ -100,11 +105,14 @@ namespace GW2BuildLibrary
                 return;
             }
 
-            BuildLibrary = new BuildLibrary();
-            BuildLibrary.Load();
+            BuildLibrary = new BuildLibrary(overlayMode,
+                                            quickMode,
+                                            professionFilter);
 
             if (!string.IsNullOrEmpty(exportLocation))
             {
+                // Save the library without window data to the specified location
+                // then shutdown the application
                 BuildLibrary.Save(exportLocation, false);
                 Shutdown(0);
                 return;
@@ -114,36 +122,15 @@ namespace GW2BuildLibrary
         }
 
         /// <summary>
-        /// Whether or not the application is in overlay mode.
-        /// </summary>
-        public static bool OverlayMode { get; private set; } = false;
-
-        /// <summary>
-        /// Whether or not he application is in quick mode.
-        /// </summary>
-        public static bool QuickMode { get; private set; } = false;
-
-        /// <summary>
-        /// The location to export all currently loaded builds to.
-        /// </summary>
-        private string exportLocation = null;
-
-        /// <summary>
-        /// The application profession filter.
-        /// </summary>
-        /// <remarks>
-        /// If set then only the applicable build will be shown and the filter buttons will be hidden.
-        /// </remarks>
-        public static Profession ProfessionFilter { get; private set; } = Profession.None;
-
-        /// <summary>
-        /// Sets the profession filter to what was passed into the application.
+        /// Parses the profession filter from what was passed into the application.
         /// </summary>
         /// <param name="value">The value that was passed into the application.</param>
-        private void SetProfessionFilter(string value)
+        private Profession ParseProfessionFilter(string value)
         {
             if (Enum.TryParse(value, out Profession profession))
-                ProfessionFilter = profession;
+                return profession;
+
+            return Profession.None;
         }
 
         private bool ShowHelp { get; set; } = false;

@@ -26,13 +26,13 @@ namespace GW2BuildLibrary
         {
             InitializeComponent();
 
-            if (App.ProfessionFilter != Profession.None)
+            if (BuildLibrary.ProfessionFilter != Profession.None)
             {
-                ProfessionFilter = App.ProfessionFilter;
+                ProfessionFilter = BuildLibrary.ProfessionFilter;
                 // TODO Hide filter buttons
             }
 
-            if (App.OverlayMode)
+            if (BuildLibrary.OverlayMode)
             {
                 WindowStyle = WindowStyle.None;
                 AllowsTransparency = true;
@@ -140,7 +140,7 @@ namespace GW2BuildLibrary
                 }
 
                 // If we are in quick mode then we exit after this interaction
-                if (App.QuickMode)
+                if (BuildLibrary.QuickMode)
                     Application.Current.Shutdown(0);
             }
             else
