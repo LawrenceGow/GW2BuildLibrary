@@ -33,7 +33,7 @@ Builds are saved automatically upon the application closing.
   - Name must be typed in-full with the first letter capitalised.
 - export=FILENAME: `--export="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"`
   - Exports the builds to the file specified in the XML format then exits.
-- ~~import~~
+- ~~import=FILENAME: `--import="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"`~~
   - Imports builds from the file specified.
 - ~~no-save-state: `--nosave-state`~~
   - GW2BuildLibrary will not save the window state.
