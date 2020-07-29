@@ -66,7 +66,7 @@ namespace GW2BuildLibrary
         /// <param name="e">An System.EventArgs that contains the event data.</param>
         protected override void OnClosed(EventArgs e)
         {
-            BuildLibrary?.UpdateWindowState(WindowState, RenderSize, Left, Top);
+            BuildLibrary?.UpdateWindowStateForSaving(WindowState, RenderSize, Left, Top);
 
             base.OnClosed(e);
         }

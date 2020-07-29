@@ -28,6 +28,8 @@ Builds are saved automatically upon the application closing.
   - GW2BuildLibrary will open full screen, regardless of the previous state.
 - q|quick: `-q` or `--quick`
   - GW2BuildLibrary will close after copying a build into the clipboard or after storing a build.
+- no-save-window-state: `--no-save-window-state`
+  - GW2BuildLibrary will not save the window state.
 - profession=VALUE: `--profession="Warrior"`
   - Opens GW2BuildLibrary filtered to the specified profession.
   - Name must be typed in-full with the first letter capitalised.
@@ -35,8 +37,6 @@ Builds are saved automatically upon the application closing.
   - Exports the builds to the file specified in the XML format then exits.
 - ~~import=FILENAME: `--import="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"`~~
   - Imports builds from the file specified.
-- ~~no-save-state: `--nosave-state`~~
-  - GW2BuildLibrary will not save the window state.
 - h|?|help: `-h` or `-?` or `--help`
   - Displays a message with all possible command line arguments with the option to open this file.
 

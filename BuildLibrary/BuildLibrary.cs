@@ -30,6 +30,11 @@ namespace GW2BuildLibrary
         public bool QuickMode { get; private set; } = false;
 
         /// <summary>
+        /// Whether or not the library will save the window state.
+        /// </summary>
+        public bool SaveWindowState { get; private set; } = true;
+
+        /// <summary>
         /// The library profession filter.
         /// </summary>
         public Profession ProfessionFilter { get; private set; } = Profession.None;
@@ -39,13 +44,23 @@ namespace GW2BuildLibrary
         /// <summary>
         /// Initialises a new <see cref="BuildLibrary"/> instance.
         /// </summary>
-        /// <param name="overlayMode"><c>True</c> if the library should be in overlay mode, otherwise <c>false</c>.</param>
-        /// <param name="quickMode"><c>True</c> if the library should be in quick mode, otherwise <c>false</c>.</param>
-        /// <param name="professionFilter">The profession filter to apply to the templates.</param>
-        public BuildLibrary(bool overlayMode, bool quickMode, Profession professionFilter)
+        /// <param name="overlayMode">
+        /// <c>True</c> if the library should be in overlay mode, otherwise <c>false</c>.
+        /// </param>
+        /// <param name="quickMode">
+        /// <c>True</c> if the library should be in quick mode, otherwise <c>false</c>.
+        /// </param>
+        /// <param name="saveWindowState">
+        /// <c>True</c> to save the window state into the library, otherwise <c>false</c>.
+        /// </param>
+        /// <param name="professionFilter">
+        /// The profession filter to apply to the templates.
+        /// </param>
+        public BuildLibrary(bool overlayMode, bool quickMode, bool saveWindowState, Profession professionFilter)
         {
             OverlayMode = overlayMode;
             QuickMode = quickMode;
+            SaveWindowState = saveWindowState;
             ProfessionFilter = professionFilter;
 
             // Load the library
@@ -162,13 +177,19 @@ namespace GW2BuildLibrary
         /// <param name="size">The current size of the window.</param>
         /// <param name="left">The pixels left of the window.</param>
         /// <param name="top">The pixel above the window.</param>
-        public void UpdateWindowState(in WindowState windowState, in Size size, in double left, in double top)
+        public void UpdateWindowStateForSaving(in WindowState windowState,
+                                               in Size size,
+                                               in double left,
+                                               in double top)
         {
-            WindowState = windowState;
-            Width = size.Width;
-            Height = size.Height;
-            Left = left;
-            Top = top;
+            if (SaveWindowState)
+            {
+                WindowState = windowState;
+                Width = size.Width;
+                Height = size.Height;
+                Left = left;
+                Top = top;
+            }
         }
 
         /// <summary>

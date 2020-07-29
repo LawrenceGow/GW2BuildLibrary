@@ -26,8 +26,9 @@ namespace GW2BuildLibrary
         {
             bool overlayMode = false;
             bool quickMode = false;
-            string exportLocation = null;
+            bool saveWindowState = true;
             Profession professionFilter = Profession.None;
+            string exportLocation = null;
 
             options = new OptionSet()
             {
@@ -45,6 +46,20 @@ namespace GW2BuildLibrary
                     v => quickMode = v != null
                 },
 
+                // No Save Window State
+                {
+                    "no-save-window-state",
+                    "No Save Window State",
+                    v => saveWindowState = v == null
+                },
+
+                // Profession Filter
+                {
+                    "profession=",
+                    "Profession Filter",
+                    v => professionFilter = ParseProfessionFilter(v)
+                },
+
                 // Export Builds
                 {
                     "export=",
@@ -53,13 +68,6 @@ namespace GW2BuildLibrary
                 },
 
                 //{ "import", "Import", v => { } },
-
-                // Profession Filter
-                {
-                    "profession=",
-                    "Profession Filter",
-                    v => professionFilter = ParseProfessionFilter(v)
-                },
 
                 // Help
                 {
@@ -107,6 +115,7 @@ namespace GW2BuildLibrary
 
             BuildLibrary = new BuildLibrary(overlayMode,
                                             quickMode,
+                                            saveWindowState,
                                             professionFilter);
 
             if (!string.IsNullOrEmpty(exportLocation))
