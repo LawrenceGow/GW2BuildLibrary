@@ -24,7 +24,7 @@ Builds are saved automatically upon the application closing.
 - o|overlay : `-o` or `--overlay`
   - Opens GW2BuildLibrary with no window furniture.
   - GW2BuildLibrary will be placed on top of all other windows.
-- ~~f|full-screen: `-f` or `--full-screen`~~
+- f|full-screen: `-f` or `--full-screen`
   - GW2BuildLibrary will open full screen, regardless of the previous state.
 - q|quick: `-q` or `--quick`
   - GW2BuildLibrary will close after copying a build into the clipboard or after storing a build.
