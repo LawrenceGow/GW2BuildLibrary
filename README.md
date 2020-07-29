@@ -1,6 +1,6 @@
 ## What is GW2BuildLibrary?
 
-GW2BuildLibrary is a program to help store and manage build templates from Guild Wars 2.
+GW2BuildLibrary is a simple application to help store and manage build templates from Guild Wars 2.
 
 ## Installation
 
