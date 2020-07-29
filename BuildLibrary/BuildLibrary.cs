@@ -25,6 +25,11 @@ namespace GW2BuildLibrary
         public bool OverlayMode { get; private set; } = false;
 
         /// <summary>
+        /// Whether or not the library is in full screen mode.
+        /// </summary>
+        public bool FullScreenMode { get; private set; } = false;
+
+        /// <summary>
         /// Whether or not the library is in quick mode.
         /// </summary>
         public bool QuickMode { get; private set; } = false;
@@ -47,6 +52,9 @@ namespace GW2BuildLibrary
         /// <param name="overlayMode">
         /// <c>True</c> if the library should be in overlay mode, otherwise <c>false</c>.
         /// </param>
+        /// <param name="fullScreenMode">
+        /// <c>True</c> if the library should be in full screen mode, otherwise <c>false</c>.
+        /// </param>
         /// <param name="quickMode">
         /// <c>True</c> if the library should be in quick mode, otherwise <c>false</c>.
         /// </param>
@@ -56,9 +64,14 @@ namespace GW2BuildLibrary
         /// <param name="professionFilter">
         /// The profession filter to apply to the templates.
         /// </param>
-        public BuildLibrary(bool overlayMode, bool quickMode, bool saveWindowState, Profession professionFilter)
+        public BuildLibrary(bool overlayMode,
+                            bool fullScreenMode,
+                            bool quickMode,
+                            bool saveWindowState,
+                            Profession professionFilter)
         {
             OverlayMode = overlayMode;
+            FullScreenMode = fullScreenMode;
             QuickMode = quickMode;
             SaveWindowState = saveWindowState;
             ProfessionFilter = professionFilter;

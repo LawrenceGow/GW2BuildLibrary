@@ -122,6 +122,7 @@ namespace GW2BuildLibrary
             }
 
             BuildLibrary = new BuildLibrary(overlayMode,
+                                            fullScreenMode,
                                             quickMode,
                                             saveWindowState,
                                             professionFilter);
