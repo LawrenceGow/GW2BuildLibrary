@@ -4,7 +4,7 @@ GW2BuildLibrary is a program to help store and manage build templates from Guild
 
 ## Installation
 
-1. Download latest .zip archive from https://github.com/LawrenceGow/GW2BuildLibrary/releases
+1. Download latest .zip archive from [here](https://github.com/LawrenceGow/GW2BuildLibrary/releases).
 2. Place the downloaded archive where you wish to install.
 3. Unzip the archive.
 4. Ensure both GW2BuildLibrary.exe and the README file are in the same folder.
