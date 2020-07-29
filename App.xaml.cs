@@ -40,12 +40,18 @@ namespace GW2BuildLibrary
                     v => QuickMode = v != null
                 },
 
-                //{ "x|export", "Export", v => { } },
-                //{ "i|import", "Import", v => { } },
+                // Export Builds
+                {
+                    "export=",
+                    "Export",
+                    v => exportLocation = v
+                },
+
+                //{ "import", "Import", v => { } },
 
                 // Profession Filter
                 {
-                    "p=|profession=",
+                    "profession=",
                     "Profession Filter",
                     v => SetProfessionFilter(v)
                 },
@@ -96,6 +102,14 @@ namespace GW2BuildLibrary
 
             BuildLibrary = new BuildLibrary();
             BuildLibrary.Load();
+
+            if (!string.IsNullOrEmpty(exportLocation))
+            {
+                BuildLibrary.Save(exportLocation, false);
+                Shutdown(0);
+                return;
+            }
+
             base.OnStartup(e);
         }
 
@@ -108,6 +122,11 @@ namespace GW2BuildLibrary
         /// Whether or not he application is in quick mode.
         /// </summary>
         public static bool QuickMode { get; private set; } = false;
+
+        /// <summary>
+        /// The location to export all currently loaded builds to.
+        /// </summary>
+        private string exportLocation = null;
 
         /// <summary>
         /// The application profession filter.

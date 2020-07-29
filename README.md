@@ -19,18 +19,19 @@ To get a build back out of GW2BuildLibrary simply click on its slot, this will p
 Builds can be deleted by clicking the 'X' button on their respective slot.
 
 ### Command-Line Arguments
-- o|overlay
+- o|overlay : `-o` or `--overlay`
   - Opens GW2BuildLibrary with no window furniture.
   - GW2BuildLibrary will be placed on top of all other windows.
-- q|quick
+- q|quick: `-q` or `--quick`
   - GW2BuildLibrary will close after copying a build into the clipboard or after storing a build.
-- p=|profession=VALUE
+- profession=VALUE: `--profession="Warrior"`
   - Opens GW2BuildLibrary filtered to the specified profession.
-- ~~x|export~~
-  - Exports the current builds to the file specified.
-- ~~i|import~~
+  - Name must be typed in-full with the first letter capitalised.
+- export=FILENAME: `--export="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"`
+  - Exports the builds to the file specified in the XML format then exits.
+- ~~import~~
   - Imports builds from the file specified.
-- h|?|help
+- h|?|help: `-h` or `-?` or `--help`
   - Displays a message with all possible command line arguments with the option to open this file.
 
 #### Running With Arguments sans Command-Line

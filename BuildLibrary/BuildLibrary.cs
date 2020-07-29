@@ -66,11 +66,19 @@ namespace GW2BuildLibrary
         /// <summary>
         /// Saves the build library.
         /// </summary>
-        public void Save()
+        public void Save() =>
+            Save(saveLocation, saveWindowState: true);
+
+        /// <summary>
+        /// Saves the build library.
+        /// </summary>
+        /// <param name="location">The location to save to.</param>
+        /// <param name="saveWindowState"><c>True</c> to also save the window state, otherwise <c>false</c>.</param>
+        public void Save(string location, bool saveWindowState)
         {
 #if DEBUG
-            if (MessageBox.Show("Save changes?",
-                                "Save changes?",
+            if (MessageBox.Show($"Save to {location}?",
+                                "Save?",
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Question,
                                 MessageBoxResult.Yes) != MessageBoxResult.Yes)
@@ -78,18 +86,23 @@ namespace GW2BuildLibrary
 #endif
             try
             {
-                File.Delete(saveLocation);
-                using (XmlWriter writer = XmlWriter.Create(saveLocation,
+                File.Delete(location);
+                using (XmlWriter writer = XmlWriter.Create(location,
                                                            new XmlWriterSettings()
                                                            { Indent = true, NewLineChars = "\n" }))
                 {
                     writer.WriteStartDocument();
                     writer.WriteStartElement(nameof(BuildTemplates));
-                    writer.WriteAttributeString("WindowState", WindowState.ToString());
-                    writer.WriteAttributeString("Width", Width.ToString());
-                    writer.WriteAttributeString("Height", Height.ToString());
-                    writer.WriteAttributeString("Left", Left.ToString());
-                    writer.WriteAttributeString("Top", Top.ToString());
+
+                    if (saveWindowState)
+                    {
+                        writer.WriteAttributeString("WindowState", WindowState.ToString());
+                        writer.WriteAttributeString("Width", Width.ToString());
+                        writer.WriteAttributeString("Height", Height.ToString());
+                        writer.WriteAttributeString("Left", Left.ToString());
+                        writer.WriteAttributeString("Top", Top.ToString());
+                    }
+
                     foreach (BuildTemplate build in BuildTemplates.Values)
                     {
                         build.Save(writer);
