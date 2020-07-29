@@ -180,7 +180,17 @@ namespace GW2BuildLibrary
             }
         }
 
-        public WindowState WindowState = WindowState.Normal;
+        private WindowState windowState = WindowState.Normal;
+
+        /// <summary>
+        /// The window state.
+        /// </summary>
+        public WindowState WindowState
+        {
+            get => FullScreenMode ? WindowState.Maximized : windowState;
+            set => windowState = value;
+        }
+
         public double Width = 0, Height = 0, Left = 0, Top = 0;
 
         /// <summary>
