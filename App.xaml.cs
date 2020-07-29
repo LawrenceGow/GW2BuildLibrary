@@ -25,6 +25,7 @@ namespace GW2BuildLibrary
         protected override void OnStartup(StartupEventArgs e)
         {
             bool overlayMode = false;
+            bool fullScreenMode = false;
             bool quickMode = false;
             bool saveWindowState = true;
             Profession professionFilter = Profession.None;
@@ -37,6 +38,13 @@ namespace GW2BuildLibrary
                     "o|overlay",
                     "Overlay Mode",
                     v => overlayMode = v != null
+                },
+
+                // Full Screen Mode
+                {
+                    "f|full-screen",
+                    "Full Screen Mode",
+                    v => fullScreenMode = v != null
                 },
 
                 // Quick Mode
