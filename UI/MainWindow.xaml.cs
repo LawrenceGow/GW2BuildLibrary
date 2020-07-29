@@ -20,16 +20,28 @@ namespace GW2BuildLibrary
         { get { return App.BuildLibrary; } }
 
         /// <summary>
-        /// Initailises a new instance of the <see cref="MainWindow"/> class.
+        /// Initialises a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
 
+            if (App.ProfessionFilter != Profession.None)
+            {
+                ProfessionFilter = App.ProfessionFilter;
+                // TODO Hide filter buttons
+            }
+
+            if (App.OverlayMode)
+            {
+                WindowStyle = WindowStyle.None;
+                AllowsTransparency = true;
+                Topmost = true;
+                Opacity = 0.9d;
+            }
+
             SyncModels();
         }
-
-        private readonly bool sizeLoaded = false;
 
         /// <summary>
         /// Is invoked whenever application code or internal processes call
@@ -54,7 +66,7 @@ namespace GW2BuildLibrary
         /// <param name="e">An System.EventArgs that contains the event data.</param>
         protected override void OnClosed(EventArgs e)
         {
-            BuildLibrary.UpdateWindowState(WindowState, RenderSize, Left, Top);
+            BuildLibrary?.UpdateWindowState(WindowState, RenderSize, Left, Top);
 
             base.OnClosed(e);
         }
@@ -115,16 +127,25 @@ namespace GW2BuildLibrary
 
         private void StoreOrRecallBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Debug.Assert(e.Parameter is BuildTemplateViewModel);
-            BuildTemplateViewModel model = (BuildTemplateViewModel)e.Parameter;
-            if (model.BuildTemplate == null)
+            if (e.Parameter is BuildTemplateViewModel model)
             {
-                BuildLibrary.CreateBuildTemplate(model.Page, model.Index, Clipboard.GetText());
-                SyncModels();
+                if (model.BuildTemplate == null)
+                {
+                    BuildLibrary.CreateBuildTemplate(model.Page, model.Index, Clipboard.GetText());
+                    SyncModels();
+                }
+                else
+                {
+                    Clipboard.SetText(model.BuildTemplate.BuildData);
+                }
+
+                // If we are in quick mode then we exit after this interaction
+                if (App.QuickMode)
+                    Application.Current.Shutdown(0);
             }
             else
             {
-                Clipboard.SetText(model.BuildTemplate.BuildData);
+                Debug.Fail("Unexpected model type.");
             }
         }
 
@@ -186,11 +207,13 @@ namespace GW2BuildLibrary
         #endregion
 
         /// <summary>
-        /// Synchronises the view models for the build templates with the tewmplates in the library.
+        /// Synchronises the view models for the build templates with the templates in the library.
         /// </summary>
         private void SyncModels()
         {
             Debug.Assert(BuildLibrary != null, "No BuildLibrary instance was set.");
+            if (BuildLibrary == null)
+                return;
 
             if (ProfessionFilter == Profession.None)
             {

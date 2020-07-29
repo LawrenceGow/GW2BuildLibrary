@@ -215,42 +215,42 @@
             <ToggleButton x:Name="PART_FilterButton_Warrior"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Warrior}">
-                <BitmapImage UriSource="Icons\Warrior.png"/>
+                <BitmapImage UriSource="..\Icons\Warrior.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Engineer"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Engineer}">
-                <BitmapImage UriSource="Icons\Engineer.png"/>
+                <BitmapImage UriSource="..\Icons\Engineer.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Ranger"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Ranger}">
-                <BitmapImage UriSource="Icons\Ranger.png"/>
+                <BitmapImage UriSource="..\Icons\Ranger.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Thief"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Thief}">
-                <BitmapImage UriSource="Icons\Thief.png"/>
+                <BitmapImage UriSource="..\Icons\Thief.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Elementalist"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Elementalist}">
-                <BitmapImage UriSource="Icons\Elementalist.png"/>
+                <BitmapImage UriSource="..\Icons\Elementalist.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Mesmer"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Mesmer}">
-                <BitmapImage UriSource="Icons\Mesmer.png"/>
+                <BitmapImage UriSource="..\Icons\Mesmer.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Necromancer"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Necromancer}">
-                <BitmapImage UriSource="Icons\Necromancer.png"/>
+                <BitmapImage UriSource="..\Icons\Necromancer.png"/>
             </ToggleButton>
             <ToggleButton x:Name="PART_FilterButton_Revenant"
                           Style="{StaticResource filterButtonStyle}"
                           CommandParameter="{x:Static local:Profession.Revenant}">
-                <BitmapImage UriSource="Icons\Revenant.png"/>
+                <BitmapImage UriSource="..\Icons\Revenant.png"/>
             </ToggleButton>
         </StackPanel>
 

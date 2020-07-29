@@ -37,6 +37,9 @@
   <PropertyGroup>
     <ApplicationIcon>Icons\gw2lb.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GW2BuildLibrary.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -68,6 +71,7 @@
     </Compile>
     <Compile Include="BuildLibrary\BuildTemplate.cs" />
     <Compile Include="BuildLibrary\BuildLibrary.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
     <Compile Include="UI\ViewModels\BuildTemplateViewModel.cs" />
     <Compile Include="UI\Converters\MultiEqualityConverter.cs" />
