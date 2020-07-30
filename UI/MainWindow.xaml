@@ -105,7 +105,8 @@
                    BasedOn="{StaticResource interactableButtonStyle}"
                    TargetType="{x:Type ButtonBase}">
                 <Setter Property="Width"
-                        Value="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                        Value="{Binding Path=ActualHeight,
+                                        RelativeSource={RelativeSource Self}}"/>
                 <Setter Property="Foreground"
                         Value="AntiqueWhite"/>
                 <Setter Property="BorderBrush"
@@ -162,7 +163,8 @@
                         Margin="0">
                     <Image Stretch="Uniform"
                           Margin="3"
-                          Source="{TemplateBinding Property=CommandParameter, Converter={StaticResource professionIconConverter}}"/>
+                          Source="{TemplateBinding Property=CommandParameter,
+                                                   Converter={StaticResource professionIconConverter}}"/>
                 </Border>
             </ControlTemplate>
 
@@ -199,175 +201,198 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Background="{StaticResource defaultBackgroundBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        
-        <!-- Profession Filter Buttons -->
-        <StackPanel Grid.Row="0"
-                    Margin="5"
-                    Orientation="Horizontal">
-            <ToggleButton x:Name="PART_FilterButton_Guardian"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Guardian}"/>
-            <ToggleButton x:Name="PART_FilterButton_Warrior"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Warrior}">
-                <BitmapImage UriSource="..\Icons\Warrior.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Engineer"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Engineer}">
-                <BitmapImage UriSource="..\Icons\Engineer.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Ranger"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Ranger}">
-                <BitmapImage UriSource="..\Icons\Ranger.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Thief"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Thief}">
-                <BitmapImage UriSource="..\Icons\Thief.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Elementalist"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Elementalist}">
-                <BitmapImage UriSource="..\Icons\Elementalist.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Mesmer"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Mesmer}">
-                <BitmapImage UriSource="..\Icons\Mesmer.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Necromancer"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Necromancer}">
-                <BitmapImage UriSource="..\Icons\Necromancer.png"/>
-            </ToggleButton>
-            <ToggleButton x:Name="PART_FilterButton_Revenant"
-                          Style="{StaticResource filterButtonStyle}"
-                          CommandParameter="{x:Static local:Profession.Revenant}">
-                <BitmapImage UriSource="..\Icons\Revenant.png"/>
-            </ToggleButton>
-        </StackPanel>
+    <Border>
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="Background"
+                        Value="{StaticResource defaultBackgroundBrush}"/>
 
-        <!-- Build Templates -->
-        <local:BuildTemplateItemsControl x:Name="BuildTemplateItems"
-                                         Grid.Row="1"
-                                         Padding="0,0,2,2"
-                                         ItemsSource="{Binding Path=BuildTemplateModels, RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}">
-            <local:BuildTemplateItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="{Binding Path=Rows, ElementName='BuildTemplateItems'}"
-                                 Columns="{Binding Path=Columns, ElementName='BuildTemplateItems'}"
-                                 IsItemsHost="True"/>
-                </ItemsPanelTemplate>
-            </local:BuildTemplateItemsControl.ItemsPanel>
-            <local:BuildTemplateItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:BuildTemplateViewModel}">
-                    <Button Style="{StaticResource ioButtonStyle}"
-                            CommandParameter="{Binding}">
-                        <Border Background="Black"
-                                Margin="2,2,0,0"
-                                CornerRadius="2">
-                            <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right"
-                                        Style="{StaticResource clearButtonStyle}"
-                                        CommandParameter="{Binding}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=InOverlayMode,
+                                                   RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
+                                                   Mode=OneTime}"
+                                 Value="True">
+                        <Setter Property="Padding"
+                                    Value="10"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
 
-                                <Button DockPanel.Dock="Right"
-                                        Style="{StaticResource renameButtonStyle}"
-                                        Margin="0,0,2,0"
-                                        CommandParameter="{Binding}"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                                <Image DockPanel.Dock="Left"
-                                       Margin="2"
-                                       Stretch="Uniform"
-                                       Source="{Binding Path=Profession, Converter={StaticResource professionIconConverter}, Mode=OneWay}"/>
+            <!-- Profession Filter Buttons -->
+            <StackPanel Grid.Row="0"
+                        Margin="5"
+                        Orientation="Horizontal">
+                <ToggleButton x:Name="PART_FilterButton_Guardian"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Guardian}"/>
+                <ToggleButton x:Name="PART_FilterButton_Warrior"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Warrior}">
+                    <BitmapImage UriSource="..\Icons\Warrior.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Engineer"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Engineer}">
+                    <BitmapImage UriSource="..\Icons\Engineer.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Ranger"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Ranger}">
+                    <BitmapImage UriSource="..\Icons\Ranger.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Thief"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Thief}">
+                    <BitmapImage UriSource="..\Icons\Thief.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Elementalist"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Elementalist}">
+                    <BitmapImage UriSource="..\Icons\Elementalist.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Mesmer"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Mesmer}">
+                    <BitmapImage UriSource="..\Icons\Mesmer.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Necromancer"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Necromancer}">
+                    <BitmapImage UriSource="..\Icons\Necromancer.png"/>
+                </ToggleButton>
+                <ToggleButton x:Name="PART_FilterButton_Revenant"
+                              Style="{StaticResource filterButtonStyle}"
+                              CommandParameter="{x:Static local:Profession.Revenant}">
+                    <BitmapImage UriSource="..\Icons\Revenant.png"/>
+                </ToggleButton>
+            </StackPanel>
 
-                                <TextBlock x:Name="PART_TemplateName"
-                                           Style="{StaticResource textBlockStyle}"
-                                           Text="{Binding Path=Name, Mode=OneWay}"/>
-                            </DockPanel>
-                        </Border>
-                    </Button>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Path=Name}"
-                                     Value="Empty">
-                            <Setter TargetName="PART_TemplateName"
-                                    Property="Foreground"
-                                    Value="White"/>
-                            <Setter TargetName="PART_TemplateName"
-                                    Property="TextAlignment"
-                                    Value="Center"/>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </local:BuildTemplateItemsControl.ItemTemplate>
-        </local:BuildTemplateItemsControl>
+            <!-- Build Templates -->
+            <local:BuildTemplateItemsControl x:Name="BuildTemplateItems"
+                                             Grid.Row="1"
+                                             Padding="0,0,2,2"
+                                             ItemsSource="{Binding Path=BuildTemplateModels,
+                                                                   RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}">
+                <local:BuildTemplateItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding Path=Rows,
+                                                    ElementName='BuildTemplateItems'}"
+                                     Columns="{Binding Path=Columns,
+                                                       ElementName='BuildTemplateItems'}"
+                                     IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </local:BuildTemplateItemsControl.ItemsPanel>
+                <local:BuildTemplateItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:BuildTemplateViewModel}">
+                        <Button Style="{StaticResource ioButtonStyle}"
+                                CommandParameter="{Binding}">
+                            <Border Background="Black"
+                                    Margin="2,2,0,0"
+                                    CornerRadius="2">
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock="Right"
+                                            Style="{StaticResource clearButtonStyle}"
+                                            CommandParameter="{Binding}"/>
 
-        <Border x:Name="PART_RenameInputDialog"
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Background="#A0000000"
-                Visibility="Collapsed">
-            <Border VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="250" Height="100"
-                    BorderThickness="1"
-                    BorderBrush="Black"
-                    Background="{StaticResource defaultBackgroundBrush}"
-                    CornerRadius="5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                                    <Button DockPanel.Dock="Right"
+                                            Style="{StaticResource renameButtonStyle}"
+                                            Margin="0,0,2,0"
+                                            CommandParameter="{Binding}"/>
 
-                    <TextBox x:Name="PART_RenameTextInput"
-                             Grid.Row="0" Grid.Column="0"
-                             Grid.ColumnSpan="2"
-                             Height="30"
-                             Margin="20,0"
-                             FontFamily="Tahoma"
-                             FontSize="12"
-                             TextAlignment="Left"
-                             VerticalContentAlignment="Center"
-                             MaxLength="31">
-                        <TextBox.InputBindings>
-                            <KeyBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
-                                        CommandParameter="True"
-                                        Key="Enter"/>
-                            <KeyBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
-                                        CommandParameter="True"
-                                        Key="Return"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
+                                    <Image DockPanel.Dock="Left"
+                                           Margin="2"
+                                           Stretch="Uniform"
+                                           Source="{Binding Path=Profession,
+                                                            Converter={StaticResource professionIconConverter}, Mode=OneWay}"/>
 
-                    <Button Grid.Row="1" Grid.Column="0"
-                            Height="30"
-                            Style="{StaticResource buttonBaseStyle}"
-                            Content="{StaticResource tickIconGeometry}"
-                            Margin="5"
-                            Command="{x:Static local:MainWindow.ExitRenameMode}"
-                            CommandParameter="True"/>
+                                    <TextBlock x:Name="PART_TemplateName"
+                                               Style="{StaticResource textBlockStyle}"
+                                               Text="{Binding Path=Name, Mode=OneWay}"/>
+                                </DockPanel>
+                            </Border>
+                        </Button>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=Name}"
+                                         Value="Empty">
+                                <Setter TargetName="PART_TemplateName"
+                                        Property="Foreground"
+                                        Value="White"/>
+                                <Setter TargetName="PART_TemplateName"
+                                        Property="TextAlignment"
+                                        Value="Center"/>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </local:BuildTemplateItemsControl.ItemTemplate>
+            </local:BuildTemplateItemsControl>
 
-                    <Button Grid.Row="1" Grid.Column="1"
-                            Height="30"
-                            Style="{StaticResource buttonBaseStyle}"
-                            Content="{StaticResource crossIconGeometry}"
-                            Margin="5"
-                            Command="{x:Static local:MainWindow.ExitRenameMode}"
-                            CommandParameter="False"/>
-                </Grid>
+            <Border x:Name="PART_RenameInputDialog"
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Background="#A0000000"
+                    Visibility="Collapsed">
+                <Border VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="250" Height="100"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="{StaticResource defaultBackgroundBrush}"
+                        CornerRadius="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox x:Name="PART_RenameTextInput"
+                                 Grid.Row="0" Grid.Column="0"
+                                 Grid.ColumnSpan="2"
+                                 Height="30"
+                                 Margin="20,0"
+                                 FontFamily="Tahoma"
+                                 FontSize="12"
+                                 TextAlignment="Left"
+                                 VerticalContentAlignment="Center"
+                                 MaxLength="31">
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
+                                            CommandParameter="True"
+                                            Key="Enter"/>
+                                <KeyBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
+                                            CommandParameter="True"
+                                            Key="Return"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+
+                        <Button Grid.Row="1" Grid.Column="0"
+                                Height="30"
+                                Style="{StaticResource buttonBaseStyle}"
+                                Content="{StaticResource tickIconGeometry}"
+                                Margin="5"
+                                Command="{x:Static local:MainWindow.ExitRenameMode}"
+                                CommandParameter="True"/>
+
+                        <Button Grid.Row="1" Grid.Column="1"
+                                Height="30"
+                                Style="{StaticResource buttonBaseStyle}"
+                                Content="{StaticResource crossIconGeometry}"
+                                Margin="5"
+                                Command="{x:Static local:MainWindow.ExitRenameMode}"
+                                CommandParameter="False"/>
+                    </Grid>
+                </Border>
             </Border>
-        </Border>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>

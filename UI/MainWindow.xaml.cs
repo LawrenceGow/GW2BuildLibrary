@@ -36,6 +36,7 @@ namespace GW2BuildLibrary
 
                 if (BuildLibrary.OverlayMode)
                 {
+                    InOverlayMode = true;
                     WindowStyle = WindowStyle.None;
                     AllowsTransparency = true;
                     Topmost = true;
@@ -86,6 +87,9 @@ namespace GW2BuildLibrary
 
         #region Dependency Properties
 
+        /// <summary>
+        /// The build template view models.
+        /// </summary>
         public ObservableCollection<BuildTemplateViewModel> BuildTemplateModels
         {
             get { return (ObservableCollection<BuildTemplateViewModel>)GetValue(BuildTemplateModelsProperty); }
@@ -108,6 +112,19 @@ namespace GW2BuildLibrary
         // Using a DependencyProperty as the backing store for ProfessionFilter.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ProfessionFilterProperty =
             DependencyProperty.Register("ProfessionFilter", typeof(Profession), typeof(MainWindow), new PropertyMetadata(Profession.None));
+
+        /// <summary>
+        /// Gets whether the library is in overlay mode or not.
+        /// </summary>
+        public bool InOverlayMode
+        {
+            get { return (bool)GetValue(InOverlayModeProperty); }
+            set { SetValue(InOverlayModeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for InOverlayMode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty InOverlayModeProperty =
+            DependencyProperty.Register("InOverlayMode", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 
         /// <summary>
         /// Gets or sets the current page.
