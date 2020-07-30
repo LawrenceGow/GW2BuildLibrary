@@ -26,18 +26,21 @@ namespace GW2BuildLibrary
         {
             InitializeComponent();
 
-            if (BuildLibrary.ProfessionFilter != Profession.None)
+            if (BuildLibrary != null)
             {
-                ProfessionFilter = BuildLibrary.ProfessionFilter;
-                // TODO Hide filter buttons
-            }
+                if (BuildLibrary.ProfessionFilter != Profession.None)
+                {
+                    ProfessionFilter = BuildLibrary.ProfessionFilter;
+                    // TODO Hide filter buttons
+                }
 
-            if (BuildLibrary.OverlayMode)
-            {
-                WindowStyle = WindowStyle.None;
-                AllowsTransparency = true;
-                Topmost = true;
-                Opacity = 0.9d;
+                if (BuildLibrary.OverlayMode)
+                {
+                    WindowStyle = WindowStyle.None;
+                    AllowsTransparency = true;
+                    Topmost = true;
+                    Opacity = 0.9d;
+                }
             }
 
             SyncModels();

@@ -1,5 +1,6 @@
 ﻿using Mono.Options;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
@@ -10,6 +11,8 @@ namespace GW2BuildLibrary
     /// </summary>
     public partial class App : Application
     {
+        public static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
         /// <summary>
         /// Reference to the <see cref="GW2BuildLibrary.BuildLibrary"/> instance.
         /// </summary>
@@ -165,13 +168,15 @@ namespace GW2BuildLibrary
                 optionText = writer.ToString();
             }
 
-            MessageBox.Show($"USAGE\n{optionText}\n\n" +
+            if (MessageBox.Show($"USAGE\n{optionText}\n\n" +
                             $"Would you like to open the README file?",
                             "Help",
                             MessageBoxButton.YesNo,
-                            MessageBoxImage.Information);
-
-            // TODO Open the README file
+                            MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                // Open the README file
+                Process.Start(Path.Combine(BaseDirectory, "README.pdf"));
+            }
         }
 
         /// <summary>

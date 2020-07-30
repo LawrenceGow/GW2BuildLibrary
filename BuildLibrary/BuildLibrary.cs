@@ -15,7 +15,7 @@ namespace GW2BuildLibrary
     /// </summary>
     public class BuildLibrary
     {
-        private readonly string saveLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BuildLibrary.xml");
+        private readonly string saveLocation = Path.Combine(App.BaseDirectory, "BuildLibrary.xml");
 
         #region Settings
 
