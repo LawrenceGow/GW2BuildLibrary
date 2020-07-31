@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Threading;
 
-namespace GW2BuildLibrary
+namespace GW2BuildLibrary.UI.ViewModels
 {
     /// <summary>
     /// View model class for <see cref="GW2BuildLibrary.BuildTemplate"/>s.

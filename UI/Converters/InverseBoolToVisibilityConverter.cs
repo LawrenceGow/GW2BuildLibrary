@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace GW2BuildLibrary.UI.Converters
 {
     /// <summary>
-    /// Converter used to convert a given <see cref="Profession"/> member into its icon location.
+    /// Converter used to convert a <see cref="bool"/> into a <see cref="Visibility"/>.
     /// </summary>
-    public class ProfessionToIconUriConverter : IValueConverter
+    /// <remarks>
+    /// An input of <c>true</c> produces <c>Visible</c>, <c>false</c> produces <c>Collapsed</c>.
+    /// </remarks>
+    public class InverseBoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Profession profession = (Profession)value;
+            bool boolValue = (bool)value;
 
-            // Show no icon for a blank profession
-            if (profession == Profession.None)
-                return null;
-
-            return $"..\\Icons\\{profession}.png";
+            return !boolValue ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>

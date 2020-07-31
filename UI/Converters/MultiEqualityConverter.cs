@@ -3,8 +3,11 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace GW2BuildLibrary
+namespace GW2BuildLibrary.UI.Converters
 {
+    /// <summary>
+    /// Converter to check if all values are equal.
+    /// </summary>
     public class MultiEqualityConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -21,9 +24,7 @@ namespace GW2BuildLibrary
                 return values.All(v => v == null);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
-        }
     }
 }

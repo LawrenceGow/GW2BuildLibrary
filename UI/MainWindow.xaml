@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
         xmlns:local="clr-namespace:GW2BuildLibrary"
+        xmlns:controls="clr-namespace:GW2BuildLibrary.UI.Controls"
+        xmlns:converters="clr-namespace:GW2BuildLibrary.UI.Converters"
+        xmlns:viewmodels="clr-namespace:GW2BuildLibrary.UI.ViewModels"
         mc:Ignorable="d"
         Title="GW2BuildLibrary"
         Width="0" Height="0"
@@ -21,13 +24,17 @@
                         Executed="ExitRenameMode_Executed"/>
         <CommandBinding Command="{x:Static local:MainWindow.ToggleFilter}"
                         Executed="ToggleFilter_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.CloseApplication}"
+                        Executed="CloseApplication_Executed"/>
     </Window.CommandBindings>
     <Window.Resources>
         <ResourceDictionary>
 
-            <local:ProfessionToIconUriConverter x:Key="professionIconConverter"/>
+            <converters:ProfessionToIconUriConverter x:Key="professionIconConverter"/>
 
-            <local:MultiEqualityConverter x:Key="equalityConverter"/>
+            <converters:MultiEqualityConverter x:Key="equalityConverter"/>
+
+            <converters:BoolToVisibilityConverter x:Key="boolToVisConverter"/>
 
             <SolidColorBrush x:Key="defaultBackgroundBrush"
                              po:Freeze="True"
@@ -273,24 +280,40 @@
                     <BitmapImage UriSource="..\Icons\Revenant.png"/>
                 </ToggleButton>
             </StackPanel>
+            
+            <!-- System Buttons -->
+            <StackPanel Grid.Row="0"
+                        Margin="5"
+                        Orientation="Horizontal"
+                        FlowDirection="RightToLeft">
+                <Button Style="{StaticResource clearButtonStyle}"
+                        Command="{x:Static local:MainWindow.CloseApplication}"
+                        Visibility="{Binding Path=InOverlayMode,
+                                             RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
+                                             Converter={StaticResource boolToVisConverter},
+                                             Mode=OneTime}"/>
+            </StackPanel>
 
             <!-- Build Templates -->
-            <local:BuildTemplateItemsControl x:Name="BuildTemplateItems"
+            <controls:BuildTemplateItemsControl x:Name="BuildTemplateItems"
                                              Grid.Row="1"
                                              Padding="0,0,2,2"
                                              ItemsSource="{Binding Path=BuildTemplateModels,
-                                                                   RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}">
-                <local:BuildTemplateItemsControl.ItemsPanel>
+                                                                   RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
+                                                                   Mode=OneWay}">
+                <controls:BuildTemplateItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="{Binding Path=Rows,
-                                                    ElementName='BuildTemplateItems'}"
+                                                    ElementName='BuildTemplateItems',
+                                                    Mode=OneWay}"
                                      Columns="{Binding Path=Columns,
-                                                       ElementName='BuildTemplateItems'}"
+                                                       ElementName='BuildTemplateItems',
+                                                       Mode=OneWay}"
                                      IsItemsHost="True"/>
                     </ItemsPanelTemplate>
-                </local:BuildTemplateItemsControl.ItemsPanel>
-                <local:BuildTemplateItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:BuildTemplateViewModel}">
+                </controls:BuildTemplateItemsControl.ItemsPanel>
+                <controls:BuildTemplateItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:BuildTemplateViewModel}">
                         <Button Style="{StaticResource ioButtonStyle}"
                                 CommandParameter="{Binding}">
                             <Border Background="Black"
@@ -310,11 +333,13 @@
                                            Margin="2"
                                            Stretch="Uniform"
                                            Source="{Binding Path=Profession,
-                                                            Converter={StaticResource professionIconConverter}, Mode=OneWay}"/>
+                                                            Converter={StaticResource professionIconConverter},
+                                                            Mode=OneWay}"/>
 
                                     <TextBlock x:Name="PART_TemplateName"
                                                Style="{StaticResource textBlockStyle}"
-                                               Text="{Binding Path=Name, Mode=OneWay}"/>
+                                               Text="{Binding Path=Name,
+                                                              Mode=OneWay}"/>
                                 </DockPanel>
                             </Border>
                         </Button>
@@ -330,8 +355,8 @@
                             </DataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
-                </local:BuildTemplateItemsControl.ItemTemplate>
-            </local:BuildTemplateItemsControl>
+                </controls:BuildTemplateItemsControl.ItemTemplate>
+            </controls:BuildTemplateItemsControl>
 
             <Border x:Name="PART_RenameInputDialog"
                     Grid.Row="0"

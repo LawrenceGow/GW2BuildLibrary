@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GW2BuildLibrary.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -143,6 +144,10 @@ namespace GW2BuildLibrary
 
         #region Commands
 
+        /// <summary>
+        /// Stores a build template if the selected slot is empty, otherwise the stored build will be placed
+        /// into the clipboard.
+        /// </summary>
         public static RoutedCommand StoreOrRecallBuildTemplate = new RoutedCommand();
 
         private void StoreOrRecallBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -169,6 +174,9 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Clears the build template out of the slot.
+        /// </summary>
         public static RoutedCommand ClearBuildTemplate = new RoutedCommand();
 
         private void ClearBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -184,6 +192,9 @@ namespace GW2BuildLibrary
 
         private BuildTemplateViewModel renameTarget = null;
 
+        /// <summary>
+        /// Enters rename mode, targeting the selected slot.
+        /// </summary>
         public static RoutedCommand EnterRenameMode = new RoutedCommand();
 
         private void EnterRenameMode_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -200,6 +211,9 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Exits rename mode for the targeted slot, and pushes the name to the underlying <see cref="BuildTemplate"/>.
+        /// </summary>
         public static RoutedCommand ExitRenameMode = new RoutedCommand();
 
         private void ExitRenameMode_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -214,6 +228,9 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Toggles the profession filter.
+        /// </summary>
         public static RoutedCommand ToggleFilter = new RoutedCommand();
 
         private void ToggleFilter_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -223,6 +240,14 @@ namespace GW2BuildLibrary
             ProfessionFilter = ProfessionFilter == filter ? Profession.None : filter;
             SyncModels();
         }
+
+        /// <summary>
+        /// Closes the application.
+        /// </summary>
+        public static RoutedCommand CloseApplication = new RoutedCommand();
+
+        private void CloseApplication_Executed(object sender, ExecutedRoutedEventArgs e) =>
+            Close();
 
         #endregion
 

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GW2BuildLibrary
+namespace GW2BuildLibrary.UI.Controls
 {
     public class BuildTemplateItemsControl : ItemsControl
     {
