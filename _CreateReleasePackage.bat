@@ -1,0 +1,1 @@
+PowerShell -ExecutionPolicy RemoteSigned -Command "&%~dpn0.ps1"

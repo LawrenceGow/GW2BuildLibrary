@@ -43,13 +43,13 @@ using System.Windows;
 
 // Version information for an assembly consists of the following four values:
 //
-//      Major Version
-//      Minor Version
-//      Build Number
-//      Revision
+//      Major Version   - Total Rewrites, or new function that breaks backwards compatibility
+//      Minor Version   - New Functionality, backwards compatible
+//      Patch Version   - Bug fixes/Minor changes
+//      Type            - 0=Release, 1=PreRelease, 2=Beta, 3=Alpha
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.2")]
+[assembly: AssemblyFileVersion("1.0.1.2")]
