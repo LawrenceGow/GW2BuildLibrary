@@ -9,10 +9,10 @@ namespace GW2BuildLibrary
         public const string XmlNodeName = "BuildTemplate";
 
         public int Page
-        { get; protected set; } = -1;
+        { get; set; } = -1;
 
         public int Index
-        { get; protected set; } = -1;
+        { get; set; } = -1;
 
         public ulong Id
         { get { return GetId(Page, Index); } }

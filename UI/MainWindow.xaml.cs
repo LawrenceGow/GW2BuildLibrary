@@ -29,13 +29,13 @@ namespace GW2BuildLibrary
 
             if (BuildLibrary != null)
             {
-                if (BuildLibrary.ProfessionFilter != Profession.None)
+                if (BuildLibrary.Settings.ProfessionFilter != Profession.None)
                 {
-                    ProfessionFilter = BuildLibrary.ProfessionFilter;
+                    ProfessionFilter = BuildLibrary.Settings.ProfessionFilter;
                     // TODO Hide filter buttons
                 }
 
-                if (BuildLibrary.OverlayMode)
+                if (BuildLibrary.Settings.OverlayMode)
                 {
                     InOverlayMode = true;
                     WindowStyle = WindowStyle.None;
@@ -165,7 +165,7 @@ namespace GW2BuildLibrary
                 }
 
                 // If we are in quick mode then we exit after this interaction
-                if (BuildLibrary.QuickMode)
+                if (BuildLibrary.Settings.QuickMode)
                     Application.Current.Shutdown(0);
             }
             else

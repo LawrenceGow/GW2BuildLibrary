@@ -15,66 +15,17 @@ namespace GW2BuildLibrary
     /// </summary>
     public class BuildLibrary
     {
-        private readonly string saveLocation = Path.Combine(App.BaseDirectory, "BuildLibrary.xml");
+        private readonly string DefaultSaveLocation = Path.Combine(App.BaseDirectory, "BuildLibrary.xml");
 
-        #region Settings
-
-        /// <summary>
-        /// Whether or not the library is in overlay mode.
-        /// </summary>
-        public bool OverlayMode { get; private set; } = false;
-
-        /// <summary>
-        /// Whether or not the library is in full screen mode.
-        /// </summary>
-        public bool FullScreenMode { get; private set; } = false;
-
-        /// <summary>
-        /// Whether or not the library is in quick mode.
-        /// </summary>
-        public bool QuickMode { get; private set; } = false;
-
-        /// <summary>
-        /// Whether or not the library will save the window state.
-        /// </summary>
-        public bool SaveWindowState { get; private set; } = true;
-
-        /// <summary>
-        /// The library profession filter.
-        /// </summary>
-        public Profession ProfessionFilter { get; private set; } = Profession.None;
-
-        #endregion
+        public readonly BuildLibrarySettings Settings;
 
         /// <summary>
         /// Initialises a new <see cref="BuildLibrary"/> instance.
         /// </summary>
-        /// <param name="overlayMode">
-        /// <c>True</c> if the library should be in overlay mode, otherwise <c>false</c>.
-        /// </param>
-        /// <param name="fullScreenMode">
-        /// <c>True</c> if the library should be in full screen mode, otherwise <c>false</c>.
-        /// </param>
-        /// <param name="quickMode">
-        /// <c>True</c> if the library should be in quick mode, otherwise <c>false</c>.
-        /// </param>
-        /// <param name="saveWindowState">
-        /// <c>True</c> to save the window state into the library, otherwise <c>false</c>.
-        /// </param>
-        /// <param name="professionFilter">
-        /// The profession filter to apply to the templates.
-        /// </param>
-        public BuildLibrary(bool overlayMode,
-                            bool fullScreenMode,
-                            bool quickMode,
-                            bool saveWindowState,
-                            Profession professionFilter)
+        /// <param name="settings">The settings for this <see cref="BuildLibrary"/> instance.</param>
+        public BuildLibrary(BuildLibrarySettings settings)
         {
-            OverlayMode = overlayMode;
-            FullScreenMode = fullScreenMode;
-            QuickMode = quickMode;
-            SaveWindowState = saveWindowState;
-            ProfessionFilter = professionFilter;
+            Settings = settings;
 
             // Load the library
             Load();
@@ -89,25 +40,38 @@ namespace GW2BuildLibrary
         /// <summary>
         /// Loads the build library.
         /// </summary>
-        public void Load()
+        public void Load() =>
+            Load(DefaultSaveLocation, loadWindowState: true);
+
+        /// <summary>
+        /// Loads the build library.
+        /// </summary>
+        /// <param name="location">The location to load from.</param>
+        /// <param name="loadWindowState"><c>True</c> to also load the window state, otherwise <c>false</c>.</param>
+        public void Load(string location, bool loadWindowState)
         {
             try
             {
-                using (XmlReader reader = XmlReader.Create(saveLocation))
+                using (XmlReader reader = XmlReader.Create(location))
                 {
                     XPathDocument doc = new XPathDocument(reader);
                     XPathNavigator nav = doc.CreateNavigator();
                     nav = nav.SelectSingleNode(nameof(BuildTemplates));
-                    if (Enum.TryParse(nav.GetAttribute("WindowState", string.Empty), out WindowState windowState))
-                        WindowState = windowState;
-                    if (double.TryParse(nav.GetAttribute("Width", string.Empty), out double d))
-                        Width = d;
-                    if (double.TryParse(nav.GetAttribute("Height", string.Empty), out d))
-                        Height = d;
-                    if (double.TryParse(nav.GetAttribute("Left", string.Empty), out d))
-                        Left = d;
-                    if (double.TryParse(nav.GetAttribute("Top", string.Empty), out d))
-                        Top = d;
+
+                    if (loadWindowState)
+                    {
+                        if (Enum.TryParse(nav.GetAttribute("WindowState", string.Empty), out WindowState windowState))
+                            WindowState = windowState;
+                        if (double.TryParse(nav.GetAttribute("Width", string.Empty), out double d))
+                            Width = d;
+                        if (double.TryParse(nav.GetAttribute("Height", string.Empty), out d))
+                            Height = d;
+                        if (double.TryParse(nav.GetAttribute("Left", string.Empty), out d))
+                            Left = d;
+                        if (double.TryParse(nav.GetAttribute("Top", string.Empty), out d))
+                            Top = d;
+                    }
+
                     foreach (XPathNavigator node in nav.Select(BuildTemplate.XmlNodeName))
                     {
                         if (node != null)
@@ -115,7 +79,12 @@ namespace GW2BuildLibrary
                             BuildTemplate build = new BuildTemplate();
                             build.Load(node);
                             if (!build.IsValid)
+                            {
+                                // Avoid any possible conflicts by moving the build to the next available index
+                                while (BuildTemplates.ContainsKey(build.Id))
+                                    build.Index++;
                                 BuildTemplates[build.Id] = build;
+                            }
                         }
                     }
                 }
@@ -130,7 +99,7 @@ namespace GW2BuildLibrary
         /// Saves the build library.
         /// </summary>
         public void Save() =>
-            Save(saveLocation, saveWindowState: true);
+            Save(DefaultSaveLocation, saveWindowState: true);
 
         /// <summary>
         /// Saves the build library.
@@ -187,7 +156,7 @@ namespace GW2BuildLibrary
         /// </summary>
         public WindowState WindowState
         {
-            get => FullScreenMode ? WindowState.Maximized : windowState;
+            get => Settings.FullScreenMode ? WindowState.Maximized : windowState;
             set => windowState = value;
         }
 
@@ -205,7 +174,7 @@ namespace GW2BuildLibrary
                                                in double left,
                                                in double top)
         {
-            if (SaveWindowState)
+            if (Settings.SaveWindowState)
             {
                 WindowState = windowState;
                 Width = size.Width;

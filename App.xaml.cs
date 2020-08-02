@@ -27,12 +27,9 @@ namespace GW2BuildLibrary
         /// <param name="e">A System.Windows.StartupEventArgs that contains the event data.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            bool overlayMode = false;
-            bool fullScreenMode = false;
-            bool quickMode = false;
-            bool saveWindowState = true;
-            Profession professionFilter = Profession.None;
-            string exportLocation = null;
+            BuildLibrarySettings settings = new BuildLibrarySettings();
+            string exportLocation = null,
+                   importLocation = null;
 
             options = new OptionSet()
             {
@@ -40,35 +37,35 @@ namespace GW2BuildLibrary
                 {
                     "o|overlay",
                     "Overlay Mode",
-                    v => overlayMode = v != null
+                    v => settings.OverlayMode = v != null
                 },
 
                 // Full Screen Mode
                 {
                     "f|full-screen",
                     "Full Screen Mode",
-                    v => fullScreenMode = v != null
+                    v => settings.FullScreenMode = v != null
                 },
 
                 // Quick Mode
                 {
                     "q|quick",
                     "Quick Mode",
-                    v => quickMode = v != null
+                    v => settings.QuickMode = v != null
                 },
 
                 // No Save Window State
                 {
                     "no-save-window-state",
                     "No Save Window State",
-                    v => saveWindowState = v == null
+                    v => settings.SaveWindowState = v == null
                 },
 
                 // Profession Filter
                 {
                     "profession=",
                     "Profession Filter",
-                    v => professionFilter = ParseProfessionFilter(v)
+                    v => settings.ProfessionFilter = ParseProfessionFilter(v)
                 },
 
                 // Export Builds
@@ -78,7 +75,12 @@ namespace GW2BuildLibrary
                     v => exportLocation = v
                 },
 
-                //{ "import", "Import", v => { } },
+                // Import Builds
+                {
+                    "import=",
+                    "Import",
+                    v => importLocation = v
+                },
 
                 // Help
                 {
@@ -91,20 +93,6 @@ namespace GW2BuildLibrary
             try
             {
                 options.Parse(e.Args);
-#if DEBUG
-                using (StringWriter text = new StringWriter())
-                {
-                    text.WriteLine($"Overlay Mode: {overlayMode}");
-                    text.WriteLine($"Quick Mode: {quickMode}");
-                    text.WriteLine($"Profession Filter: {professionFilter}");
-                    text.WriteLine($"Help: {ShowHelp}");
-
-                    MessageBox.Show(text.ToString(),
-                                    "DEBUG Options",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
-                }
-#endif
             }
             catch (OptionException ex)
             {
@@ -124,22 +112,27 @@ namespace GW2BuildLibrary
                 return;
             }
 
-            BuildLibrary = new BuildLibrary(overlayMode,
-                                            fullScreenMode,
-                                            quickMode,
-                                            saveWindowState,
-                                            professionFilter);
+            BuildLibrary = new BuildLibrary(settings);
+
+            bool shutdown = false;
+            if (!string.IsNullOrEmpty(importLocation))
+            {
+                // Load the additional templates
+                BuildLibrary.Load(importLocation, loadWindowState: false);
+            }
 
             if (!string.IsNullOrEmpty(exportLocation))
             {
                 // Save the library without window data to the specified location
                 // then shutdown the application
-                BuildLibrary.Save(exportLocation, false);
-                Shutdown(0);
-                return;
+                BuildLibrary.Save(exportLocation, saveWindowState: false);
+                shutdown = true;
             }
 
-            base.OnStartup(e);
+            if (shutdown)
+                Shutdown(0);
+            else
+                base.OnStartup(e);
         }
 
         /// <summary>
