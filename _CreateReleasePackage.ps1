@@ -5,23 +5,23 @@ $infoPath = "D:\Users\Lawrence\Documents\Projects\GW2BuildLibrary\Properties\Ass
 $version = Select-String -Path $infoPath -Pattern '^\[assembly: AssemblyVersion\("(.*)"\)\]$'  | % {"$($_.matches.groups[1])"}
 
 $arr = $version.Split(".")
-$tag = ""
+$tag = "INVALID"
 switch ($arr[3])
 {
-	"0" { $tag = "-Release" }
+	"0" { $tag = "" }
 	"1" { $tag = "-Pre" }
 	"2" { $tag = "-Beta" }
 	"3" { $tag = "-Alpha" }
 }
 
-if ($tag -eq "") {
+if ($tag -eq "INVALID") {
 	write-host -f red "Invalid version: '$version'"
 } else {
 	$major = $arr[0]
 	$minor = $arr[1]
 	$patch = $arr[2]
 	
-	$version = "$major.$minor.$patch$tag"
+	$version = "v$major.$minor.$patch$tag"
 
 	# Set a tag on the current branch with the version number found
 	git tag "$version" HEAD
@@ -31,7 +31,7 @@ if ($tag -eq "") {
 	$loc = "D:\Users\Lawrence\Documents\Projects\GW2BuildLibrary\"
 	$exeLocation = "bin\Release\GW2BuildLibrary.exe"
 	$readmeLocation = "bin\Release\README.pdf"
-	$archiveName = "GW2BuildLibrary_v$version.zip"
+	$archiveName = "GW2BuildLibrary_$version.zip"
 
 	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $loc$archiveName $loc$exeLocation $loc$readmeLocation
 	write-host -f green "Release archive created."
