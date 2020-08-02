@@ -24,7 +24,7 @@ if ($tag -eq "") {
 	$version = "$major.$minor.$patch$tag"
 
 	# Set a tag on the current branch with the version number found
-	# git tag "$version" HEAD
+	git tag "$version" HEAD
 	write-host -f green "HEAD tagged with: '$version'"
 	
 	# Create the zip file containing the built release
