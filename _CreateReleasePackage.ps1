@@ -1,8 +1,19 @@
-param ($config)
+$version = Read-Host 'New Version'
 
-# Get the version found in the project
-$infoPath = "D:\Users\Lawrence\Documents\Projects\GW2BuildLibrary\Properties\AssemblyInfo.cs"
-$version = Select-String -Path $infoPath -Pattern '^\[assembly: AssemblyVersion\("(.*)"\)\]$'  | % {"$($_.matches.groups[1])"}
+# Build the project in Release
+&"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" "GW2BuildLibrary.sln" /t:Clean,Build /p:Configuration=Release /p:Platform="Any CPU"
+
+# Update AssemblyVersion in the project
+$infoPath = "Properties\AssemblyInfo.cs"
+$regex = '^\[assembly: AssemblyVersion\(".*"\)\]$'
+$newVersion = '[assembly: AssemblyVersion("' + $version + '")]'
+(Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
+
+# Update AssemblyFileVersion in the project
+$infoPath = "Properties\AssemblyInfo.cs"
+$regex = '^\[assembly: AssemblyFileVersion\(".*"\)\]$'
+$newVersion = '[assembly: AssemblyFileVersion("' + $version + '")]'
+(Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
 
 $arr = $version.Split(".")
 $tag = "INVALID"
@@ -28,13 +39,15 @@ if ($tag -eq "INVALID") {
 	write-host -f green "HEAD tagged with: '$version'"
 	
 	# Create the zip file containing the built release
-	$loc = "D:\Users\Lawrence\Documents\Projects\GW2BuildLibrary\"
 	$exeLocation = "bin\Release\GW2BuildLibrary.exe"
 	$readmeLocation = "bin\Release\README.pdf"
 	$archiveName = "GW2BuildLibrary_$version.zip"
 
-	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $loc$archiveName $loc$exeLocation $loc$readmeLocation
+	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $archiveName $exeLocation $readmeLocation
 	write-host -f green "Release archive created."
+	
+	# Undo file changes
+	git reset --hard
 }
 
 if ($Host.Name -eq "ConsoleHost") {
