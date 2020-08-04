@@ -7,7 +7,6 @@ $newVersion = '[assembly: AssemblyVersion("' + $version + '")]'
 (Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
 
 # Update AssemblyFileVersion in the project
-$infoPath = "Properties\AssemblyInfo.cs"
 $regex = '^\[assembly: AssemblyFileVersion\(".*"\)\]$'
 $newVersion = '[assembly: AssemblyFileVersion("' + $version + '")]'
 (Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
@@ -53,8 +52,8 @@ if ($tag -eq "INVALID") {
 	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $archiveName $file1 $file2 $file3
 	write-host -f green "Release archive created."
 	
-	# Undo file changes
-	git reset --hard
+	# Undo file change for version bump
+	git restore $infoPath
 }
 
 if ($Host.Name -eq "ConsoleHost") {
