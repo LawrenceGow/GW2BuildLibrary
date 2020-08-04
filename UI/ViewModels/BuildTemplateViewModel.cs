@@ -20,11 +20,6 @@ namespace GW2BuildLibrary.UI.ViewModels
         }
 
         /// <summary>
-        /// The page of the model. Zero based.
-        /// </summary>
-        public int Page = -1;
-
-        /// <summary>
         /// The index of the model.
         /// </summary>
         public int Index = -1;

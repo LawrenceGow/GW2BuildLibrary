@@ -149,14 +149,13 @@ namespace GW2BuildLibrary
         /// into the clipboard.
         /// </summary>
         public static RoutedCommand StoreOrRecallBuildTemplate = new RoutedCommand();
-
         private void StoreOrRecallBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is BuildTemplateViewModel model)
             {
                 if (model.BuildTemplate == null)
                 {
-                    BuildLibrary.CreateBuildTemplate(model.Page, model.Index, Clipboard.GetText());
+                    BuildLibrary.CreateBuildTemplate(model.Index, Clipboard.GetText());
                     SyncModels();
                 }
                 else
@@ -178,14 +177,13 @@ namespace GW2BuildLibrary
         /// Clears the build template out of the slot.
         /// </summary>
         public static RoutedCommand ClearBuildTemplate = new RoutedCommand();
-
         private void ClearBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.Assert(e.Parameter is BuildTemplateViewModel);
             BuildTemplateViewModel model = (BuildTemplateViewModel)e.Parameter;
             if (model.BuildTemplate != null)
             {
-                BuildLibrary.DeleteBuildTemplate(model.Page, model.Index);
+                BuildLibrary.DeleteBuildTemplate(model.Index);
                 SyncModels();
             }
         }
@@ -196,7 +194,6 @@ namespace GW2BuildLibrary
         /// Enters rename mode, targeting the selected slot.
         /// </summary>
         public static RoutedCommand EnterRenameMode = new RoutedCommand();
-
         private void EnterRenameMode_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.Assert(e.Parameter is BuildTemplateViewModel);
@@ -215,14 +212,13 @@ namespace GW2BuildLibrary
         /// Exits rename mode for the targeted slot, and pushes the name to the underlying <see cref="BuildTemplate"/>.
         /// </summary>
         public static RoutedCommand ExitRenameMode = new RoutedCommand();
-
         private void ExitRenameMode_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (renameTarget != null && bool.TryParse(e.Parameter as string, out bool setName))
             {
                 PART_RenameInputDialog.Visibility = Visibility.Collapsed;
                 if (setName)
-                    BuildLibrary.SetBuildTemplateName(renameTarget.Page, renameTarget.Index, PART_RenameTextInput.Text);
+                    BuildLibrary.SetBuildTemplateName(renameTarget.Index, PART_RenameTextInput.Text);
                 PART_RenameTextInput.Clear();
                 renameTarget = null;
             }
@@ -232,7 +228,6 @@ namespace GW2BuildLibrary
         /// Toggles the profession filter.
         /// </summary>
         public static RoutedCommand ToggleFilter = new RoutedCommand();
-
         private void ToggleFilter_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.Assert(e.Parameter is Profession);
@@ -242,10 +237,35 @@ namespace GW2BuildLibrary
         }
 
         /// <summary>
+        /// Moves to the next page.
+        /// </summary>
+        public static RoutedCommand NextPage = new RoutedCommand();
+        private void NextPage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CurrentPage < 255)
+            {
+                CurrentPage++;
+                SyncModels();
+            }
+        }
+
+        /// <summary>
+        /// Moves to the previous page.
+        /// </summary>
+        public static RoutedCommand PrevPage = new RoutedCommand();
+        private void PrevPage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (CurrentPage > 1)
+            {
+                CurrentPage--;
+                SyncModels();
+            }
+        }
+
+        /// <summary>
         /// Closes the application.
         /// </summary>
         public static RoutedCommand CloseApplication = new RoutedCommand();
-
         private void CloseApplication_Executed(object sender, ExecutedRoutedEventArgs e) =>
             Close();
 
@@ -260,52 +280,56 @@ namespace GW2BuildLibrary
             if (BuildLibrary == null)
                 return;
 
+            int pageOffset = BuildTemplateItems.ItemCount * (CurrentPage - 1);
             if (ProfessionFilter == Profession.None)
             {
-                for (int i = 0; i < BuildTemplateItems.ItemCount; i++)
+                // No filter applied so just show the builds as is
+                // All models are used and blank ones allow for storing more builds
+                for (int modelIndex = 0; modelIndex < BuildTemplateItems.ItemCount; modelIndex++)
                 {
                     BuildTemplateViewModel model;
-                    if (BuildTemplateModels.Count <= i)
+                    if (BuildTemplateModels.Count <= modelIndex)
                     {
                         model = new BuildTemplateViewModel();
                         BuildTemplateModels.Add(model);
                     }
                     else
-                        model = BuildTemplateModels[i];
+                        model = BuildTemplateModels[modelIndex];
 
-                    BuildTemplate build = BuildLibrary.GetBuildTemplate(CurrentPage - 1, i);
+                    BuildTemplate build = BuildLibrary.GetBuildTemplate(modelIndex + pageOffset);
                     model.BuildTemplate = build;
-                    model.Page = build?.Page ?? CurrentPage - 1;
-                    model.Index = build?.Index ?? i;
+                    model.Index = build?.Index ?? (modelIndex + pageOffset);
                 }
             }
             else
             {
                 // If a filter is applied then get all templates and only create models for those that match
-                List<BuildTemplate> buildTemplates = BuildLibrary.GetAllBuildTemplates(ProfessionFilter).OrderBy(b => b.Id).ToList();
-                int visibleCount = 0;
-                for (int i = BuildTemplateItems.ItemCount * (CurrentPage - 1); i < buildTemplates.Count && i < (BuildTemplateItems.ItemCount * CurrentPage); i++)
-                {
-                    BuildTemplate build = buildTemplates[i];
+                List<BuildTemplate> buildTemplates = BuildLibrary.GetAllBuildTemplates(ProfessionFilter)
+                    .OrderBy(b => b.Index).ToList();
 
+                int modelIndex;
+                for (modelIndex = 0; modelIndex < BuildTemplateItems.ItemCount
+                    && (modelIndex + pageOffset) < buildTemplates.Count; modelIndex++)
+                {
                     BuildTemplateViewModel model;
-                    if (BuildTemplateModels.Count <= i)
+                    if (BuildTemplateModels.Count <= modelIndex)
                     {
                         model = new BuildTemplateViewModel();
                         BuildTemplateModels.Add(model);
                     }
                     else
                     {
-                        model = BuildTemplateModels[i];
+                        model = BuildTemplateModels[modelIndex];
                     }
 
+                    BuildTemplate build = buildTemplates[modelIndex + pageOffset];
+
                     model.BuildTemplate = build;
-                    model.Page = build.Page;
                     model.Index = build.Index;
-                    visibleCount++;
                 }
 
-                while (BuildTemplateModels.Count > visibleCount)
+                // Remove the models that aren't being used
+                while (BuildTemplateModels.Count > modelIndex)
                 {
                     BuildTemplateModels[BuildTemplateModels.Count - 1].Dispose();
                     BuildTemplateModels.RemoveAt(BuildTemplateModels.Count - 1);

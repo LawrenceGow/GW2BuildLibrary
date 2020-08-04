@@ -34,8 +34,8 @@ namespace GW2BuildLibrary
         /// <summary>
         /// Map of all the build templates in the library.
         /// </summary>
-        private Dictionary<ulong, BuildTemplate> BuildTemplates
-        { get; set; } = new Dictionary<ulong, BuildTemplate>();
+        private Dictionary<int, BuildTemplate> BuildTemplates
+        { get; set; } = new Dictionary<int, BuildTemplate>();
 
         /// <summary>
         /// Loads the build library.
@@ -81,9 +81,9 @@ namespace GW2BuildLibrary
                             if (!build.IsValid)
                             {
                                 // Avoid any possible conflicts by moving the build to the next available index
-                                while (BuildTemplates.ContainsKey(build.Id))
+                                while (BuildTemplates.ContainsKey(build.Index))
                                     build.Index++;
-                                BuildTemplates[build.Id] = build;
+                                BuildTemplates[build.Index] = build;
                             }
                         }
                     }
@@ -187,37 +187,32 @@ namespace GW2BuildLibrary
         /// <summary>
         /// Creates a new build template.
         /// </summary>
-        /// <param name="page">The new templates page.</param>
         /// <param name="index">The new templates index.</param>
         /// <param name="data">The build template data.</param>
-        public void CreateBuildTemplate(in int page, in int index, in string data)
+        public void CreateBuildTemplate(in int index, in string data)
         {
             BuildTemplate build = new BuildTemplate();
-            if (build.SetBuildData(page, index, data))
+            if (build.SetBuildData(index, data))
             {
-                BuildTemplates[build.Id] = build;
+                BuildTemplates[build.Index] = build;
             }
         }
 
         /// <summary>
         /// Deletes the build template.
         /// </summary>
-        /// <param name="page">The page.</param>
         /// <param name="index">The index.</param>
-        public void DeleteBuildTemplate(in int page, in int index)
-        {
-            BuildTemplates.Remove(BuildTemplate.GetId(page, index));
-        }
+        public void DeleteBuildTemplate(in int index) =>
+            BuildTemplates.Remove(index);
 
         /// <summary>
         /// Gets the build template at the specified location.
         /// </summary>
-        /// <param name="page">The page.</param>
         /// <param name="index">The index.</param>
         /// <returns>The build template that was at the index, or null.</returns>
-        public BuildTemplate GetBuildTemplate(in int page, in int index)
+        public BuildTemplate GetBuildTemplate(in int index)
         {
-            BuildTemplates.TryGetValue(BuildTemplate.GetId(page, index), out BuildTemplate build);
+            BuildTemplates.TryGetValue(index, out BuildTemplate build);
             return build;
         }
 
@@ -236,12 +231,9 @@ namespace GW2BuildLibrary
         /// <summary>
         /// Sets the name of the build template at the specified index.
         /// </summary>
-        /// <param name="page">The page.</param>
         /// <param name="index">The index.</param>
         /// <param name="name">The new name of the template.</param>
-        public void SetBuildTemplateName(in int page, in int index, in string name)
-        {
-            GetBuildTemplate(page, index)?.SetName(name);
-        }
+        public void SetBuildTemplateName(in int index, in string name) =>
+            GetBuildTemplate(index)?.SetName(name);
     }
 }

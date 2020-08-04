@@ -24,6 +24,10 @@
                         Executed="ExitRenameMode_Executed"/>
         <CommandBinding Command="{x:Static local:MainWindow.ToggleFilter}"
                         Executed="ToggleFilter_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.NextPage}"
+                        Executed="NextPage_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.PrevPage}"
+                        Executed="PrevPage_Executed"/>
         <CommandBinding Command="{x:Static local:MainWindow.CloseApplication}"
                         Executed="CloseApplication_Executed"/>
     </Window.CommandBindings>
@@ -100,7 +104,8 @@
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="2"
                         Background="#01000000"
-                        Margin="0">
+                        Margin="0"
+                        Padding="{TemplateBinding Padding}">
                     <Path Fill="{TemplateBinding Foreground}"
                           Stretch="Uniform"
                           Margin="3"
@@ -205,6 +210,16 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+            <PathGeometry x:Key="nextIconGeometry"
+                          po:Freeze="True">
+                m 5.5976534 297 1.83789 -1.83984 -3.75781 -3.75782 3.75781 -3.75781 -1.83789 -1.83789 -5.59765 5.5957 z
+            </PathGeometry>
+
+            <PathGeometry x:Key="prevIconGeometry"
+                          po:Freeze="True">
+                M 1.8378906 285.80664 0 287.64648 3.7578125 291.4043 0 295.16211 1.8378906 297 7.4355469 291.4043 Z
+            </PathGeometry>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -286,21 +301,39 @@
                         Margin="5"
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft">
+                <!-- Close Button -->
                 <Button Style="{StaticResource clearButtonStyle}"
                         Command="{x:Static local:MainWindow.CloseApplication}"
                         Visibility="{Binding Path=InOverlayMode,
                                              RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
                                              Converter={StaticResource boolToVisConverter},
                                              Mode=OneTime}"/>
+
+                <!-- Next Page Button -->
+                <Button Style="{StaticResource buttonBaseStyle}"
+                        Command="{x:Static local:MainWindow.NextPage}"
+                        Content="{StaticResource nextIconGeometry}"/>
+                
+                <!-- Current Page -->
+                <TextBlock Style="{StaticResource textBlockStyle}"
+                           TextAlignment="Center"
+                           Width="30"
+                           Text="{Binding Path=CurrentPage,
+                                          RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                
+                <!-- Prev Page Button -->
+                <Button Style="{StaticResource buttonBaseStyle}"
+                        Command="{x:Static local:MainWindow.PrevPage}"
+                        Content="{StaticResource prevIconGeometry}"/>
             </StackPanel>
 
             <!-- Build Templates -->
             <controls:BuildTemplateItemsControl x:Name="BuildTemplateItems"
-                                             Grid.Row="1"
-                                             Padding="0,0,2,2"
-                                             ItemsSource="{Binding Path=BuildTemplateModels,
-                                                                   RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
-                                                                   Mode=OneWay}">
+                                                Grid.Row="1"
+                                                Padding="0,0,2,2"
+                                                ItemsSource="{Binding Path=BuildTemplateModels,
+                                                                      RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
+                                                                      Mode=OneWay}">
                 <controls:BuildTemplateItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Rows="{Binding Path=Rows,
