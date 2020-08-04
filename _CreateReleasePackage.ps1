@@ -33,6 +33,9 @@ if ($tag -eq "INVALID") {
 	
 	$version = "v$major.$minor.$patch$tag"
 
+	# Create an empty commit to place the tag on
+	git commit --allow-empty -m"$version"
+	
 	# Set a tag on the current branch with the version number found
 	git tag "$version" HEAD
 	write-host -f green "HEAD tagged with: '$version'"
