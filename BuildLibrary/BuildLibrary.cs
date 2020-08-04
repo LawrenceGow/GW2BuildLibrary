@@ -15,8 +15,19 @@ namespace GW2BuildLibrary
     /// </summary>
     public class BuildLibrary
     {
+        /// <summary>
+        /// The current version of the XML file.
+        /// </summary>
+        private const int XmlFileVersion = 1;
+
+        /// <summary>
+        /// The default save location.
+        /// </summary>
         private readonly string DefaultSaveLocation = Path.Combine(App.BaseDirectory, "BuildLibrary.xml");
 
+        /// <summary>
+        /// The settings for the <see cref="BuildLibrary"/>.
+        /// </summary>
         public readonly BuildLibrarySettings Settings;
 
         /// <summary>
@@ -57,6 +68,8 @@ namespace GW2BuildLibrary
                     XPathDocument doc = new XPathDocument(reader);
                     XPathNavigator nav = doc.CreateNavigator();
                     nav = nav.SelectSingleNode(nameof(BuildTemplates));
+                    if (!int.TryParse(nav.GetAttribute("XmlFileVersion", string.Empty), out int xmlFileVersion))
+                        xmlFileVersion = 1;
 
                     if (loadWindowState)
                     {
@@ -125,6 +138,7 @@ namespace GW2BuildLibrary
                 {
                     writer.WriteStartDocument();
                     writer.WriteStartElement(nameof(BuildTemplates));
+                    writer.WriteAttributeString("XmlFileVersion", XmlFileVersion.ToString());
 
                     if (saveWindowState)
                     {
