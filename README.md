@@ -7,7 +7,6 @@ GW2BuildLibrary is a simple application to help store and manage build templates
 1. Download latest .zip archive from [here](https://github.com/LawrenceGow/GW2BuildLibrary/releases).
 2. Place the downloaded archive where you wish to install.
 3. Unzip the archive.
-4. Ensure both GW2BuildLibrary.exe and the README file are in the same folder.
 5. Done!
 
 ## General Usage
@@ -21,24 +20,18 @@ Builds can be deleted by clicking the 'X' button on their respective slot.
 Builds are saved automatically upon the application closing.
 
 ### Command-Line Arguments
-- o|overlay : `-o` or `--overlay`
-  - Opens GW2BuildLibrary with no window furniture.
-  - GW2BuildLibrary will be placed on top of all other windows.
-- f|full-screen: `-f` or `--full-screen`
-  - GW2BuildLibrary will open full screen, regardless of the previous state.
-- q|quick: `-q` or `--quick`
-  - GW2BuildLibrary will close after copying a build into the clipboard or after storing a build.
-- no-save-window-state: `--no-save-window-state`
-  - GW2BuildLibrary will not save the window state.
-- profession=VALUE: `--profession="Warrior"`
-  - Opens GW2BuildLibrary filtered to the specified profession.
-  - Name must be typed in-full with the first letter capitalised.
-- export=FILENAME: `--export="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"`
-  - Exports the builds to the file specified in the XML format then exits.
-- ~~import=FILENAME: `--import="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"`~~
-  - Imports builds from the file specified.
-- h|?|help: `-h` or `-?` or `--help`
-  - Displays a message with all possible command line arguments with the option to open this file.
+
+| Command                 | Arguments                                                    | Comments                                                     |
+| ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Overlay Mode            | `-o` or `--overlay`                                          | Opens GW2BuildLibrary with no window furniture.<br />GW2BuildLibrary will be placed on top of all other windows. |
+| Full Screen Mode        | `-f` or `--full-screen`                                      | GW2BuildLibrary will open full screen, regardless of the previous state. |
+| Quick Mode              | `-q` or `--quick`                                            | GW2BuildLibrary will close after copying a build into the clipboard or after storing a build. |
+| Don't save window state | `--no-save-window-state`                                     | GW2BuildLibrary will not save the window state.              |
+| Profession Filter       | `--profession="Warrior"`                                     | Opens GW2BuildLibrary filtered to the specified profession.<br />Name must be typed in-full with the first letter capitalised. |
+| Export                  | `--export="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"` | Exports the builds to the file specified in the XML format then exits. |
+| Import                  | `--import="D:\Program Files (x86)\Guild Wars 2\Build Library\builds.xml"` | Imports builds from the file specified.                      |
+| Help                    | `-h` or `-?` or `--help`                                     | Displays a message with all possible command line arguments with the option to open this file. |
+<div style="page-break-after: always; break-after: page;"/>
 
 #### Running With Arguments sans Command-Line
 
@@ -62,6 +55,3 @@ The following is an example of a simple .bat file that can be used to run GW2Bui
 start GW2BuildLibrary.exe --overlay
 exit
 ```
-
-## XML Save File Format
-
