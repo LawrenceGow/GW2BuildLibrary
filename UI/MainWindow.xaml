@@ -303,6 +303,7 @@
                         FlowDirection="RightToLeft">
                 <!-- Close Button -->
                 <Button Style="{StaticResource clearButtonStyle}"
+                        Margin="0,0,2,0"
                         Command="{x:Static local:MainWindow.CloseApplication}"
                         Visibility="{Binding Path=InOverlayMode,
                                              RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
