@@ -3,9 +3,9 @@
 namespace GW2BuildLibrary
 {
     /// <summary>
-    /// Helpful methods for <see cref="Profession"/> bit-twiddling.
+    /// Helpful methods for <see cref="Profession"/> and <see cref="Specialization"/> bit-twiddling.
     /// </summary>
-    public static class ProfessionHelper
+    public static class TemplateHelper
     {
         public const byte Core = 0b0000;
         public const byte HeartOfThorns = 0b0001;
