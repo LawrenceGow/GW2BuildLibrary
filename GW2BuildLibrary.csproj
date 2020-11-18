@@ -41,9 +41,6 @@
     <StartupObject>GW2BuildLibrary.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -76,8 +73,6 @@
     <Compile Include="BuildLibrary\BuildLibrary.cs" />
     <Compile Include="BuildLibrary\BuildLibrarySettings.cs" />
     <Compile Include="BuildLibrary\Specialization.cs" />
-    <Compile Include="BuildLibrary\APIDataGenerator.cs" />
-    <Compile Include="Options.cs" />
     <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
     <Compile Include="UI\Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
@@ -109,7 +104,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -156,6 +150,11 @@
     <Resource Include="Icons\Soulbeast.png" />
     <Resource Include="Icons\Spellbreaker.png" />
     <Resource Include="Icons\Weaver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mono.Options">
+      <Version>6.6.0.161</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
