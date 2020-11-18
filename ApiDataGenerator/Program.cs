@@ -46,6 +46,11 @@ namespace ApiDataGenerator
             Process.Start(apiOutputDir);
         }
 
+        /// <summary>
+        /// Saves the profession icons.
+        /// </summary>
+        /// <param name="professions">The collection professions JSON objects.</param>
+        /// <returns></returns>
         private static async Task SaveProfessionIcons(JArray professions)
         {
             foreach (JToken profession in professions)
@@ -67,6 +72,7 @@ namespace ApiDataGenerator
         /// <param name="professionName">The name of the profession to write about.</param>
         /// <param name="specs">The collection of specialisation JSON objects.</param>
         /// <param name="specFile">The <see cref="StreamWriter"/> to write to.</param>
+        /// <returns></returns>
         private static async Task WriteSpecialisationsForProfession(string professionName, JArray specs, StreamWriter specFile)
         {
             specFile.WriteLine($"// {professionName}");
@@ -83,7 +89,8 @@ namespace ApiDataGenerator
         /// Saves the specialisation icon.
         /// </summary>
         /// <param name="specName">The name of the specialisation.</param>
-        /// <param name="spec">The specialisation JSON object.</param>
+        /// <param name="spec">The specialisation.</param>
+        /// <returns></returns>
         private static async Task SaveSpecialisationImage(string specName, JToken spec)
         {
             using (HttpClient client = new HttpClient())
@@ -101,6 +108,11 @@ namespace ApiDataGenerator
             }
         }
 
+        /// <summary>
+        /// Writes the given <see cref="Stream"/> to a file at the specified path.
+        /// </summary>
+        /// <param name="source">The source <see cref="Stream"/> to read from.</param>
+        /// <param name="path">The target file path.</param>
         private static void WriteStreamToFile(Stream source, string path)
         {
             using (FileStream file = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
