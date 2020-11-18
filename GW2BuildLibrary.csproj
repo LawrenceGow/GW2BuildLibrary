@@ -76,6 +76,7 @@
     <Compile Include="BuildLibrary\BuildLibrary.cs" />
     <Compile Include="BuildLibrary\BuildLibrarySettings.cs" />
     <Compile Include="BuildLibrary\Specialization.cs" />
+    <Compile Include="BuildLibrary\APIDataGenerator.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
     <Compile Include="UI\Converters\InverseBoolToVisibilityConverter.cs" />
