@@ -2,11 +2,15 @@
 
 namespace GW2BuildLibrary
 {
-    public static class ProfessionHelper
+    /// <summary>
+    /// Helpful methods for <see cref="Profession"/> and <see cref="Specialization"/> bit-twiddling.
+    /// </summary>
+    public static class TemplateHelper
     {
+        public const byte Core = 0b0000;
         public const byte HeartOfThorns = 0b0001;
         public const byte PathOfFire = 0b0010;
-        public const byte IcebroodSaga = 0b0011;
+        public const byte EndOfDragons = 0b0011;
 
         private static readonly HashSet<byte> HeartOfThornsSpecs = new HashSet<byte>()
         { 5, 7, 18, 27, 34, 40, 43, 48, 52 };
@@ -14,11 +18,11 @@ namespace GW2BuildLibrary
         private static readonly HashSet<byte> PathOfFireSpecs = new HashSet<byte>()
         { 55, 56, 57, 58, 59, 60, 61, 62, 63 };
 
-        private static readonly HashSet<byte> IcebroodSagaSpecs = new HashSet<byte>()
+        private static readonly HashSet<byte> EndOfDragonsSpecs = new HashSet<byte>()
         { };
 
         /// <summary>
-        /// Gets the byte that represents the set of elite specs required
+        /// Gets the byte that represents the set of elite specialisations required
         /// for the specializations provided.
         /// </summary>
         /// <param name="eliteSlotByte">The elite specialization slot byte.</param>
@@ -31,10 +35,10 @@ namespace GW2BuildLibrary
             if (PathOfFireSpecs.Contains(eliteSlotByte))
                 return PathOfFire;
 
-            if (IcebroodSagaSpecs.Contains(eliteSlotByte))
-                return IcebroodSaga;
+            if (EndOfDragonsSpecs.Contains(eliteSlotByte))
+                return EndOfDragons;
 
-            return 0; // 0 is core
+            return Core;
         }
 
         /// <summary>

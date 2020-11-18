@@ -72,7 +72,7 @@
     <Compile Include="BuildLibrary\BuildTemplate.cs" />
     <Compile Include="BuildLibrary\BuildLibrary.cs" />
     <Compile Include="BuildLibrary\BuildLibrarySettings.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="BuildLibrary\Specialization.cs" />
     <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
     <Compile Include="UI\Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
@@ -85,7 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildLibrary\Profession.cs" />
-    <Compile Include="BuildLibrary\ProfessionHelper.cs" />
+    <Compile Include="BuildLibrary\TemplateHelper.cs" />
     <Compile Include="UI\Converters\ProfessionToIconUriConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -119,37 +119,104 @@
     <Resource Include="Icons\gw2lb.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Elementalist.png" />
-    <Resource Include="Icons\Engineer.png" />
-    <Resource Include="Icons\Guardian.png" />
-    <Resource Include="Icons\Mesmer.png" />
-    <Resource Include="Icons\Necromancer.png" />
-    <Resource Include="Icons\Ranger.png" />
-    <Resource Include="Icons\Revenant.png" />
-    <Resource Include="Icons\Thief.png" />
-    <Resource Include="Icons\Warrior.png" />
+    <PackageReference Include="Mono.Options">
+      <Version>6.6.0.161</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\Professions\Berserker.png" />
+    <Resource Include="Icons\Professions\Chronomancer.png" />
+    <Resource Include="Icons\Professions\Daredevil.png" />
+    <Resource Include="Icons\Professions\Deadeye.png" />
+    <Resource Include="Icons\Professions\Dragonhunter.png" />
+    <Resource Include="Icons\Professions\Druid.png" />
+    <Resource Include="Icons\Professions\Elementalist.png" />
+    <Resource Include="Icons\Professions\Engineer.png" />
+    <Resource Include="Icons\Professions\Firebrand.png" />
+    <Resource Include="Icons\Professions\Guardian.png" />
+    <Resource Include="Icons\Professions\Herald.png" />
+    <Resource Include="Icons\Professions\Holosmith.png" />
+    <Resource Include="Icons\Professions\Mesmer.png" />
+    <Resource Include="Icons\Professions\Mirage.png" />
+    <Resource Include="Icons\Professions\Necromancer.png" />
+    <Resource Include="Icons\Professions\Ranger.png" />
+    <Resource Include="Icons\Professions\Reaper.png" />
+    <Resource Include="Icons\Professions\Renegade.png" />
+    <Resource Include="Icons\Professions\Revenant.png" />
+    <Resource Include="Icons\Professions\Scourge.png" />
+    <Resource Include="Icons\Professions\Scrapper.png" />
+    <Resource Include="Icons\Professions\Soulbeast.png" />
+    <Resource Include="Icons\Professions\Spellbreaker.png" />
+    <Resource Include="Icons\Professions\Tempest.png" />
+    <Resource Include="Icons\Professions\Thief.png" />
+    <Resource Include="Icons\Professions\Warrior.png" />
+    <Resource Include="Icons\Professions\Weaver.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Berserker.png" />
-    <Resource Include="Icons\Chronomancer.png" />
-    <Resource Include="Icons\Daredevil.png" />
-    <Resource Include="Icons\Dragonhunter.png" />
-    <Resource Include="Icons\Druid.png" />
-    <Resource Include="Icons\Herald.png" />
-    <Resource Include="Icons\Reaper.png" />
-    <Resource Include="Icons\Scrapper.png" />
-    <Resource Include="Icons\Tempest.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icons\Deadeye.png" />
-    <Resource Include="Icons\Firebrand.png" />
-    <Resource Include="Icons\Holosmith.png" />
-    <Resource Include="Icons\Mirage.png" />
-    <Resource Include="Icons\Renegade.png" />
-    <Resource Include="Icons\Scourge.png" />
-    <Resource Include="Icons\Soulbeast.png" />
-    <Resource Include="Icons\Spellbreaker.png" />
-    <Resource Include="Icons\Weaver.png" />
+    <Resource Include="Icons\Specialisations\Acrobatics.png" />
+    <Resource Include="Icons\Specialisations\Air.png" />
+    <Resource Include="Icons\Specialisations\Alchemy.png" />
+    <Resource Include="Icons\Specialisations\Arcane.png" />
+    <Resource Include="Icons\Specialisations\Arms.png" />
+    <Resource Include="Icons\Specialisations\Beastmastery.png" />
+    <Resource Include="Icons\Specialisations\Berserker.png" />
+    <Resource Include="Icons\Specialisations\BloodMagic.png" />
+    <Resource Include="Icons\Specialisations\Chaos.png" />
+    <Resource Include="Icons\Specialisations\Chronomancer.png" />
+    <Resource Include="Icons\Specialisations\Corruption.png" />
+    <Resource Include="Icons\Specialisations\CriticalStrikes.png" />
+    <Resource Include="Icons\Specialisations\Curses.png" />
+    <Resource Include="Icons\Specialisations\Daredevil.png" />
+    <Resource Include="Icons\Specialisations\Deadeye.png" />
+    <Resource Include="Icons\Specialisations\DeadlyArts.png" />
+    <Resource Include="Icons\Specialisations\DeathMagic.png" />
+    <Resource Include="Icons\Specialisations\Defense.png" />
+    <Resource Include="Icons\Specialisations\Devastation.png" />
+    <Resource Include="Icons\Specialisations\Discipline.png" />
+    <Resource Include="Icons\Specialisations\Domination.png" />
+    <Resource Include="Icons\Specialisations\Dragonhunter.png" />
+    <Resource Include="Icons\Specialisations\Druid.png" />
+    <Resource Include="Icons\Specialisations\Dueling.png" />
+    <Resource Include="Icons\Specialisations\Earth.png" />
+    <Resource Include="Icons\Specialisations\Explosives.png" />
+    <Resource Include="Icons\Specialisations\Fire.png" />
+    <Resource Include="Icons\Specialisations\Firearms.png" />
+    <Resource Include="Icons\Specialisations\Firebrand.png" />
+    <Resource Include="Icons\Specialisations\Herald.png" />
+    <Resource Include="Icons\Specialisations\Holosmith.png" />
+    <Resource Include="Icons\Specialisations\Honor.png" />
+    <Resource Include="Icons\Specialisations\Illusions.png" />
+    <Resource Include="Icons\Specialisations\Inspiration.png" />
+    <Resource Include="Icons\Specialisations\Inventions.png" />
+    <Resource Include="Icons\Specialisations\Invocation.png" />
+    <Resource Include="Icons\Specialisations\Marksmanship.png" />
+    <Resource Include="Icons\Specialisations\Mirage.png" />
+    <Resource Include="Icons\Specialisations\NatureMagic.png" />
+    <Resource Include="Icons\Specialisations\Radiance.png" />
+    <Resource Include="Icons\Specialisations\Reaper.png" />
+    <Resource Include="Icons\Specialisations\Renegade.png" />
+    <Resource Include="Icons\Specialisations\Retribution.png" />
+    <Resource Include="Icons\Specialisations\Salvation.png" />
+    <Resource Include="Icons\Specialisations\Scourge.png" />
+    <Resource Include="Icons\Specialisations\Scrapper.png" />
+    <Resource Include="Icons\Specialisations\ShadowArts.png" />
+    <Resource Include="Icons\Specialisations\Skirmishing.png" />
+    <Resource Include="Icons\Specialisations\Soulbeast.png" />
+    <Resource Include="Icons\Specialisations\SoulReaping.png" />
+    <Resource Include="Icons\Specialisations\Spellbreaker.png" />
+    <Resource Include="Icons\Specialisations\Spite.png" />
+    <Resource Include="Icons\Specialisations\Strength.png" />
+    <Resource Include="Icons\Specialisations\Tactics.png" />
+    <Resource Include="Icons\Specialisations\Tempest.png" />
+    <Resource Include="Icons\Specialisations\Tools.png" />
+    <Resource Include="Icons\Specialisations\Trickery.png" />
+    <Resource Include="Icons\Specialisations\Valor.png" />
+    <Resource Include="Icons\Specialisations\Virtues.png" />
+    <Resource Include="Icons\Specialisations\Water.png" />
+    <Resource Include="Icons\Specialisations\Weaver.png" />
+    <Resource Include="Icons\Specialisations\WildernessSurvival.png" />
+    <Resource Include="Icons\Specialisations\Zeal.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

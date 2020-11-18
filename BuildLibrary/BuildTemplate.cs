@@ -104,13 +104,21 @@ namespace GW2BuildLibrary
                 try
                 {
                     byte[] raw = Convert.FromBase64String(data.Substring(2, data.Length - 3));
+                    // For how the chat-link is built
+                    // See: https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
                     // Build templates are always 44 bytes long
-                    // Build templates have a link type of 13
-                    if (raw.Length == 44 && raw[0] == 13)
+                    if (raw.Length == 44
+                        // Build templates have a link type of 13
+                        && raw[0] == 13)
                     {
                         BuildData = data;
                         Index = index;
-                        Profession = ProfessionHelper.FromBytes(raw[1], ProfessionHelper.GetSetByte(raw[6]));
+
+                        // Check https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
+                        // raw[2], raw[4], and raw[6] are the specialisations
+                        // raw[3], raw[5], and raw[7] are the tart choices
+
+                        Profession = TemplateHelper.FromBytes(raw[1], TemplateHelper.GetSetByte(raw[6]));
 
                         Updated?.Invoke(this, null);
                         return true;
