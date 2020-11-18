@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,21 +9,10 @@ namespace ApiDataGenerator
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
-        {
-            await WriteAPIDataToFiles();
-
-            // Open the output folder
-            Process.Start(apiOutputPath);
-        }
-
         private static readonly string apiOutputPath = Path.Combine(@"D:\Temp\GW2BuildLibrary");
         private static readonly string specsFilePath = Path.Combine(apiOutputPath, "Specialization.txt");
 
-        /// <summary>
-        /// Writes a file contain the currently available specialisations for all classes.
-        /// </summary>
-        public static async Task WriteAPIDataToFiles()
+        private static async Task Main(string[] args)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -52,6 +40,9 @@ namespace ApiDataGenerator
                     WriteSpecialisations("Revenant", specs, specFile);
                 }
             }
+
+            // Open the output folder
+            Process.Start(apiOutputPath);
         }
 
         /// <summary>
