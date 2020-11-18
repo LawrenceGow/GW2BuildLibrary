@@ -1,23 +1,27 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Windows;
+using System.Threading.Tasks;
 
-namespace GW2BuildLibrary
+namespace ApiDataGenerator
 {
-    /// <summary>
-    /// Helpful methods for <see cref="Profession"/> and <see cref="Specialization"/> bit-twiddling.
-    /// </summary>
-    public static class APIDataGenerator
+    internal class Program
     {
-        private static readonly string apiOutputPath = Path.Combine(App.BaseDirectory, "API_Output");
+        private static async Task Main(string[] args)
+        {
+            await WriteAPIDataToFiles();
+            Console.ReadKey();
+        }
+
+        private static readonly string apiOutputPath = Path.Combine(@"D:\Temp\GW2BuildLibrary", "API_Output");
+        private static readonly string specsFilePath = Path.Combine(apiOutputPath, "Specialization.txt");
 
         /// <summary>
         /// Writes a file contain the currently available specialisations for all classes.
         /// </summary>
-        public static async void WriteAPIDataToFiles()
+        public static async Task WriteAPIDataToFiles()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -31,7 +35,6 @@ namespace GW2BuildLibrary
                 // Ensure the output directory exists
                 Directory.CreateDirectory(apiOutputPath);
 
-                string specsFilePath = Path.Combine(apiOutputPath, "Specialization.txt");
                 File.Delete(specsFilePath);
                 using (StreamWriter specFile = new StreamWriter(specsFilePath, false))
                 {
@@ -47,7 +50,7 @@ namespace GW2BuildLibrary
                 }
             }
 
-            MessageBox.Show("API Output Processed");
+            Console.WriteLine("API Output Processed.");
         }
 
         /// <summary>
@@ -79,11 +82,12 @@ namespace GW2BuildLibrary
             string dir = Path.Combine(apiOutputPath, professionName);
             Directory.CreateDirectory(dir);
 
-            using (FileStream specImgFile = new FileStream(Path.Combine(dir, $"{specName}.png"), FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream specImgFile = new FileStream(Path.Combine(dir, $"{specName}.png"),
+                FileMode.OpenOrCreate, FileAccess.ReadWrite))
             using (HttpClient client = new HttpClient())
             {
                 string iconURL = spec["icon"].ToString();
-                var data = await client.GetStreamAsync(iconURL);
+                Stream data = await client.GetStreamAsync(iconURL);
                 int b;
                 while ((b = data.ReadByte()) != -1)
                     specImgFile.WriteByte((byte)b);

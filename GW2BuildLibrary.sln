@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GW2BuildLibrary", "GW2BuildLibrary.csproj", "{E774435F-8A82-4961-A013-204082568C3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiDataGenerator", "ApiDataGenerator\ApiDataGenerator.csproj", "{FDEBE2B1-966D-4784-87F9-C8EB553FCB1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E774435F-8A82-4961-A013-204082568C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E774435F-8A82-4961-A013-204082568C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E774435F-8A82-4961-A013-204082568C3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDEBE2B1-966D-4784-87F9-C8EB553FCB1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDEBE2B1-966D-4784-87F9-C8EB553FCB1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDEBE2B1-966D-4784-87F9-C8EB553FCB1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDEBE2B1-966D-4784-87F9-C8EB553FCB1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
