@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace ApiDataGenerator
 {
     internal class Program
     {
+        private const string apiURL = @"https://api.guildwars2.com/v2";
         private static readonly string apiOutputPath = Path.Combine(@"D:\Temp\GW2BuildLibrary");
         private static readonly string specsFilePath = Path.Combine(apiOutputPath, "Specialization.txt");
 
@@ -16,12 +18,19 @@ namespace ApiDataGenerator
         {
             using (HttpClient client = new HttpClient())
             {
+                // Get the list of professions ids
+                string professionIds = string.Join(",",
+                    JArray.Parse(await client.GetStringAsync($"{apiURL}/professions")));
+
+                // Get the profession info
+                JArray professions = JArray.Parse(await client.GetStringAsync($"{apiURL}/professions?ids={professionIds}"));
+
                 // Get the list of specialisation ids
                 string specIds = string.Join(",",
-                    JArray.Parse(await client.GetStringAsync("https://api.guildwars2.com/v2/specializations")));
+                    JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations")));
 
                 // Get the specialisation info
-                JArray specs = JArray.Parse(await client.GetStringAsync($"https://api.guildwars2.com/v2/specializations?ids={specIds}"));
+                JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids={specIds}"));
 
                 // Ensure the output directory exists
                 Directory.CreateDirectory(apiOutputPath);
@@ -29,29 +38,26 @@ namespace ApiDataGenerator
                 File.Delete(specsFilePath);
                 using (StreamWriter specFile = new StreamWriter(specsFilePath, false))
                 {
-                    WriteSpecialisations("Guardian", specs, specFile);
-                    WriteSpecialisations("Warrior", specs, specFile);
-                    WriteSpecialisations("Engineer", specs, specFile);
-                    WriteSpecialisations("Ranger", specs, specFile);
-                    WriteSpecialisations("Thief", specs, specFile);
-                    WriteSpecialisations("Elementalist", specs, specFile);
-                    WriteSpecialisations("Mesmer", specs, specFile);
-                    WriteSpecialisations("Necromancer", specs, specFile);
-                    WriteSpecialisations("Revenant", specs, specFile);
+                    foreach (var profession in professions)
+                        WriteSpecialisationsForProfession(profession["name"].ToString(), specs, specFile);
                 }
             }
 
+
+            Console.WriteLine("DONE! Press any key to exit.");
+            Console.ReadKey();
             // Open the output folder
             Process.Start(apiOutputPath);
         }
 
         /// <summary>
-        /// Writes the specialisation enum values with the given <see cref="StreamWriter"/>.
+        /// Writes the specialisation enum values with the given <see cref="StreamWriter"/>
+        /// for the specified profession.
         /// </summary>
         /// <param name="professionName">The name of the profession to write about.</param>
         /// <param name="specs">The collection of specialisation JSON objects.</param>
         /// <param name="specFile">The <see cref="StreamWriter"/> to write to.</param>
-        private static void WriteSpecialisations(string professionName, JArray specs, StreamWriter specFile)
+        private static void WriteSpecialisationsForProfession(string professionName, JArray specs, StreamWriter specFile)
         {
             specFile.WriteLine($"// {professionName}");
             foreach (JToken spec in specs.Where(s => s["profession"].ToString() == professionName))
