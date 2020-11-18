@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -12,10 +13,12 @@ namespace ApiDataGenerator
         private static async Task Main(string[] args)
         {
             await WriteAPIDataToFiles();
-            Console.ReadKey();
+
+            // Open the output folder
+            Process.Start(apiOutputPath);
         }
 
-        private static readonly string apiOutputPath = Path.Combine(@"D:\Temp\GW2BuildLibrary", "API_Output");
+        private static readonly string apiOutputPath = Path.Combine(@"D:\Temp\GW2BuildLibrary");
         private static readonly string specsFilePath = Path.Combine(apiOutputPath, "Specialization.txt");
 
         /// <summary>
@@ -49,8 +52,6 @@ namespace ApiDataGenerator
                     WriteSpecialisations("Revenant", specs, specFile);
                 }
             }
-
-            Console.WriteLine("API Output Processed.");
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace ApiDataGenerator
             {
                 string specName = spec["name"].ToString().Replace(" ", "");
                 specFile.WriteLine($"{specName} = {spec["id"]},");
-                WriteSpecialisationImgFile(professionName, specName, spec);
+                WriteSpecialisationImgFile(specName, spec);
             }
             specFile.WriteLine();
         }
@@ -74,12 +75,11 @@ namespace ApiDataGenerator
         /// <summary>
         /// Writes the specialisation icon to a file.
         /// </summary>
-        /// <param name="professionName">The name of the profession this specialisation is on.</param>
         /// <param name="specName">The name of the specialisation.</param>
         /// <param name="spec">The specialisation JSON object.</param>
-        private static async void WriteSpecialisationImgFile(string professionName, string specName, JToken spec)
+        private static async void WriteSpecialisationImgFile(string specName, JToken spec)
         {
-            string dir = Path.Combine(apiOutputPath, professionName);
+            string dir = Path.Combine(apiOutputPath, @"Icons\Specialisations");
             Directory.CreateDirectory(dir);
 
             using (FileStream specImgFile = new FileStream(Path.Combine(dir, $"{specName}.png"),
