@@ -13,7 +13,7 @@ namespace ApiDataGenerator
         private const string apiURL = @"https://api.guildwars2.com/v2";
         private static readonly string apiOutputDir = Path.Combine(@"D:\Temp\GW2BuildLibrary");
         private static readonly string specsFilePath = Path.Combine(apiOutputDir, "Specialization.txt");
-        private static readonly string specIconsDir = Path.Combine(apiOutputDir, @"Icons\Specialisations");
+        private static readonly string specIconsDir = Path.Combine(apiOutputDir, @"Icons\Specializations");
         private static readonly string professionIconsDir = Path.Combine(apiOutputDir, @"Icons\Professions");
 
         private static async Task Main(string[] args)
@@ -28,14 +28,14 @@ namespace ApiDataGenerator
                 JArray professions = JArray.Parse(await client.GetStringAsync($"{apiURL}/professions?ids=all"));
                 await SaveProfessionIcons(professions);
 
-                // Get the specialisations
+                // Get the specializations
                 JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all"));
 
                 File.Delete(specsFilePath);
                 using (StreamWriter specFile = new StreamWriter(specsFilePath, false))
                 {
                     foreach (JToken profession in professions)
-                        await WriteSpecialisationsForProfession(profession["name"].ToString(), specs, specFile);
+                        await WriteSpecializationsForProfession(profession["name"].ToString(), specs, specFile);
                 }
             }
 
@@ -66,32 +66,32 @@ namespace ApiDataGenerator
         }
 
         /// <summary>
-        /// Writes the specialisation enum values with the given <see cref="StreamWriter"/>
+        /// Writes the specialization enum values with the given <see cref="StreamWriter"/>
         /// for the specified profession.
         /// </summary>
         /// <param name="professionName">The name of the profession to write about.</param>
-        /// <param name="specs">The collection of specialisation JSON objects.</param>
+        /// <param name="specs">The collection of specialization JSON objects.</param>
         /// <param name="specFile">The <see cref="StreamWriter"/> to write to.</param>
         /// <returns></returns>
-        private static async Task WriteSpecialisationsForProfession(string professionName, JArray specs, StreamWriter specFile)
+        private static async Task WriteSpecializationsForProfession(string professionName, JArray specs, StreamWriter specFile)
         {
             specFile.WriteLine($"// {professionName}");
             foreach (JToken spec in specs.Where(s => s["profession"].ToString() == professionName))
             {
                 string specName = spec["name"].ToString().Replace(" ", "");
                 specFile.WriteLine($"{specName} = {spec["id"]},");
-                await SaveSpecialisationImage(specName, spec);
+                await SaveSpecializationImage(specName, spec);
             }
             specFile.WriteLine();
         }
 
         /// <summary>
-        /// Saves the specialisation icon.
+        /// Saves the specialization icon.
         /// </summary>
-        /// <param name="specName">The name of the specialisation.</param>
-        /// <param name="spec">The specialisation.</param>
+        /// <param name="specName">The name of the specialization.</param>
+        /// <param name="spec">The specialization.</param>
         /// <returns></returns>
-        private static async Task SaveSpecialisationImage(string specName, JToken spec)
+        private static async Task SaveSpecializationImage(string specName, JToken spec)
         {
             using (HttpClient client = new HttpClient())
             {

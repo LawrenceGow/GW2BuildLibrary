@@ -1,7 +1,7 @@
 ﻿namespace GW2BuildLibrary
 {
     /// <summary>
-    /// The available specialisations.
+    /// The available specializations.
     /// </summary>
     public enum Specialization : byte
     {
