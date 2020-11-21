@@ -41,5 +41,13 @@
             Trait2 = (byte)((traitsByte & 0b00001100) >> 2);
             Trait3 = (byte)((traitsByte & 0b00110000) >> 4);
         }
+
+        /// <summary>
+        /// Gets a <see cref="string"/> representation of this <see cref="SpecializationSlot"/> instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="string"/> that represents this <see cref="SpecializationSlot"/> instance.
+        /// </returns>
+        public override string ToString() => $"{Specialization} - {Trait1}|{Trait2}|{Trait3}";
     }
 }
