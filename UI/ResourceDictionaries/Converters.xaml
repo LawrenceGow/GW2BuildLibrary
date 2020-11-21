@@ -2,8 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:GW2BuildLibrary.UI.Converters"
                     xmlns:local="clr-namespace:GW2BuildLibrary.UI.ResourceDictionaries">
-    
+
     <converters:ProfessionToIconUriConverter x:Key="professionIconConverter"/>
+
+    <converters:SpecializationToIconUriConverter x:Key="specializationIconConverter"/>
 
     <converters:MultiEqualityConverter x:Key="equalityConverter"/>
 
