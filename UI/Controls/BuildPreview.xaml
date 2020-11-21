@@ -4,15 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GW2BuildLibrary.UI.Controls"
+             xmlns:properties="clr-namespace:GW2BuildLibrary.Properties"
              mc:Ignorable="d" 
              d:DesignWidth="300" d:DesignHeight="450"
-             Width="300" Height="200">
+             Width="300" Height="180">
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Brushes.xaml"/>
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Converters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid>
+
+    <Grid ShowGridLines="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="60"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -24,12 +31,22 @@
         <Image Grid.Row="0" Grid.Column="0"
                Stretch="Uniform"
                Height="50"
-               Source="../../Icons/Specializations/Devastation.png"/>
+               Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BuildPreview}},
+                                Path=Slot1.Specialization,
+                                Converter={StaticResource specializationIconConverter}}"/>
 
         <Image Grid.Row="1" Grid.Column="0"
-               Source="../Icons/Specializations/Corruption.png"/>
+               Stretch="Uniform"
+               Height="50"
+               Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BuildPreview}},
+                                Path=Slot2.Specialization,
+                                Converter={StaticResource specializationIconConverter}}"/>
 
         <Image Grid.Row="2" Grid.Column="0"
-               Source="../Icons/Specializations/Renegade.png"/>
+               Stretch="Uniform"
+               Height="50"
+               Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BuildPreview}},
+                                Path=Slot3.Specialization,
+                                Converter={StaticResource specializationIconConverter}}"/>
     </Grid>
 </UserControl>
