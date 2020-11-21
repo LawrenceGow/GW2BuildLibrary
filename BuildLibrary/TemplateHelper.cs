@@ -12,34 +12,52 @@ namespace GW2BuildLibrary
         public const byte PathOfFire = 0b0010;
         public const byte EndOfDragons = 0b0011;
 
-        private static readonly HashSet<byte> HeartOfThornsSpecs = new HashSet<byte>()
-        { 5, 7, 18, 27, 34, 40, 43, 48, 52 };
+        private static readonly HashSet<Specialization> HeartOfThornsSpecs = new HashSet<Specialization>()
+        { Specialization.Dragonhunter, Specialization.Berserker, Specialization.Scrapper, Specialization.Druid,
+            Specialization.Daredevil, Specialization.Tempest, Specialization.Chronomancer, Specialization.Reaper,
+            Specialization.Herald };
 
-        private static readonly HashSet<byte> PathOfFireSpecs = new HashSet<byte>()
-        { 55, 56, 57, 58, 59, 60, 61, 62, 63 };
+        private static readonly HashSet<Specialization> PathOfFireSpecs = new HashSet<Specialization>()
+        { Specialization.Firebrand, Specialization.Spellbreaker, Specialization.Holosmith, Specialization.Soulbeast,
+            Specialization.Deadeye, Specialization.Weaver, Specialization.Mirage, Specialization.Scourge,
+            Specialization.Renegade };
 
-        private static readonly HashSet<byte> EndOfDragonsSpecs = new HashSet<byte>()
-        { };
+        private static readonly HashSet<Specialization> EndOfDragonsSpecs = new HashSet<Specialization>();
+
+        #region Specialization Methods
 
         /// <summary>
-        /// Gets the byte that represents the set of elite specialisations required
+        /// Gets the byte that represents the set of elite specializations required
         /// for the specializations provided.
         /// </summary>
-        /// <param name="eliteSlotByte">The elite specialization slot byte.</param>
+        /// <param name="specialization">The third specialization.</param>
         /// <returns></returns>
-        public static byte GetSetByte(in byte eliteSlotByte)
+        public static byte GetSetByte(in Specialization specialization)
         {
-            if (HeartOfThornsSpecs.Contains(eliteSlotByte))
+            if (HeartOfThornsSpecs.Contains(specialization))
                 return HeartOfThorns;
 
-            if (PathOfFireSpecs.Contains(eliteSlotByte))
+            if (PathOfFireSpecs.Contains(specialization))
                 return PathOfFire;
 
-            if (EndOfDragonsSpecs.Contains(eliteSlotByte))
+            if (EndOfDragonsSpecs.Contains(specialization))
                 return EndOfDragons;
 
             return Core;
         }
+
+        #endregion
+
+        #region Profession Methods
+
+        /// <summary>
+        /// Generates a profession enum based on the provided profession byte and third specialization.
+        /// </summary>
+        /// <param name="professionByte">The profession byte.</param>
+        /// <param name="specialization">The third specialization.</param>
+        /// <returns></returns>
+        public static Profession GetProfessionFromBytes(in byte professionByte, in Specialization specialization) =>
+            GetProfessionFromBytes(professionByte, GetSetByte(specialization));
 
         /// <summary>
         /// Generates a profession enum based on the provided profession and set bytes.
@@ -47,7 +65,7 @@ namespace GW2BuildLibrary
         /// <param name="professionByte">The profession byte.</param>
         /// <param name="setByte">The set byte.</param>
         /// <returns></returns>
-        public static Profession FromBytes(in byte professionByte, in byte setByte)
+        public static Profession GetProfessionFromBytes(in byte professionByte, in byte setByte)
         {
             try
             {
@@ -69,5 +87,7 @@ namespace GW2BuildLibrary
         {
             return ((byte)profession & 0b00001111) == (byte)check;
         }
+
+        #endregion
     }
 }

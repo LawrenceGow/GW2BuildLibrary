@@ -14,6 +14,8 @@ namespace GW2BuildLibrary
         /// </summary>
         public const string XmlNodeName = "BuildTemplate";
 
+        #region Properties
+
         /// <summary>
         /// The index of the slot the build is in.
         /// </summary>
@@ -37,6 +39,23 @@ namespace GW2BuildLibrary
         /// </summary>
         public Profession Profession
         { get; set; } = Profession.None;
+
+        /// <summary>
+        /// The first specialization slot.
+        /// </summary>
+        public readonly SpecializationSlot Slot1 = new SpecializationSlot();
+
+        /// <summary>
+        /// The second specialization slot.
+        /// </summary>
+        public readonly SpecializationSlot Slot2 = new SpecializationSlot();
+
+        /// <summary>
+        /// The third specialization slot.
+        /// </summary>
+        public readonly SpecializationSlot Slot3 = new SpecializationSlot();
+
+        #endregion
 
         /// <summary>
         /// Loads the build from the provided node.
@@ -114,11 +133,11 @@ namespace GW2BuildLibrary
                         BuildData = data;
                         Index = index;
 
-                        // Check https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
-                        // raw[2], raw[4], and raw[6] are the specialisations
-                        // raw[3], raw[5], and raw[7] are the tart choices
+                        Slot1.LoadFromBytes(raw[2], raw[3]);
+                        Slot2.LoadFromBytes(raw[4], raw[5]);
+                        Slot3.LoadFromBytes(raw[6], raw[7]);
 
-                        Profession = TemplateHelper.FromBytes(raw[1], TemplateHelper.GetSetByte(raw[6]));
+                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], Slot3.Specialization);
 
                         Updated?.Invoke(this, null);
                         return true;

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+    
+    <SolidColorBrush x:Key="defaultBackgroundBrush"
+                     po:Freeze="True"
+                     Color="#3A3428"/>
+
+    <SolidColorBrush x:Key="FilledTextForegoundBrush"
+                     po:Freeze="True"
+                     Color="#EAD6A1"/>
+</ResourceDictionary>

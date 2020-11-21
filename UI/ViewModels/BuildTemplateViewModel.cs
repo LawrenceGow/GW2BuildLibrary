@@ -19,6 +19,8 @@ namespace GW2BuildLibrary.UI.ViewModels
             Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
+        #region Properties
+
         /// <summary>
         /// The index of the model.
         /// </summary>
@@ -37,7 +39,7 @@ namespace GW2BuildLibrary.UI.ViewModels
                 if (name != value)
                 {
                     name = value;
-                    OnPropertyChanged("Name");
+                    OnPropertyChanged(nameof(Name));
                 }
             }
         }
@@ -55,7 +57,79 @@ namespace GW2BuildLibrary.UI.ViewModels
                 if (profession != value)
                 {
                     profession = value;
-                    OnPropertyChanged("Profession");
+                    OnPropertyChanged(nameof(Profession));
+                }
+            }
+        }
+
+        private SpecializationSlot slot1 = null;
+
+        /// <summary>
+        /// The first specialization slot.
+        /// </summary>
+        public SpecializationSlot Slot1
+        {
+            get { return slot1; }
+            set
+            {
+                if (slot1 != value)
+                {
+                    slot1 = value;
+                    OnPropertyChanged(nameof(Slot1));
+                }
+            }
+        }
+
+        private SpecializationSlot slot2 = null;
+
+        /// <summary>
+        /// The second specialization slot.
+        /// </summary>
+        public SpecializationSlot Slot2
+        {
+            get { return slot2; }
+            set
+            {
+                if (slot2 != value)
+                {
+                    slot2 = value;
+                    OnPropertyChanged(nameof(Slot2));
+                }
+            }
+        }
+
+        private SpecializationSlot slot3 = null;
+
+        /// <summary>
+        /// The third specialization slot.
+        /// </summary>
+        public SpecializationSlot Slot3
+        {
+            get { return slot3; }
+            set
+            {
+                if (slot3 != value)
+                {
+                    slot3 = value;
+                    OnPropertyChanged(nameof(Slot3));
+                }
+            }
+        }
+
+        private bool showPreview = false;
+
+        /// <summary>
+        /// Whether or not to show the preview of the build.
+        /// </summary>
+        public bool ShowPreview
+        {
+            get { return showPreview; }
+            set
+            {
+                if (showPreview != value)
+                {
+                    showPreview = value;
+                    OnPropertyChanged(nameof(ShowPreview));
                 }
             }
         }
@@ -93,6 +167,8 @@ namespace GW2BuildLibrary.UI.ViewModels
             Dispatcher.BeginInvoke(new Action(FillProperties));
         }
 
+        #endregion
+
         /// <summary>
         /// Fills the visual properties of the view model.
         /// </summary>
@@ -105,11 +181,19 @@ namespace GW2BuildLibrary.UI.ViewModels
                 else
                     Name = BuildTemplate.Name;
                 Profession = BuildTemplate.Profession;
+                Slot1 = BuildTemplate.Slot1;
+                Slot2 = BuildTemplate.Slot2;
+                Slot3 = BuildTemplate.Slot3;
+                ShowPreview = true;
             }
             else
             {
                 Name = "Empty";
                 Profession = Profession.None;
+                Slot1 = null;
+                Slot2 = null;
+                Slot3 = null;
+                ShowPreview = false;
             }
         }
 
@@ -125,6 +209,7 @@ namespace GW2BuildLibrary.UI.ViewModels
         }
 
         #region IDisposable Support
+
         private bool disposedValue = false; // To detect redundant calls
 
         /// <summary>
@@ -155,6 +240,7 @@ namespace GW2BuildLibrary.UI.ViewModels
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
         }
+
         #endregion
     }
 }
