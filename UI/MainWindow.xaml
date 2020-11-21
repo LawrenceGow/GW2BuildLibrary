@@ -218,7 +218,7 @@
                                                    Mode=OneTime}"
                                  Value="True">
                         <Setter Property="Padding"
-                                    Value="10"/>
+                                Value="10"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -337,7 +337,9 @@
                                 <Border.ToolTip>
                                     <controls:BuildPreview Slot1="{Binding Path=Slot1}"
                                                            Slot2="{Binding Path=Slot2}"
-                                                           Slot3="{Binding Path=Slot3}"/>
+                                                           Slot3="{Binding Path=Slot3}"
+                                                           Visibility="{Binding Path=ShowPreview,
+                                                                                Converter={StaticResource boolToVisConverter}}"/>
                                 </Border.ToolTip>
                                 
                                 <DockPanel LastChildFill="True">

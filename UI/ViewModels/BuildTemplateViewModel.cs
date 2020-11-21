@@ -116,6 +116,24 @@ namespace GW2BuildLibrary.UI.ViewModels
             }
         }
 
+        private bool showPreview = false;
+
+        /// <summary>
+        /// Whether or not to show the preview of the build.
+        /// </summary>
+        public bool ShowPreview
+        {
+            get { return showPreview; }
+            set
+            {
+                if (showPreview != value)
+                {
+                    showPreview = value;
+                    OnPropertyChanged(nameof(ShowPreview));
+                }
+            }
+        }
+
         private BuildTemplate buildTemplate = null;
 
         /// <summary>
@@ -166,6 +184,7 @@ namespace GW2BuildLibrary.UI.ViewModels
                 Slot1 = BuildTemplate.Slot1;
                 Slot2 = BuildTemplate.Slot2;
                 Slot3 = BuildTemplate.Slot3;
+                ShowPreview = true;
             }
             else
             {
@@ -174,6 +193,7 @@ namespace GW2BuildLibrary.UI.ViewModels
                 Slot1 = null;
                 Slot2 = null;
                 Slot3 = null;
+                ShowPreview = false;
             }
         }
 
