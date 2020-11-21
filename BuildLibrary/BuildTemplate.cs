@@ -41,25 +41,19 @@ namespace GW2BuildLibrary
         { get; set; } = Profession.None;
 
         /// <summary>
-        /// The specialization in the first slot.
+        /// The first specialization slot.
         /// </summary>
-        public Specialization Specialization1
-        { get; set; }
-
-        public byte[] Traits1
-        { get; set; } = new byte[3];
+        public readonly SpecializationSlot Slot1 = new SpecializationSlot();
 
         /// <summary>
-        /// The specialization in the second slot.
+        /// The second specialization slot.
         /// </summary>
-        public Specialization Specialization2
-        { get; set; }
+        public readonly SpecializationSlot Slot2 = new SpecializationSlot();
 
         /// <summary>
-        /// The specialization in the third slot.
+        /// The third specialization slot.
         /// </summary>
-        public Specialization Specialization3
-        { get; set; }
+        public readonly SpecializationSlot Slot3 = new SpecializationSlot();
 
         #endregion
 
@@ -139,19 +133,11 @@ namespace GW2BuildLibrary
                         BuildData = data;
                         Index = index;
 
-                        // Check https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
-                        // raw[2], raw[4], and raw[6] are the specializations
-                        // raw[3], raw[5], and raw[7] are the trait choices
+                        Slot1.LoadFromBytes(raw[2], raw[3]);
+                        Slot2.LoadFromBytes(raw[4], raw[5]);
+                        Slot3.LoadFromBytes(raw[6], raw[7]);
 
-                        Specialization1 = (Specialization)raw[2];
-                        Traits1[0] = (byte)(raw[3] & 0b00000011);
-                        Traits1[1] = (byte)((raw[3] & 0b00001100) >> 2);
-                        Traits1[2] = (byte)((raw[3] & 0b00110000) >> 4);
-
-                        Specialization2 = (Specialization)raw[4];
-                        Specialization3 = (Specialization)raw[6];
-
-                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], TemplateHelper.GetSetByte(Specialization3));
+                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], TemplateHelper.GetSetByte(Slot3.Specialization));
 
                         Updated?.Invoke(this, null);
                         return true;
