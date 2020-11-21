@@ -140,7 +140,11 @@ namespace GW2BuildLibrary
                         // raw[2], raw[4], and raw[6] are the specialisations
                         // raw[3], raw[5], and raw[7] are the tart choices
 
-                        Profession = TemplateHelper.FromBytes(raw[1], TemplateHelper.GetSetByte(raw[6]));
+                        Specialization1 = (Specialization)raw[2];
+                        Specialization2 = (Specialization)raw[4];
+                        Specialization3 = (Specialization)raw[6];
+
+                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], (byte)((int)Specialization3 >> 4));
 
                         Updated?.Invoke(this, null);
                         return true;
