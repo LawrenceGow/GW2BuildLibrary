@@ -9,7 +9,7 @@ namespace GW2BuildLibrary.UI.Converters
     /// Converter used to convert a <see cref="bool"/> into a <see cref="Visibility"/>.
     /// </summary>
     /// <remarks>
-    /// An input of <c>true</c> produces <c>Visible</c>, <c>false</c> produces <c>Collapsed</c>.
+    /// An input of <c>true</c> produces <c>Collapsed</c>, <c>false</c> produces <c>Visible</c>.
     /// </remarks>
     public class InverseBoolToVisibilityConverter : IValueConverter
     {
