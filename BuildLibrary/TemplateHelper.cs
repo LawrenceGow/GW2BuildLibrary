@@ -7,6 +7,43 @@ namespace GW2BuildLibrary
     /// </summary>
     public static class TemplateHelper
     {
+        public const byte Core = 0b0000;
+        public const byte HeartOfThorns = 0b0001;
+        public const byte PathOfFire = 0b0010;
+        public const byte EndOfDragons = 0b0011;
+
+        private static readonly HashSet<Specialization> HeartOfThornsSpecs = new HashSet<Specialization>()
+        { Specialization.Dragonhunter, Specialization.Berserker, Specialization.Scrapper, Specialization.Druid,
+            Specialization.Daredevil, Specialization.Tempest, Specialization.Chronomancer, Specialization.Reaper,
+            Specialization.Herald };
+
+        private static readonly HashSet<Specialization> PathOfFireSpecs = new HashSet<Specialization>()
+        { Specialization.Firebrand, Specialization.Spellbreaker, Specialization.Holosmith, Specialization.Soulbeast,
+            Specialization.Deadeye, Specialization.Weaver, Specialization.Mirage, Specialization.Scourge,
+            Specialization.Renegade };
+
+        private static readonly HashSet<Specialization> EndOfDragonsSpecs = new HashSet<Specialization>();
+
+        /// <summary>
+        /// Gets the byte that represents the set of elite specializations required
+        /// for the specializations provided.
+        /// </summary>
+        /// <param name="specialization">The third specialization.</param>
+        /// <returns></returns>
+        public static byte GetSetByte(in Specialization specialization)
+        {
+            if (HeartOfThornsSpecs.Contains(specialization))
+                return HeartOfThorns;
+
+            if (PathOfFireSpecs.Contains(specialization))
+                return PathOfFire;
+
+            if (EndOfDragonsSpecs.Contains(specialization))
+                return EndOfDragons;
+
+            return Core;
+        }
+
         #region Profession Methods
 
         /// <summary>
@@ -40,7 +77,7 @@ namespace GW2BuildLibrary
 
         #endregion
 
-        #region Specialisation Methods
+        #region Specialization Methods
 
         #endregion
     }
