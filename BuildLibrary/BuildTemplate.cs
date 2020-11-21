@@ -41,19 +41,22 @@ namespace GW2BuildLibrary
         { get; set; } = Profession.None;
 
         /// <summary>
-        /// The specialisation in the first slot.
+        /// The specialization in the first slot.
         /// </summary>
         public Specialization Specialization1
         { get; set; }
 
+        public byte[] Traits1
+        { get; set; } = new byte[3];
+
         /// <summary>
-        /// The specialisation in the second slot.
+        /// The specialization in the second slot.
         /// </summary>
         public Specialization Specialization2
         { get; set; }
 
         /// <summary>
-        /// The specialisation in the third slot.
+        /// The specialization in the third slot.
         /// </summary>
         public Specialization Specialization3
         { get; set; }
@@ -137,14 +140,18 @@ namespace GW2BuildLibrary
                         Index = index;
 
                         // Check https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
-                        // raw[2], raw[4], and raw[6] are the specialisations
-                        // raw[3], raw[5], and raw[7] are the tart choices
+                        // raw[2], raw[4], and raw[6] are the specializations
+                        // raw[3], raw[5], and raw[7] are the trait choices
 
                         Specialization1 = (Specialization)raw[2];
+                        Traits1[0] = (byte)(raw[3] & 0b00000011);
+                        Traits1[1] = (byte)((raw[3] & 0b00001100) >> 2);
+                        Traits1[2] = (byte)((raw[3] & 0b00110000) >> 4);
+
                         Specialization2 = (Specialization)raw[4];
                         Specialization3 = (Specialization)raw[6];
 
-                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], (byte)((int)Specialization3 >> 4));
+                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], TemplateHelper.GetSetByte(Specialization3));
 
                         Updated?.Invoke(this, null);
                         return true;
