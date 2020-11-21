@@ -14,6 +14,8 @@ namespace GW2BuildLibrary
         /// </summary>
         public const string XmlNodeName = "BuildTemplate";
 
+        #region Properties
+
         /// <summary>
         /// The index of the slot the build is in.
         /// </summary>
@@ -37,6 +39,26 @@ namespace GW2BuildLibrary
         /// </summary>
         public Profession Profession
         { get; set; } = Profession.None;
+
+        /// <summary>
+        /// The specialisation in the first slot.
+        /// </summary>
+        public Specialization Specialization1
+        { get; set; }
+
+        /// <summary>
+        /// The specialisation in the second slot.
+        /// </summary>
+        public Specialization Specialization2
+        { get; set; }
+
+        /// <summary>
+        /// The specialisation in the third slot.
+        /// </summary>
+        public Specialization Specialization3
+        { get; set; }
+
+        #endregion
 
         /// <summary>
         /// Loads the build from the provided node.
