@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="UI\Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="UI\Converters\SpecializationToIconUriConverter.cs" />
     <Compile Include="UI\ViewModels\BuildTemplateViewModel.cs" />
     <Compile Include="UI\Converters\MultiEqualityConverter.cs" />
     <Compile Include="UI\MainWindow.xaml.cs">
