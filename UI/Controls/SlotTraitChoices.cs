@@ -10,6 +10,7 @@ namespace GW2BuildLibrary.UI.Controls
     {
         private const double traitSize = 3;
         private Pen TraitPen;
+        private Brush DimTraitBrush;
 
         /// <summary>
         /// The brush to use for the trait choices.
@@ -27,6 +28,11 @@ namespace GW2BuildLibrary.UI.Controls
                     SlotTraitChoices traitChoices = (SlotTraitChoices)d;
                     traitChoices.TraitPen = new Pen(traitChoices.TraitBrush, 1);
                     traitChoices.TraitPen.Freeze();
+                    Color traitColour = ((SolidColorBrush)traitChoices.TraitBrush).Color;
+                    double s = 0.6d;
+                    traitChoices.DimTraitBrush = new SolidColorBrush(Color.FromRgb((byte)(traitColour.R * s),
+                        (byte)(traitColour.G * s), (byte)(traitColour.B * s)));
+                    traitChoices.DimTraitBrush.Freeze();
                     traitChoices.InvalidateVisual();
                 })));
 
@@ -55,26 +61,84 @@ namespace GW2BuildLibrary.UI.Controls
             if (Slot == null)
                 return;
 
-            dc.DrawEllipse((Slot.Trait1 == 1) ? TraitBrush : null, TraitPen,
-                new Point(0, 0), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait1 == 2) ? TraitBrush : null, TraitPen,
-                new Point(0, ActualHeight / 2), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait1 == 3) ? TraitBrush : null, TraitPen,
-                new Point(0, ActualHeight), traitSize, traitSize);
+            // Draw line between 1&2
+            if (Slot.Trait1 > 0 && Slot.Trait2 > 0)
+            {
+                dc.DrawLine(TraitPen,
+                    GetPositionForTrait(1, Slot.Trait1),
+                    GetPositionForTrait(2, Slot.Trait2));
+            }
 
-            dc.DrawEllipse((Slot.Trait2 == 1) ? TraitBrush : null, TraitPen,
-                new Point(ActualWidth / 2, 0), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait2 == 2) ? TraitBrush : null, TraitPen,
-                new Point(ActualWidth / 2, ActualHeight / 2), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait2 == 3) ? TraitBrush : null, TraitPen,
-                new Point(ActualWidth / 2, ActualHeight), traitSize, traitSize);
+            // Draw line between 2&3
+            if (Slot.Trait2 > 0 && Slot.Trait3 > 0)
+            {
+                dc.DrawLine(TraitPen,
+                    GetPositionForTrait(2, Slot.Trait2),
+                    GetPositionForTrait(3, Slot.Trait3));
+            }
 
-            dc.DrawEllipse((Slot.Trait3 == 1) ? TraitBrush : null, TraitPen,
-                new Point(ActualWidth, 0), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait3 == 2) ? TraitBrush : null, TraitPen,
-                new Point(ActualWidth, ActualHeight / 2), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait3 == 3) ? TraitBrush : null, TraitPen,
-                new Point(ActualWidth, ActualHeight), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait1 == 1) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(1, 1), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait1 == 2) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(1, 2), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait1 == 3) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(1, 3), traitSize, traitSize);
+
+            dc.DrawEllipse((Slot.Trait2 == 1) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(2, 1), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait2 == 2) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(2, 2), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait2 == 3) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(2, 3), traitSize, traitSize);
+
+            dc.DrawEllipse((Slot.Trait3 == 1) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(3, 1), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait3 == 2) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(3, 2), traitSize, traitSize);
+            dc.DrawEllipse((Slot.Trait3 == 3) ? DimTraitBrush : null, TraitPen,
+                GetPositionForTrait(3, 3), traitSize, traitSize);
+        }
+
+        /// <summary>
+        /// Gets the position for the specified trait.
+        /// </summary>
+        /// <param name="traitStage">The stage the trait is in.</param>
+        /// <param name="traitChoice">The trait choice number.</param>
+        /// <returns></returns>
+        private Point GetPositionForTrait(in byte traitStage, in byte traitChoice)
+        {
+            double x = 0, y = 0;
+            switch (traitStage)
+            {
+                case 1:
+                    x = 0;
+                    break;
+
+                case 2:
+                    x = ActualWidth / 2;
+                    break;
+
+                case 3:
+                    x = ActualWidth;
+                    break;
+            }
+
+            switch (traitChoice)
+            {
+                case 1:
+                    y = 0;
+                    break;
+
+                case 2:
+                    y = ActualHeight / 2;
+                    break;
+
+                case 3:
+                    y = ActualHeight;
+                    break;
+            }
+
+            return new Point(x, y);
         }
     }
 }
