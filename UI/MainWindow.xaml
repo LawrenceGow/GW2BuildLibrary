@@ -31,23 +31,14 @@
         <CommandBinding Command="{x:Static local:MainWindow.CloseApplication}"
                         Executed="CloseApplication_Executed"/>
     </Window.CommandBindings>
+
     <Window.Resources>
         <ResourceDictionary>
-
-            <converters:ProfessionToIconUriConverter x:Key="professionIconConverter"/>
-
-            <converters:MultiEqualityConverter x:Key="equalityConverter"/>
-
-            <converters:BoolToVisibilityConverter x:Key="boolToVisConverter"/>
-
-            <SolidColorBrush x:Key="defaultBackgroundBrush"
-                             po:Freeze="True"
-                             Color="#3A3428"/>
-
-            <SolidColorBrush x:Key="FilledTextForegoundBrush"
-                             po:Freeze="True"
-                             Color="#EAD6A1"/>
-
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Brushes.xaml"/>
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Converters.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
             <Style x:Key="textBlockStyle"
                    TargetType="{x:Type TextBlock}">
                 <Setter Property="Foreground"
@@ -357,8 +348,11 @@
                                     ToolTipService.BetweenShowDelay="0"
                                     ToolTipService.ShowDuration="30000"
                                     ToolTipService.Placement="Bottom"
-                                    ToolTipService.PlacementTarget="{Binding RelativeSource={RelativeSource Self}}"
-                                    ToolTip="Hello World!">
+                                    ToolTipService.PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
+                                <Border.ToolTip>
+                                    <controls:BuildPreview/>
+                                </Border.ToolTip>
+                                
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock="Right"
                                             Style="{StaticResource clearButtonStyle}"
