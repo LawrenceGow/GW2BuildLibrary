@@ -7,39 +7,7 @@ namespace GW2BuildLibrary
     /// </summary>
     public static class TemplateHelper
     {
-        public const byte Core = 0b0000;
-        public const byte HeartOfThorns = 0b0001;
-        public const byte PathOfFire = 0b0010;
-        public const byte EndOfDragons = 0b0011;
-
-        private static readonly HashSet<byte> HeartOfThornsSpecs = new HashSet<byte>()
-        { 5, 7, 18, 27, 34, 40, 43, 48, 52 };
-
-        private static readonly HashSet<byte> PathOfFireSpecs = new HashSet<byte>()
-        { 55, 56, 57, 58, 59, 60, 61, 62, 63 };
-
-        private static readonly HashSet<byte> EndOfDragonsSpecs = new HashSet<byte>()
-        { };
-
-        /// <summary>
-        /// Gets the byte that represents the set of elite specialisations required
-        /// for the specializations provided.
-        /// </summary>
-        /// <param name="eliteSlotByte">The elite specialization slot byte.</param>
-        /// <returns></returns>
-        public static byte GetSetByte(in byte eliteSlotByte)
-        {
-            if (HeartOfThornsSpecs.Contains(eliteSlotByte))
-                return HeartOfThorns;
-
-            if (PathOfFireSpecs.Contains(eliteSlotByte))
-                return PathOfFire;
-
-            if (EndOfDragonsSpecs.Contains(eliteSlotByte))
-                return EndOfDragons;
-
-            return Core;
-        }
+        #region Profession Methods
 
         /// <summary>
         /// Generates a profession enum based on the provided profession and set bytes.
@@ -47,7 +15,7 @@ namespace GW2BuildLibrary
         /// <param name="professionByte">The profession byte.</param>
         /// <param name="setByte">The set byte.</param>
         /// <returns></returns>
-        public static Profession FromBytes(in byte professionByte, in byte setByte)
+        public static Profession GetProfessionFromBytes(in byte professionByte, in byte setByte)
         {
             try
             {
@@ -69,5 +37,11 @@ namespace GW2BuildLibrary
         {
             return ((byte)profession & 0b00001111) == (byte)check;
         }
+
+        #endregion
+
+        #region Specialisation Methods
+
+        #endregion
     }
 }
