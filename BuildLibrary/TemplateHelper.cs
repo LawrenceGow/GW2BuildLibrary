@@ -24,6 +24,8 @@ namespace GW2BuildLibrary
 
         private static readonly HashSet<Specialization> EndOfDragonsSpecs = new HashSet<Specialization>();
 
+        #region Specialization Methods
+
         /// <summary>
         /// Gets the byte that represents the set of elite specializations required
         /// for the specializations provided.
@@ -44,7 +46,18 @@ namespace GW2BuildLibrary
             return Core;
         }
 
+        #endregion
+
         #region Profession Methods
+
+        /// <summary>
+        /// Generates a profession enum based on the provided profession byte and third specialization.
+        /// </summary>
+        /// <param name="professionByte">The profession byte.</param>
+        /// <param name="specialization">The third specialization.</param>
+        /// <returns></returns>
+        public static Profession GetProfessionFromBytes(in byte professionByte, in Specialization specialization) =>
+            GetProfessionFromBytes(professionByte, GetSetByte(specialization));
 
         /// <summary>
         /// Generates a profession enum based on the provided profession and set bytes.
@@ -74,10 +87,6 @@ namespace GW2BuildLibrary
         {
             return ((byte)profession & 0b00001111) == (byte)check;
         }
-
-        #endregion
-
-        #region Specialization Methods
 
         #endregion
     }

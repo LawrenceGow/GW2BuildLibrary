@@ -137,7 +137,7 @@ namespace GW2BuildLibrary
                         Slot2.LoadFromBytes(raw[4], raw[5]);
                         Slot3.LoadFromBytes(raw[6], raw[7]);
 
-                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], TemplateHelper.GetSetByte(Slot3.Specialization));
+                        Profession = TemplateHelper.GetProfessionFromBytes(raw[1], Slot3.Specialization);
 
                         Updated?.Invoke(this, null);
                         return true;
