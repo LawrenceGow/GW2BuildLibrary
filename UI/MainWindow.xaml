@@ -165,9 +165,9 @@
                         Background="#01000000"
                         Margin="0">
                     <Image Stretch="Uniform"
-                          Margin="3"
-                          Source="{TemplateBinding Property=CommandParameter,
-                                                   Converter={StaticResource professionIconConverter}}"/>
+                           Margin="3"
+                           Source="{TemplateBinding Property=CommandParameter,
+                                                    Converter={StaticResource professionIconConverter}}"/>
                 </Border>
             </ControlTemplate>
 

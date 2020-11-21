@@ -17,7 +17,7 @@ namespace GW2BuildLibrary.UI.Converters
             if (profession == Profession.None)
                 return null;
 
-            return $"..\\Icons\\Professions\\{profession}.png";
+            return $"pack://application:,,,/Icons/{profession}_Profession.png";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
