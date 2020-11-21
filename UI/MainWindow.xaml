@@ -350,7 +350,9 @@
                                     ToolTipService.Placement="Bottom"
                                     ToolTipService.PlacementTarget="{Binding RelativeSource={RelativeSource Self}}">
                                 <Border.ToolTip>
-                                    <controls:BuildPreview/>
+                                    <controls:BuildPreview Slot1="{Binding Path=Slot1}"
+                                                           Slot2="{Binding Path=Slot2}"
+                                                           Slot3="{Binding Path=Slot3}"/>
                                 </Border.ToolTip>
                                 
                                 <DockPanel LastChildFill="True">
