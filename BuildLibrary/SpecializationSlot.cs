@@ -34,6 +34,10 @@
         /// </summary>
         /// <param name="specializationByte">The byte for the specialization.</param>
         /// <param name="traitsByte">The byte for the trait choices.</param>
+        /// <remarks>
+        /// See: https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
+        /// for details on how the data is loaded.
+        /// </remarks>
         public void LoadFromBytes(in byte specializationByte, in byte traitsByte)
         {
             Specialization = (Specialization)specializationByte;
