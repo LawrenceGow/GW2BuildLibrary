@@ -37,6 +37,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Brushes.xaml"/>
                 <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Converters.xaml"/>
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Geometries.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <Style x:Key="textBlockStyle"
@@ -123,17 +124,7 @@
                 <Setter Property="Template"
                         Value="{StaticResource iconButtonTemplate}"/>
             </Style>
-
-            <PathGeometry x:Key="crossIconGeometry"
-                          po:Freeze="True">
-                M 8.5332031 1.4648438 L 1.4609375 8.5351562 L 17.927734 25.001953 L 1.4609375 41.466797 L 8.5332031 48.539062 L 24.998047 32.072266 L 41.464844 48.539062 L 48.535156 41.466797 L 32.070312 25.001953 L 48.535156 8.5351562 L 41.464844 1.4648438 L 24.998047 17.929688 L 8.5332031 1.4648438 z
-            </PathGeometry>
-
-            <PathGeometry x:Key="tickIconGeometry"
-                          po:Freeze="True">
-                m -4.903646,284.1582 -7.001953,7.00196 -1.710937,-1.71094 -1.871095,1.87109 3.582032,3.58203 8.8730459,-8.87304 z
-            </PathGeometry>
-
+            
             <Style x:Key="clearButtonStyle"
                    BasedOn="{StaticResource buttonBaseStyle}"
                    TargetType="{x:Type Button}">
@@ -142,12 +133,7 @@
                 <Setter Property="Content"
                         Value="{StaticResource crossIconGeometry}"/>
             </Style>
-
-            <PathGeometry x:Key="renameIconGeometry"
-                          po:Freeze="True">
-                m 71.583205 0 c 0 0 -5.43123 4.32053 -6.82391 7.38452 -1.39263 3.06393 -1.11506 5.01251 -1.67214 8.21569 -0.55708 3.20325 -2.92863 5.84768 -2.92863 5.84768 0 0 -12.52792 11.6989 -13.50283 12.25597 -0.97491 0.55709 -11.560035 10.5838 -11.560035 10.5838 l -6.688573 6.12797 -0.83124 4.45582 -0.840899 4.18518 c 0 0 -0.553567 -0.006 -2.503379 -0.14495 -1.949772 -0.13931 -2.791307 1.6717 -3.208981 2.36803 -0.417829 0.69634 -2.870636 4.29153 -2.870636 4.29153 l -4.426876 3.15098 -2.068389 6.10862 -1.28554 3.83723 c 0 0 -0.7871018 4.82366 -1.0825498 5.31607 -0.295439 0.4924 -0.241642 1.35319 -0.241642 1.35319 L 0 99.47806 8.6313552 100 16.847062 90.3924 c 0 0 20.472577 -2.78853 22.143826 -4.32047 1.671249 -1.532 -0.831248 -6.26332 -0.831248 -6.26332 0 0 4.456816 -1.67006 9.192005 -2.08774 4.73523 -0.41782 16.85017 -8.77679 18.1036 -11.14443 1.25342 -2.36759 -1.25654 -6.27292 -1.25654 -6.27292 0 0 17.12908 -14.33719 17.4077 -18.65459 0.27851 -4.31737 -0.96655 -5.43203 -0.96655 -5.43203 l -4.32052 -0.97624 c 0 0 2.64749 -2.79076 4.04023 -10.03285 1.39267 -7.24208 -1.53685 -15.87086 -1.53685 -15.87086 z m -9.90719 34.65106 c 0 0 -9.93728 17.81682 -16.14151 22.34683 C 37.360715 63.49755 22.288778 76.59963 22.288778 76.59963 41.09832 53.26003 61.676015 34.65106 61.676015 34.65106 Z
-            </PathGeometry>
-
+            
             <Style x:Key="renameButtonStyle"
                    BasedOn="{StaticResource buttonBaseStyle}"
                    TargetType="{x:Type Button}">
@@ -201,16 +187,22 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
-            <PathGeometry x:Key="nextIconGeometry"
-                          po:Freeze="True">
-                m 5.5976534 297 1.83789 -1.83984 -3.75781 -3.75782 3.75781 -3.75781 -1.83789 -1.83789 -5.59765 5.5957 z
-            </PathGeometry>
-
-            <PathGeometry x:Key="prevIconGeometry"
-                          po:Freeze="True">
-                M 1.8378906 285.80664 0 287.64648 3.7578125 291.4043 0 295.16211 1.8378906 297 7.4355469 291.4043 Z
-            </PathGeometry>
+            
+            <Style x:Key="{x:Type ToolTip}"
+                   TargetType="ToolTip">
+                <Setter Property="OverridesDefaultStyle"
+                        Value="True"/>
+                <Setter Property="HasDropShadow"
+                        Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <ContentPresenter HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Stretch"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -245,46 +237,39 @@
                 <ToggleButton x:Name="PART_FilterButton_Guardian"
                               Style="{StaticResource filterButtonStyle}"
                               CommandParameter="{x:Static local:Profession.Guardian}"/>
+                
                 <ToggleButton x:Name="PART_FilterButton_Warrior"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Warrior}">
-                    <BitmapImage UriSource="..\Icons\Warrior.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Warrior}"/>
+
                 <ToggleButton x:Name="PART_FilterButton_Engineer"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Engineer}">
-                    <BitmapImage UriSource="..\Icons\Engineer.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Engineer}"/>
+
                 <ToggleButton x:Name="PART_FilterButton_Ranger"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Ranger}">
-                    <BitmapImage UriSource="..\Icons\Ranger.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Ranger}"/>
+
                 <ToggleButton x:Name="PART_FilterButton_Thief"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Thief}">
-                    <BitmapImage UriSource="..\Icons\Thief.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Thief}"/>
+
                 <ToggleButton x:Name="PART_FilterButton_Elementalist"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Elementalist}">
-                    <BitmapImage UriSource="..\Icons\Elementalist.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Elementalist}"/>
+
                 <ToggleButton x:Name="PART_FilterButton_Mesmer"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Mesmer}">
-                    <BitmapImage UriSource="..\Icons\Mesmer.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Mesmer}"/>
+
+
                 <ToggleButton x:Name="PART_FilterButton_Necromancer"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Necromancer}">
-                    <BitmapImage UriSource="..\Icons\Necromancer.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Necromancer}"/>
+
                 <ToggleButton x:Name="PART_FilterButton_Revenant"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Revenant}">
-                    <BitmapImage UriSource="..\Icons\Revenant.png"/>
-                </ToggleButton>
+                              CommandParameter="{x:Static local:Profession.Revenant}"/>
             </StackPanel>
 
             <!-- System Buttons -->
