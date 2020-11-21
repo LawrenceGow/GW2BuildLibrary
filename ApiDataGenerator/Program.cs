@@ -13,14 +13,12 @@ namespace ApiDataGenerator
         private const string apiURL = @"https://api.guildwars2.com/v2";
         private static readonly string apiOutputDir = Path.Combine(@"D:\Temp\GW2BuildLibrary");
         private static readonly string specsFilePath = Path.Combine(apiOutputDir, "Specialization.txt");
-        private static readonly string specIconsDir = Path.Combine(apiOutputDir, @"Icons\Specializations");
-        private static readonly string professionIconsDir = Path.Combine(apiOutputDir, @"Icons\Professions");
+        private static readonly string iconsDir = Path.Combine(apiOutputDir, "Icons");
 
         private static async Task Main(string[] args)
         {
             Directory.CreateDirectory(apiOutputDir);
-            Directory.CreateDirectory(specIconsDir);
-            Directory.CreateDirectory(professionIconsDir);
+            Directory.CreateDirectory(iconsDir);
 
             using (HttpClient client = new HttpClient())
             {
@@ -60,7 +58,7 @@ namespace ApiDataGenerator
                 {
                     string iconURL = profession["icon"].ToString();
                     WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                        Path.Combine(professionIconsDir, $"{profession["name"]}.png"));
+                        Path.Combine(iconsDir, $"{profession["name"]}_Profession.png"));
                 }
             }
         }
@@ -97,13 +95,13 @@ namespace ApiDataGenerator
             {
                 string iconURL = spec["icon"].ToString();
                 WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                    Path.Combine(specIconsDir, $"{specName}.png"));
+                    Path.Combine(iconsDir, $"{specName}_Specialization.png"));
 
                 JToken profIcon = spec["profession_icon"];
                 if (profIcon != null)
                 {
                     WriteStreamToFile(await client.GetStreamAsync(profIcon.ToString()),
-                        Path.Combine(professionIconsDir, $"{specName}.png"));
+                        Path.Combine(iconsDir, $"{specName}_Profession.png"));
                 }
             }
         }
