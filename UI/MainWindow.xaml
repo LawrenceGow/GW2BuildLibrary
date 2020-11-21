@@ -295,7 +295,7 @@
                     <BitmapImage UriSource="..\Icons\Revenant.png"/>
                 </ToggleButton>
             </StackPanel>
-            
+
             <!-- System Buttons -->
             <StackPanel Grid.Row="0"
                         Margin="5"
@@ -314,14 +314,14 @@
                 <Button Style="{StaticResource buttonBaseStyle}"
                         Command="{x:Static local:MainWindow.NextPage}"
                         Content="{StaticResource nextIconGeometry}"/>
-                
+
                 <!-- Current Page -->
                 <TextBlock Style="{StaticResource textBlockStyle}"
                            TextAlignment="Center"
                            Width="30"
                            Text="{Binding Path=CurrentPage,
                                           RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
-                
+
                 <!-- Prev Page Button -->
                 <Button Style="{StaticResource buttonBaseStyle}"
                         Command="{x:Static local:MainWindow.PrevPage}"
@@ -352,7 +352,13 @@
                                 CommandParameter="{Binding}">
                             <Border Background="Black"
                                     Margin="2,2,0,0"
-                                    CornerRadius="2">
+                                    CornerRadius="2"
+                                    ToolTipService.InitialShowDelay="0"
+                                    ToolTipService.BetweenShowDelay="0"
+                                    ToolTipService.ShowDuration="30000"
+                                    ToolTipService.Placement="Bottom"
+                                    ToolTipService.PlacementTarget="{Binding RelativeSource={RelativeSource Self}}"
+                                    ToolTip="Hello World!">
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock="Right"
                                             Style="{StaticResource clearButtonStyle}"
@@ -377,6 +383,7 @@
                                 </DockPanel>
                             </Border>
                         </Button>
+
                         <DataTemplate.Triggers>
                             <DataTrigger Binding="{Binding Path=Name}"
                                          Value="Empty">
