@@ -73,6 +73,7 @@
     <Compile Include="BuildLibrary\BuildLibrary.cs" />
     <Compile Include="BuildLibrary\BuildLibrarySettings.cs" />
     <Compile Include="BuildLibrary\Specialization.cs" />
+    <Compile Include="BuildLibrary\SpecializationSlot.cs" />
     <Compile Include="UI\Controls\BuildTemplateItemsControl.cs" />
     <Compile Include="UI\Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="UI\Converters\BoolToVisibilityConverter.cs" />
