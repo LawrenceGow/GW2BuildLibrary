@@ -45,7 +45,6 @@ if ($tag -eq "INVALID") {
 	$file1 = "GW2BuildLibrary.exe"
 	$file2 = "GW2BuildLibrary.exe.config"
 	$file3 = "README.pdf"
-	$file4 = "Mono.Options.dll"
 	
 	$archiveName = "GW2BuildLibrary_$version.zip"
 
@@ -53,7 +52,7 @@ if ($tag -eq "INVALID") {
 	xcopy bin\Release\* . /Y
 	
 	# Create the archive
-	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $archiveName $file1 $file2 $file3 $file4
+	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $archiveName $file1 $file2 $file3
 	write-host -f green "Release archive created."
 	
 	# Undo file change for version bump
