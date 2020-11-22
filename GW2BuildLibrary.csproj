@@ -241,5 +241,8 @@
     <Resource Include="Icons\WildernessSurvival_Specialization.png" />
     <Resource Include="Icons\Zeal_Specialization.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
