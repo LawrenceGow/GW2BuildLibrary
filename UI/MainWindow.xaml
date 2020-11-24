@@ -325,7 +325,9 @@
                 <controls:BuildTemplateItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:BuildTemplateViewModel}">
                         <Button Style="{StaticResource ioButtonStyle}"
-                                CommandParameter="{Binding}">
+                                CommandParameter="{Binding}"
+                                Visibility="{Binding Path=IsHidden,
+                                                     Converter={StaticResource inverseBoolToVisConverter}}">
                             <Border Background="Black"
                                     Margin="2,2,0,0"
                                     CornerRadius="2"
