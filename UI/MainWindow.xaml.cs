@@ -299,6 +299,7 @@ namespace GW2BuildLibrary
                     BuildTemplate build = BuildLibrary.GetBuildTemplate(modelIndex + pageOffset);
                     model.BuildTemplate = build;
                     model.Index = build?.Index ?? (modelIndex + pageOffset);
+                    model.IsHidden = false;
                 }
             }
             else
@@ -326,13 +327,13 @@ namespace GW2BuildLibrary
 
                     model.BuildTemplate = build;
                     model.Index = build.Index;
+                    model.IsHidden = false;
                 }
 
-                // Remove the models that aren't being used
-                while (BuildTemplateModels.Count > modelIndex)
+                // Instead of deleting models, tell them to hide
+                for (; modelIndex < BuildTemplateItems.ItemCount; modelIndex++)
                 {
-                    BuildTemplateModels[BuildTemplateModels.Count - 1].Dispose();
-                    BuildTemplateModels.RemoveAt(BuildTemplateModels.Count - 1);
+                    BuildTemplateModels[modelIndex].IsHidden = true;
                 }
             }
         }
