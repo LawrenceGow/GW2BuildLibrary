@@ -12,7 +12,8 @@ $newVersion = '[assembly: AssemblyFileVersion("' + $version + '")]'
 (Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
 
 # Build the project in Release
-&"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" "..\GW2BuildLibrary.sln" /t:Clean,Build /p:Configuration=Release /p:Platform="Any CPU"
+&"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" "..\GW2BuildLibrary.sln" /t:Restore
+&"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" "..\GW2BuildLibrary.sln" /t:Clean,Build,Restore /p:Configuration=Release /p:Platform="Any CPU"
 
 $arr = $version.Split(".")
 $tag = "INVALID"
