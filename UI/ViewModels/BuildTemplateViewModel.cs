@@ -134,6 +134,24 @@ namespace GW2BuildLibrary.UI.ViewModels
             }
         }
 
+        private bool isHidden = false;
+
+        /// <summary>
+        /// Whether or not model should be hidden from view.
+        /// </summary>
+        public bool IsHidden
+        {
+            get { return isHidden; }
+            set
+            {
+                if (isHidden != value)
+                {
+                    isHidden = value;
+                    OnPropertyChanged(nameof(IsHidden));
+                }
+            }
+        }
+
         private BuildTemplate buildTemplate = null;
 
         /// <summary>
