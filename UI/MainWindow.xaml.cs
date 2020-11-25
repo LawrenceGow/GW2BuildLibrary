@@ -280,6 +280,17 @@ namespace GW2BuildLibrary
             if (BuildLibrary == null)
                 return;
 
+            // Ensure there is a model for every slot
+            while (BuildTemplateModels.Count < BuildTemplateItems.ItemCount)
+            {
+                BuildTemplateModels.Add(new BuildTemplateViewModel());
+            }
+            // And no more
+            while (BuildTemplateModels.Count > BuildTemplateItems.ItemCount)
+            {
+                BuildTemplateModels.RemoveAt(BuildTemplateModels.Count - 1);
+            }
+
             int pageOffset = BuildTemplateItems.ItemCount * (CurrentPage - 1);
             if (ProfessionFilter == Profession.None)
             {
@@ -287,15 +298,7 @@ namespace GW2BuildLibrary
                 // All models are used and blank ones allow for storing more builds
                 for (int modelIndex = 0; modelIndex < BuildTemplateItems.ItemCount; modelIndex++)
                 {
-                    BuildTemplateViewModel model;
-                    if (BuildTemplateModels.Count <= modelIndex)
-                    {
-                        model = new BuildTemplateViewModel();
-                        BuildTemplateModels.Add(model);
-                    }
-                    else
-                        model = BuildTemplateModels[modelIndex];
-
+                    BuildTemplateViewModel model = BuildTemplateModels[modelIndex];
                     BuildTemplate build = BuildLibrary.GetBuildTemplate(modelIndex + pageOffset);
                     model.BuildTemplate = build;
                     model.Index = build?.Index ?? (modelIndex + pageOffset);
@@ -312,19 +315,8 @@ namespace GW2BuildLibrary
                 for (modelIndex = 0; modelIndex < BuildTemplateItems.ItemCount
                     && (modelIndex + pageOffset) < buildTemplates.Count; modelIndex++)
                 {
-                    BuildTemplateViewModel model;
-                    if (BuildTemplateModels.Count <= modelIndex)
-                    {
-                        model = new BuildTemplateViewModel();
-                        BuildTemplateModels.Add(model);
-                    }
-                    else
-                    {
-                        model = BuildTemplateModels[modelIndex];
-                    }
-
+                    BuildTemplateViewModel model = BuildTemplateModels[modelIndex];
                     BuildTemplate build = buildTemplates[modelIndex + pageOffset];
-
                     model.BuildTemplate = build;
                     model.Index = build.Index;
                     model.IsHidden = false;
