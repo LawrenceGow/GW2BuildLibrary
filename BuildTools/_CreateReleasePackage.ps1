@@ -1,7 +1,7 @@
 $version = Read-Host 'New Version'
 
 # Update AssemblyVersion in the project
-$infoPath = "Properties\AssemblyInfo.cs"
+$infoPath = "..\Properties\AssemblyInfo.cs"
 $regex = '^\[assembly: AssemblyVersion\(".*"\)\]$'
 $newVersion = '[assembly: AssemblyVersion("' + $version + '")]'
 (Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
@@ -12,7 +12,7 @@ $newVersion = '[assembly: AssemblyFileVersion("' + $version + '")]'
 (Get-Content $infoPath) -replace $regex, $newVersion | Set-Content $infoPath
 
 # Build the project in Release
-&"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" "GW2BuildLibrary.sln" /t:Clean,Build /p:Configuration=Release /p:Platform="Any CPU"
+&"D:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" "..\GW2BuildLibrary.sln" /t:Clean,Build /p:Configuration=Release /p:Platform="Any CPU"
 
 $arr = $version.Split(".")
 $tag = "INVALID"
@@ -48,7 +48,7 @@ if ($tag -eq "INVALID") {
 	$archiveName = "GW2BuildLibrary_$version.zip"
 
 	# Copy files into current directory
-	xcopy bin\Release\* . /Y
+	xcopy ..\bin\Release\* . /Y
 	
 	# Create the archive
 	&"D:\Program Files (x86)\7-Zip\7z.exe" a -tzip $archiveName $file1 $file2
@@ -56,6 +56,9 @@ if ($tag -eq "INVALID") {
 	
 	# Undo file change for version bump
 	git restore $infoPath
+	del $file1
+	del $file2
+	del "GW2BuildLibrary.pdb"
 }
 
 if ($Host.Name -eq "ConsoleHost") {
