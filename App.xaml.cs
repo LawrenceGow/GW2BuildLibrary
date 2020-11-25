@@ -162,13 +162,13 @@ namespace GW2BuildLibrary
             }
 
             if (MessageBox.Show($"USAGE\n{optionText}\n\n" +
-                            $"Would you like to open the README file?",
-                            "Help",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Information) == MessageBoxResult.Yes)
+                $"Would you like to open the GitHub page to view the README?",
+                "Help",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Information) == MessageBoxResult.Yes)
             {
-                // Open the README file
-                Process.Start(Path.Combine(BaseDirectory, "README.pdf"));
+                // Open the GitHub page at the README file
+                Process.Start(Path.Combine(@"https://github.com/LawrenceGow/GW2BuildLibrary#what-is-gw2buildlibrary"));
             }
         }
 
