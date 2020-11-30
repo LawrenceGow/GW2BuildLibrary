@@ -12,7 +12,8 @@
 
     <Pen x:Key="defaultForegroundPen"
          po:Freeze="True"
-         Brush="{StaticResource defaultForegoundBrush}"/>
+         Brush="{StaticResource defaultForegoundBrush}"
+         Thickness="1"/>
 
     <SolidColorBrush x:Key="darkerForegoundBrush"
                      po:Freeze="True"
