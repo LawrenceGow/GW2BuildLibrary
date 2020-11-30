@@ -9,32 +9,32 @@ namespace GW2BuildLibrary.UI.Controls
     public class SlotTraitChoices : FrameworkElement
     {
         private const double traitSize = 3;
-        private Pen TraitPen;
-        private Brush DimTraitBrush;
 
         /// <summary>
-        /// The brush to use for the trait choices.
+        /// The pen to use for the traits.
         /// </summary>
-        public Brush TraitBrush
+        public Pen TraitPen
         {
-            get { return (Brush)GetValue(TraitBrushProperty); }
-            set { SetValue(TraitBrushProperty, value); }
+            get { return (Pen)GetValue(TraitPenProperty); }
+            set { SetValue(TraitPenProperty, value); }
         }
 
-        public static readonly DependencyProperty TraitBrushProperty =
-            DependencyProperty.Register("TraitBrush", typeof(Brush), typeof(SlotTraitChoices), new PropertyMetadata(null,
-                new PropertyChangedCallback((d, e) =>
-                {
-                    SlotTraitChoices traitChoices = (SlotTraitChoices)d;
-                    traitChoices.TraitPen = new Pen(traitChoices.TraitBrush, 1);
-                    traitChoices.TraitPen.Freeze();
-                    Color traitColour = ((SolidColorBrush)traitChoices.TraitBrush).Color;
-                    double s = 0.6d;
-                    traitChoices.DimTraitBrush = new SolidColorBrush(Color.FromRgb((byte)(traitColour.R * s),
-                        (byte)(traitColour.G * s), (byte)(traitColour.B * s)));
-                    traitChoices.DimTraitBrush.Freeze();
-                    traitChoices.InvalidateVisual();
-                })));
+        public static readonly DependencyProperty TraitPenProperty =
+            DependencyProperty.Register(nameof(TraitPen), typeof(Pen), typeof(SlotTraitChoices), new PropertyMetadata(null,
+                new PropertyChangedCallback((d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
+
+        /// <summary>
+        /// The brush to fill the trait choices with.
+        /// </summary>
+        public Brush TraitFillBrush
+        {
+            get { return (Brush)GetValue(FillBrushProperty); }
+            set { SetValue(FillBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty FillBrushProperty =
+            DependencyProperty.Register(nameof(TraitFillBrush), typeof(Brush), typeof(SlotTraitChoices), new PropertyMetadata(null,
+                new PropertyChangedCallback((d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
 
         /// <summary>
         /// The specialization slot this element is drawing traits for.
@@ -77,26 +77,15 @@ namespace GW2BuildLibrary.UI.Controls
                     GetPositionForTrait(3, Slot.Trait3));
             }
 
-            dc.DrawEllipse((Slot.Trait1 == 1) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(1, 1), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait1 == 2) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(1, 2), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait1 == 3) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(1, 3), traitSize, traitSize);
-
-            dc.DrawEllipse((Slot.Trait2 == 1) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(2, 1), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait2 == 2) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(2, 2), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait2 == 3) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(2, 3), traitSize, traitSize);
-
-            dc.DrawEllipse((Slot.Trait3 == 1) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(3, 1), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait3 == 2) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(3, 2), traitSize, traitSize);
-            dc.DrawEllipse((Slot.Trait3 == 3) ? DimTraitBrush : null, TraitPen,
-                GetPositionForTrait(3, 3), traitSize, traitSize);
+            // Draw all the trait choices
+            for (byte traitTier = 0; traitTier < 3; traitTier++)
+            {
+                for (byte traitChoice = 1; traitChoice <= 3; traitChoice++)
+                {
+                    dc.DrawEllipse((Slot.Traits[traitTier] == traitChoice) ? TraitFillBrush : null, TraitPen,
+                        GetPositionForTrait((byte)(traitTier + 1), traitChoice), traitSize, traitSize);
+                }
+            }
         }
 
         /// <summary>
