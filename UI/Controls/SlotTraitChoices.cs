@@ -20,8 +20,9 @@ namespace GW2BuildLibrary.UI.Controls
         }
 
         public static readonly DependencyProperty TraitPenProperty =
-            DependencyProperty.Register(nameof(TraitPen), typeof(Pen), typeof(SlotTraitChoices), new PropertyMetadata(null,
-                new PropertyChangedCallback((d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
+            DependencyProperty.Register(nameof(TraitPen), typeof(Pen), typeof(SlotTraitChoices),
+                new PropertyMetadata(null, new PropertyChangedCallback(
+                    (d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
 
         /// <summary>
         /// The brush to fill the trait choices with.
@@ -33,8 +34,9 @@ namespace GW2BuildLibrary.UI.Controls
         }
 
         public static readonly DependencyProperty FillBrushProperty =
-            DependencyProperty.Register(nameof(TraitFillBrush), typeof(Brush), typeof(SlotTraitChoices), new PropertyMetadata(null,
-                new PropertyChangedCallback((d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
+            DependencyProperty.Register(nameof(TraitFillBrush), typeof(Brush), typeof(SlotTraitChoices),
+                new PropertyMetadata(null, new PropertyChangedCallback(
+                    (d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
 
         /// <summary>
         /// The specialization slot this element is drawing traits for.
