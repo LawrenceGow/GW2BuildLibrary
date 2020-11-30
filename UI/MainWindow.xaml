@@ -340,8 +340,8 @@
                                     <controls:BuildPreview Slot1="{Binding Path=Slot1}"
                                                            Slot2="{Binding Path=Slot2}"
                                                            Slot3="{Binding Path=Slot3}"
-                                                           Visibility="{Binding Path=ShowPreview,
-                                                                                Converter={StaticResource boolToVisConverter}}"/>
+                                                           Visibility="{Binding Path=IsEmpty,
+                                                                                Converter={StaticResource inverseBoolToVisConverter}}"/>
                                 </Border.ToolTip>
                                 
                                 <DockPanel LastChildFill="True">
@@ -370,8 +370,11 @@
                         </Button>
 
                         <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Path=Name}"
-                                         Value="Empty">
+                            <DataTrigger Binding="{Binding Path=IsEmpty}"
+                                         Value="True">
+                                <Setter TargetName="PART_TemplateName"
+                                        Property="Text"
+                                        Value="Empty"/>
                                 <Setter TargetName="PART_TemplateName"
                                         Property="Foreground"
                                         Value="White"/>
