@@ -43,7 +43,7 @@
             <Style x:Key="textBlockStyle"
                    TargetType="{x:Type TextBlock}">
                 <Setter Property="Foreground"
-                        Value="{StaticResource FilledTextForegoundBrush}"/>
+                        Value="{StaticResource defaultForegoundBrush}"/>
                 <Setter Property="Background"
                         Value="Transparent"/>
                 <Setter Property="VerticalAlignment"
