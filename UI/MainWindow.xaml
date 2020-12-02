@@ -361,6 +361,7 @@
 
                                     <TextBlock x:Name="PART_TemplateName"
                                                Style="{StaticResource textBlockStyle}"
+                                               TextTrimming="CharacterEllipsis"
                                                Text="{Binding Path=Name,
                                                               Mode=OneWay}"/>
                                 </DockPanel>
