@@ -33,13 +33,6 @@ if ($tag -eq "INVALID") {
 	$patch = $arr[2]
 	
 	$version = "v$major.$minor.$patch$tag"
-
-	# Create an empty commit to place the tag on
-	git commit --allow-empty -m"$version"
-	
-	# Set a tag on the current branch with the version number found
-	git tag "$version" HEAD
-	write-host -f green "HEAD tagged with: '$version'"
 	
 	# Create the zip file containing the built release
 	# Files to include
@@ -60,6 +53,12 @@ if ($tag -eq "INVALID") {
 	del $file1
 	del $file2
 	del "GW2BuildLibrary.pdb"
+	
+	# Set a tag on the current branch with the version number
+	git tag "$version" HEAD
+	# Push the tag up to origin
+	git push --tags
+	write-host -f green "HEAD tagged with: '$version'"
 }
 
 if ($Host.Name -eq "ConsoleHost") {
