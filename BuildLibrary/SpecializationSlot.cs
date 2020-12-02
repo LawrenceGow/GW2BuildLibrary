@@ -12,22 +12,27 @@
         { get; set; }
 
         /// <summary>
+        /// The trait choices.
+        /// </summary>
+        public byte[] Traits = new byte[3];
+
+        /// <summary>
         /// The first trait choice.
         /// </summary>
         public byte Trait1
-        { get; set; }
+        { get => Traits[0]; }
 
         /// <summary>
         /// The second trait choice.
         /// </summary>
         public byte Trait2
-        { get; set; }
+        { get => Traits[1]; }
 
         /// <summary>
         /// The third trait choice.
         /// </summary>
         public byte Trait3
-        { get; set; }
+        { get => Traits[2]; }
 
         /// <summary>
         /// Loads this <see cref="SpecializationSlot"/> from the provided bytes.
@@ -41,9 +46,9 @@
         public void LoadFromBytes(in byte specializationByte, in byte traitsByte)
         {
             Specialization = (Specialization)specializationByte;
-            Trait1 = (byte)(traitsByte & 0b00000011);
-            Trait2 = (byte)((traitsByte & 0b00001100) >> 2);
-            Trait3 = (byte)((traitsByte & 0b00110000) >> 4);
+            Traits[0] = (byte)(traitsByte & 0b00000011);
+            Traits[1] = (byte)((traitsByte & 0b00001100) >> 2);
+            Traits[2] = (byte)((traitsByte & 0b00110000) >> 4);
         }
 
         /// <summary>

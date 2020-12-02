@@ -19,7 +19,7 @@
     <Border Background="{StaticResource defaultBackgroundBrush}"
             BorderThickness="1"
             CornerRadius="0"
-            BorderBrush="{StaticResource FilledTextForegoundBrush}">
+            BorderBrush="{StaticResource defaultForegoundBrush}">
         <Grid ShowGridLines="False">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
@@ -45,7 +45,8 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Margin="15,15"
-                TraitBrush="{StaticResource FilledTextForegoundBrush}"
+                TraitPen="{StaticResource defaultForegroundPen}"
+                TraitFillBrush="{StaticResource darkerForegoundBrush}"
                 Slot="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BuildPreview}},
                                Path=Slot1}"/>
             
@@ -55,7 +56,7 @@
                     Margin="10,0"
                     Opacity="0.5"
                     BorderThickness="0,1"
-                    BorderBrush="{StaticResource FilledTextForegoundBrush}"/>
+                    BorderBrush="{StaticResource defaultForegoundBrush}"/>
 
             <!-- Slot2 Icon -->
             <Image Grid.Row="1" Grid.Column="0"
@@ -71,7 +72,8 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Margin="15,15"
-                TraitBrush="{StaticResource FilledTextForegoundBrush}"
+                TraitPen="{StaticResource defaultForegroundPen}"
+                TraitFillBrush="{StaticResource darkerForegoundBrush}"
                 Slot="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BuildPreview}},
                                Path=Slot2}"/>
 
@@ -89,7 +91,8 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Margin="15,15"
-                TraitBrush="{StaticResource FilledTextForegoundBrush}"
+                TraitPen="{StaticResource defaultForegroundPen}"
+                TraitFillBrush="{StaticResource darkerForegoundBrush}"
                 Slot="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:BuildPreview}},
                                Path=Slot3}"/>
         </Grid>

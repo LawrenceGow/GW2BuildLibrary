@@ -6,7 +6,16 @@
                      po:Freeze="True"
                      Color="#3A3428"/>
 
-    <SolidColorBrush x:Key="FilledTextForegoundBrush"
+    <SolidColorBrush x:Key="defaultForegoundBrush"
                      po:Freeze="True"
                      Color="#EAD6A1"/>
+
+    <Pen x:Key="defaultForegroundPen"
+         po:Freeze="True"
+         Brush="{StaticResource defaultForegoundBrush}"
+         Thickness="1"/>
+
+    <SolidColorBrush x:Key="darkerForegoundBrush"
+                     po:Freeze="True"
+                     Color="#8C8060"/>
 </ResourceDictionary>

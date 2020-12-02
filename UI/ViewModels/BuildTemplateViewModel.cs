@@ -116,20 +116,20 @@ namespace GW2BuildLibrary.UI.ViewModels
             }
         }
 
-        private bool showPreview = false;
+        private bool isEmpty = true;
 
         /// <summary>
-        /// Whether or not to show the preview of the build.
+        /// Whether or not this model represents an empty slot.
         /// </summary>
-        public bool ShowPreview
+        public bool IsEmpty
         {
-            get { return showPreview; }
+            get { return isEmpty; }
             set
             {
-                if (showPreview != value)
+                if (isEmpty != value)
                 {
-                    showPreview = value;
-                    OnPropertyChanged(nameof(ShowPreview));
+                    isEmpty = value;
+                    OnPropertyChanged(nameof(IsEmpty));
                 }
             }
         }
@@ -202,16 +202,16 @@ namespace GW2BuildLibrary.UI.ViewModels
                 Slot1 = BuildTemplate.Slot1;
                 Slot2 = BuildTemplate.Slot2;
                 Slot3 = BuildTemplate.Slot3;
-                ShowPreview = true;
+                IsEmpty = false;
             }
             else
             {
-                Name = "Empty";
+                Name = string.Empty;
                 Profession = Profession.None;
                 Slot1 = null;
                 Slot2 = null;
                 Slot3 = null;
-                ShowPreview = false;
+                IsEmpty = true;
             }
         }
 

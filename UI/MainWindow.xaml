@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
         xmlns:local="clr-namespace:GW2BuildLibrary"
         xmlns:controls="clr-namespace:GW2BuildLibrary.UI.Controls"
-        xmlns:converters="clr-namespace:GW2BuildLibrary.UI.Converters"
         xmlns:viewmodels="clr-namespace:GW2BuildLibrary.UI.ViewModels"
         mc:Ignorable="d"
         Title="GW2BuildLibrary"
@@ -43,7 +41,7 @@
             <Style x:Key="textBlockStyle"
                    TargetType="{x:Type TextBlock}">
                 <Setter Property="Foreground"
-                        Value="{StaticResource FilledTextForegoundBrush}"/>
+                        Value="{StaticResource defaultForegoundBrush}"/>
                 <Setter Property="Background"
                         Value="Transparent"/>
                 <Setter Property="VerticalAlignment"
@@ -340,8 +338,8 @@
                                     <controls:BuildPreview Slot1="{Binding Path=Slot1}"
                                                            Slot2="{Binding Path=Slot2}"
                                                            Slot3="{Binding Path=Slot3}"
-                                                           Visibility="{Binding Path=ShowPreview,
-                                                                                Converter={StaticResource boolToVisConverter}}"/>
+                                                           Visibility="{Binding Path=IsEmpty,
+                                                                                Converter={StaticResource inverseBoolToVisConverter}}"/>
                                 </Border.ToolTip>
                                 
                                 <DockPanel LastChildFill="True">
@@ -363,6 +361,7 @@
 
                                     <TextBlock x:Name="PART_TemplateName"
                                                Style="{StaticResource textBlockStyle}"
+                                               TextTrimming="CharacterEllipsis"
                                                Text="{Binding Path=Name,
                                                               Mode=OneWay}"/>
                                 </DockPanel>
@@ -370,8 +369,11 @@
                         </Button>
 
                         <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Path=Name}"
-                                         Value="Empty">
+                            <DataTrigger Binding="{Binding Path=IsEmpty}"
+                                         Value="True">
+                                <Setter TargetName="PART_TemplateName"
+                                        Property="Text"
+                                        Value="Empty"/>
                                 <Setter TargetName="PART_TemplateName"
                                         Property="Foreground"
                                         Value="White"/>
