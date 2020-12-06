@@ -22,7 +22,8 @@ namespace GW2BuildLibrary
         /// Backing <see cref="DependencyProperty"/> for <see cref="BuildTemplateModels"/>.
         /// </summary>
         public static readonly DependencyProperty BuildTemplateModelsProperty =
-            DependencyProperty.Register("BuildTemplateModels", typeof(ObservableCollection<BuildTemplateViewModel>), typeof(MainWindow), new PropertyMetadata(new ObservableCollection<BuildTemplateViewModel>()));
+            DependencyProperty.Register("BuildTemplateModels", typeof(ObservableCollection<BuildTemplateViewModel>),
+                typeof(MainWindow), new PropertyMetadata(new ObservableCollection<BuildTemplateViewModel>()));
 
         /// <summary>
         /// Backing <see cref="DependencyProperty"/> for <see cref="CurrentPage"/>.
@@ -40,7 +41,8 @@ namespace GW2BuildLibrary
         /// Backing <see cref="DependencyProperty"/> for <see cref="ProfessionFilter"/>.
         /// </summary>
         public static readonly DependencyProperty ProfessionFilterProperty =
-            DependencyProperty.Register("ProfessionFilter", typeof(Profession), typeof(MainWindow), new PropertyMetadata(Profession.None));
+            DependencyProperty.Register("ProfessionFilter", typeof(Profession), typeof(MainWindow),
+                new PropertyMetadata(Profession.None));
 
         /// <summary>
         /// Clears the build template out of the slot.
