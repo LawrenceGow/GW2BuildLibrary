@@ -8,19 +8,43 @@ using System.Threading.Tasks;
 
 namespace ApiDataGenerator
 {
+    /// <summary>
+    /// Main program class for the ApiDataGenerator.
+    /// Makes API calls and stores data locally for use in other projects.
+    /// </summary>
     internal class Program
     {
         #region Fields
 
+        /// <summary>
+        /// Base URL for all API calls.
+        /// </summary>
         private const string apiURL = @"https://api.guildwars2.com/v2";
+
+        /// <summary>
+        /// The output directory.
+        /// </summary>
         private static readonly string apiOutputDir = Path.Combine(@"D:\Temp\GW2BuildLibrary");
+
+        /// <summary>
+        /// The directory to place all the gathered icons.
+        /// </summary>
         private static readonly string iconsDir = Path.Combine(apiOutputDir, "Icons");
+
+        /// <summary>
+        /// The file path for the generated specialization enum file.
+        /// </summary>
         private static readonly string specsFilePath = Path.Combine(apiOutputDir, "Specialization.txt");
 
         #endregion Fields
 
         #region Methods
 
+        /// <summary>
+        /// The main method.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        /// <returns></returns>
         private static async Task Main(string[] args)
         {
             Directory.CreateDirectory(apiOutputDir);
