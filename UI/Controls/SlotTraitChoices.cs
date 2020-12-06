@@ -16,18 +16,18 @@ namespace GW2BuildLibrary.UI.Controls
         private const double traitSize = 3;
 
         /// <summary>
+        /// Backing <see cref="DependencyProperty"/> for <see cref="Slot"/>.
+        /// </summary>
+        public static readonly DependencyProperty SlotProperty = DependencyProperty.Register(nameof(Slot),
+                    typeof(SpecializationSlot), typeof(SlotTraitChoices), new PropertyMetadata(null));
+
+        /// <summary>
         /// Backing <see cref="DependencyProperty"/> for <see cref="TraitFillBrush"/>.
         /// </summary>
         public static readonly DependencyProperty TraitFillBrushProperty =
                     DependencyProperty.Register(nameof(TraitFillBrush), typeof(Brush), typeof(SlotTraitChoices),
                         new PropertyMetadata(null, new PropertyChangedCallback(
                             (d, e) => ((SlotTraitChoices)d).InvalidateVisual())));
-
-        /// <summary>
-        /// Backing <see cref="DependencyProperty"/> for <see cref="Slot"/>.
-        /// </summary>
-        public static readonly DependencyProperty SlotProperty = DependencyProperty.Register(nameof(Slot),
-                    typeof(SpecializationSlot), typeof(SlotTraitChoices), new PropertyMetadata(null));
 
         /// <summary>
         /// Backing <see cref="DependencyProperty"/> for <see cref="TraitPen"/>.

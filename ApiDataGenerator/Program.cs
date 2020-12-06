@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace ApiDataGenerator
 {
     /// <summary>
-    /// Main program class for the ApiDataGenerator.
-    /// Makes API calls and stores data locally for use in other projects.
+    /// Main program class for the ApiDataGenerator. Makes API calls and stores data locally for use in other projects.
     /// </summary>
     internal class Program
     {
