@@ -11,24 +11,54 @@ namespace GW2BuildLibrary.UI.ViewModels
     {
         #region Fields
 
+        /// <summary>
+        /// The <see cref="Dispatcher"/> for this model.
+        /// </summary>
         private readonly Dispatcher Dispatcher;
 
+        /// <summary>
+        /// The <see cref="GW2BuildLibrary.BuildTemplate"/> we are modelling.
+        /// </summary>
         private BuildTemplate buildTemplate = null;
 
+        /// <summary>
+        /// Whether this model has already been disposed.
+        /// </summary>
         private bool disposedValue = false;
 
+        /// <summary>
+        /// Whether or not this model represents an empty slot.
+        /// </summary>
         private bool isEmpty = true;
 
+        /// <summary>
+        /// Whether or not model should be hidden from view.
+        /// </summary>
         private bool isHidden = false;
 
+        /// <summary>
+        /// The models name.
+        /// </summary>
         private string name = "Empty";
 
+        /// <summary>
+        /// The models profession.
+        /// </summary>
         private Profession profession = Profession.None;
 
+        /// <summary>
+        /// The first specialization slot.
+        /// </summary>
         private SpecializationSlot slot1 = null;
 
+        /// <summary>
+        /// The second specialization slot.
+        /// </summary>
         private SpecializationSlot slot2 = null;
 
+        /// <summary>
+        /// The third specialization slot.
+        /// </summary>
         private SpecializationSlot slot3 = null;
 
         /// <summary>
@@ -52,6 +82,9 @@ namespace GW2BuildLibrary.UI.ViewModels
 
         #region Events
 
+        /// <summary>
+        /// Event to call when a property has changed.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion Events
@@ -83,7 +116,7 @@ namespace GW2BuildLibrary.UI.ViewModels
         }
 
         /// <summary>
-        /// Whether or not this model represents an empty slot.
+        /// Gets or sets whether or not this model represents an empty slot.
         /// </summary>
         public bool IsEmpty
         {
@@ -102,7 +135,7 @@ namespace GW2BuildLibrary.UI.ViewModels
         }
 
         /// <summary>
-        /// Whether or not model should be hidden from view.
+        /// Gets or sets whether or not model should be hidden from view.
         /// </summary>
         public bool IsHidden
         {
@@ -265,8 +298,6 @@ namespace GW2BuildLibrary.UI.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        // To detect redundant calls
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
