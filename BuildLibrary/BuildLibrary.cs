@@ -140,6 +140,13 @@ namespace GW2BuildLibrary
         }
 
         /// <summary>
+        /// Get the next free index available for storage.
+        /// </summary>
+        /// <returns>The next free index.</returns>
+        public int GetNextFreeIndex() =>
+            BuildTemplates.Values.Max(bt => bt.Index) + 1;
+
+        /// <summary>
         /// Loads the build library.
         /// </summary>
         public void Load() =>
