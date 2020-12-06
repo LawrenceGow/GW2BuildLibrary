@@ -98,10 +98,7 @@ namespace GW2BuildLibrary
             if (BuildLibrary != null)
             {
                 if (BuildLibrary.Settings.ProfessionFilter != Profession.None)
-                {
                     ProfessionFilter = BuildLibrary.Settings.ProfessionFilter;
-                    // TODO Hide filter buttons
-                }
 
                 if (BuildLibrary.Settings.OverlayMode)
                 {
