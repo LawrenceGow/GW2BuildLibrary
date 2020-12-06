@@ -13,79 +13,79 @@
         WindowStartupLocation="CenterScreen">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.StoreOrRecallBuildTemplate}"
-                        Executed="StoreOrRecallBuildTemplate_Executed"/>
+                        Executed="StoreOrRecallBuildTemplate_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.ClearBuildTemplate}"
-                        Executed="ClearBuildTemplate_Executed"/>
+                        Executed="ClearBuildTemplate_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.EnterRenameMode}"
-                        Executed="EnterRenameMode_Executed"/>
+                        Executed="EnterRenameMode_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
-                        Executed="ExitRenameMode_Executed"/>
+                        Executed="ExitRenameMode_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.ToggleFilter}"
-                        Executed="ToggleFilter_Executed"/>
+                        Executed="ToggleFilter_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.NextPage}"
-                        Executed="NextPage_Executed"/>
+                        Executed="NextPage_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.PrevPage}"
-                        Executed="PrevPage_Executed"/>
+                        Executed="PrevPage_Executed" />
         <CommandBinding Command="{x:Static local:MainWindow.CloseApplication}"
-                        Executed="CloseApplication_Executed"/>
+                        Executed="CloseApplication_Executed" />
     </Window.CommandBindings>
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Brushes.xaml"/>
-                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Converters.xaml"/>
-                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Geometries.xaml"/>
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Brushes.xaml" />
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Converters.xaml" />
+                <ResourceDictionary Source="/GW2BuildLibrary;component/UI/ResourceDictionaries/Geometries.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
             <Style x:Key="textBlockStyle"
                    TargetType="{x:Type TextBlock}">
                 <Setter Property="Foreground"
-                        Value="{StaticResource defaultForegoundBrush}"/>
+                        Value="{StaticResource defaultForegoundBrush}" />
                 <Setter Property="Background"
-                        Value="Transparent"/>
+                        Value="Transparent" />
                 <Setter Property="VerticalAlignment"
-                        Value="Center"/>
+                        Value="Center" />
                 <Setter Property="HorizontalAlignment"
-                        Value="Stretch"/>
+                        Value="Stretch" />
                 <Setter Property="TextAlignment"
-                        Value="Left"/>
+                        Value="Left" />
                 <Setter Property="FontFamily"
-                        Value="Tahoma"/>
+                        Value="Tahoma" />
                 <Setter Property="FontSize"
-                        Value="12"/>
+                        Value="12" />
             </Style>
 
             <Style x:Key="interactableButtonStyle"
                    TargetType="{x:Type ButtonBase}">
                 <Setter Property="Opacity"
-                        Value="0.6"/>
+                        Value="0.6" />
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver"
                              Value="True">
                         <Setter Property="Opacity"
-                                Value="0.9"/>
+                                Value="0.9" />
                     </Trigger>
                     <Trigger Property="IsPressed"
                              Value="True">
                         <Setter Property="Opacity"
-                                Value="1"/>
+                                Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
 
             <ControlTemplate x:Key="invisibleButtonTemplate"
                              TargetType="{x:Type ButtonBase}">
-                <ContentPresenter Content="{TemplateBinding Content}"/>
+                <ContentPresenter Content="{TemplateBinding Content}" />
             </ControlTemplate>
 
             <Style x:Key="ioButtonStyle"
                    BasedOn="{StaticResource interactableButtonStyle}"
                    TargetType="{x:Type Button}">
                 <Setter Property="Template"
-                        Value="{StaticResource invisibleButtonTemplate}"/>
+                        Value="{StaticResource invisibleButtonTemplate}" />
                 <Setter Property="Command"
-                        Value="{x:Static local:MainWindow.StoreOrRecallBuildTemplate}"/>
+                        Value="{x:Static local:MainWindow.StoreOrRecallBuildTemplate}" />
             </Style>
 
             <ControlTemplate x:Key="iconButtonTemplate"
@@ -99,7 +99,7 @@
                     <Path Fill="{TemplateBinding Foreground}"
                           Stretch="Uniform"
                           Margin="3"
-                          Data="{TemplateBinding Content}"/>
+                          Data="{TemplateBinding Content}" />
                 </Border>
             </ControlTemplate>
 
@@ -108,37 +108,37 @@
                    TargetType="{x:Type ButtonBase}">
                 <Setter Property="Width"
                         Value="{Binding Path=ActualHeight,
-                                        RelativeSource={RelativeSource Self}}"/>
+                                        RelativeSource={RelativeSource Self}}" />
                 <Setter Property="Foreground"
-                        Value="AntiqueWhite"/>
+                        Value="AntiqueWhite" />
                 <Setter Property="BorderBrush"
-                        Value="AntiqueWhite"/>
+                        Value="AntiqueWhite" />
                 <Setter Property="BorderThickness"
-                        Value="1"/>
+                        Value="1" />
                 <Setter Property="VerticalAlignment"
-                        Value="Stretch"/>
+                        Value="Stretch" />
                 <Setter Property="HorizontalAlignment"
-                        Value="Center"/>
+                        Value="Center" />
                 <Setter Property="Template"
-                        Value="{StaticResource iconButtonTemplate}"/>
+                        Value="{StaticResource iconButtonTemplate}" />
             </Style>
-            
+
             <Style x:Key="clearButtonStyle"
                    BasedOn="{StaticResource buttonBaseStyle}"
                    TargetType="{x:Type Button}">
                 <Setter Property="Command"
-                        Value="{x:Static local:MainWindow.ClearBuildTemplate}"/>
+                        Value="{x:Static local:MainWindow.ClearBuildTemplate}" />
                 <Setter Property="Content"
-                        Value="{StaticResource crossIconGeometry}"/>
+                        Value="{StaticResource crossIconGeometry}" />
             </Style>
-            
+
             <Style x:Key="renameButtonStyle"
                    BasedOn="{StaticResource buttonBaseStyle}"
                    TargetType="{x:Type Button}">
                 <Setter Property="Command"
-                        Value="{x:Static local:MainWindow.EnterRenameMode}"/>
+                        Value="{x:Static local:MainWindow.EnterRenameMode}" />
                 <Setter Property="Content"
-                        Value="{StaticResource renameIconGeometry}"/>
+                        Value="{StaticResource renameIconGeometry}" />
             </Style>
 
             <ControlTemplate x:Key="filterButtonTemplate"
@@ -151,7 +151,7 @@
                     <Image Stretch="Uniform"
                            Margin="3"
                            Source="{TemplateBinding Property=CommandParameter,
-                                                    Converter={StaticResource professionIconConverter}}"/>
+                                                    Converter={StaticResource professionIconConverter}}" />
                 </Border>
             </ControlTemplate>
 
@@ -159,21 +159,21 @@
                    BasedOn="{StaticResource buttonBaseStyle}"
                    TargetType="{x:Type ToggleButton}">
                 <Setter Property="Height"
-                        Value="30"/>
+                        Value="30" />
                 <Setter Property="Margin"
-                        Value="0,0,2,0"/>
+                        Value="0,0,2,0" />
                 <Setter Property="Template"
-                        Value="{StaticResource filterButtonTemplate}"/>
+                        Value="{StaticResource filterButtonTemplate}" />
                 <Setter Property="Command"
-                        Value="{x:Static local:MainWindow.ToggleFilter}"/>
+                        Value="{x:Static local:MainWindow.ToggleFilter}" />
                 <Setter Property="IsChecked">
                     <Setter.Value>
                         <MultiBinding Converter="{StaticResource equalityConverter}"
                                       Mode="OneWay">
                             <Binding Path="CommandParameter"
-                                     RelativeSource="{RelativeSource Self}"/>
+                                     RelativeSource="{RelativeSource Self}" />
                             <Binding Path="ProfessionFilter"
-                                     RelativeSource="{RelativeSource AncestorType=local:MainWindow}"/>
+                                     RelativeSource="{RelativeSource AncestorType=local:MainWindow}" />
                         </MultiBinding>
                     </Setter.Value>
                 </Setter>
@@ -181,22 +181,22 @@
                     <Trigger Property="IsChecked"
                              Value="True">
                         <Setter Property="Opacity"
-                                Value="1"/>
+                                Value="1" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            
+
             <Style x:Key="{x:Type ToolTip}"
                    TargetType="ToolTip">
                 <Setter Property="OverridesDefaultStyle"
-                        Value="True"/>
+                        Value="True" />
                 <Setter Property="HasDropShadow"
-                        Value="False"/>
+                        Value="False" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ToolTip">
                             <ContentPresenter HorizontalAlignment="Stretch"
-                                              VerticalAlignment="Stretch"/>
+                                              VerticalAlignment="Stretch" />
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
@@ -208,7 +208,7 @@
         <Border.Style>
             <Style TargetType="{x:Type Border}">
                 <Setter Property="Background"
-                        Value="{StaticResource defaultBackgroundBrush}"/>
+                        Value="{StaticResource defaultBackgroundBrush}" />
 
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Path=InOverlayMode,
@@ -216,7 +216,7 @@
                                                    Mode=OneTime}"
                                  Value="True">
                         <Setter Property="Padding"
-                                Value="10"/>
+                                Value="10" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -224,8 +224,8 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <!-- Profession Filter Buttons -->
@@ -234,40 +234,39 @@
                         Orientation="Horizontal">
                 <ToggleButton x:Name="PART_FilterButton_Guardian"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Guardian}"/>
-                
+                              CommandParameter="{x:Static local:Profession.Guardian}" />
+
                 <ToggleButton x:Name="PART_FilterButton_Warrior"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Warrior}"/>
+                              CommandParameter="{x:Static local:Profession.Warrior}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Engineer"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Engineer}"/>
+                              CommandParameter="{x:Static local:Profession.Engineer}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Ranger"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Ranger}"/>
+                              CommandParameter="{x:Static local:Profession.Ranger}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Thief"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Thief}"/>
+                              CommandParameter="{x:Static local:Profession.Thief}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Elementalist"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Elementalist}"/>
+                              CommandParameter="{x:Static local:Profession.Elementalist}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Mesmer"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Mesmer}"/>
-
+                              CommandParameter="{x:Static local:Profession.Mesmer}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Necromancer"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Necromancer}"/>
+                              CommandParameter="{x:Static local:Profession.Necromancer}" />
 
                 <ToggleButton x:Name="PART_FilterButton_Revenant"
                               Style="{StaticResource filterButtonStyle}"
-                              CommandParameter="{x:Static local:Profession.Revenant}"/>
+                              CommandParameter="{x:Static local:Profession.Revenant}" />
             </StackPanel>
 
             <!-- System Buttons -->
@@ -282,24 +281,24 @@
                         Visibility="{Binding Path=InOverlayMode,
                                              RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}},
                                              Converter={StaticResource boolToVisConverter},
-                                             Mode=OneTime}"/>
+                                             Mode=OneTime}" />
 
                 <!-- Next Page Button -->
                 <Button Style="{StaticResource buttonBaseStyle}"
                         Command="{x:Static local:MainWindow.NextPage}"
-                        Content="{StaticResource nextIconGeometry}"/>
+                        Content="{StaticResource nextIconGeometry}" />
 
                 <!-- Current Page -->
                 <TextBlock Style="{StaticResource textBlockStyle}"
                            TextAlignment="Center"
                            Width="30"
                            Text="{Binding Path=CurrentPage,
-                                          RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}"/>
+                                          RelativeSource={RelativeSource AncestorType={x:Type local:MainWindow}}}" />
 
                 <!-- Prev Page Button -->
                 <Button Style="{StaticResource buttonBaseStyle}"
                         Command="{x:Static local:MainWindow.PrevPage}"
-                        Content="{StaticResource prevIconGeometry}"/>
+                        Content="{StaticResource prevIconGeometry}" />
             </StackPanel>
 
             <!-- Build Templates -->
@@ -317,7 +316,7 @@
                                      Columns="{Binding Path=Columns,
                                                        ElementName='BuildTemplateItems',
                                                        Mode=OneWay}"
-                                     IsItemsHost="True"/>
+                                     IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </controls:BuildTemplateItemsControl.ItemsPanel>
                 <controls:BuildTemplateItemsControl.ItemTemplate>
@@ -339,31 +338,31 @@
                                                            Slot2="{Binding Path=Slot2}"
                                                            Slot3="{Binding Path=Slot3}"
                                                            Visibility="{Binding Path=IsEmpty,
-                                                                                Converter={StaticResource inverseBoolToVisConverter}}"/>
+                                                                                Converter={StaticResource inverseBoolToVisConverter}}" />
                                 </Border.ToolTip>
-                                
+
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock="Right"
                                             Style="{StaticResource clearButtonStyle}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}" />
 
                                     <Button DockPanel.Dock="Right"
                                             Style="{StaticResource renameButtonStyle}"
                                             Margin="0,0,2,0"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}" />
 
                                     <Image DockPanel.Dock="Left"
                                            Margin="2"
                                            Stretch="Uniform"
                                            Source="{Binding Path=Profession,
                                                             Converter={StaticResource professionIconConverter},
-                                                            Mode=OneWay}"/>
+                                                            Mode=OneWay}" />
 
                                     <TextBlock x:Name="PART_TemplateName"
                                                Style="{StaticResource textBlockStyle}"
                                                TextTrimming="CharacterEllipsis"
                                                Text="{Binding Path=Name,
-                                                              Mode=OneWay}"/>
+                                                              Mode=OneWay}" />
                                 </DockPanel>
                             </Border>
                         </Button>
@@ -373,13 +372,13 @@
                                          Value="True">
                                 <Setter TargetName="PART_TemplateName"
                                         Property="Text"
-                                        Value="Empty"/>
+                                        Value="Empty" />
                                 <Setter TargetName="PART_TemplateName"
                                         Property="Foreground"
-                                        Value="White"/>
+                                        Value="White" />
                                 <Setter TargetName="PART_TemplateName"
                                         Property="TextAlignment"
-                                        Value="Center"/>
+                                        Value="Center" />
                             </DataTrigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
@@ -400,12 +399,12 @@
                         CornerRadius="5">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <TextBox x:Name="PART_RenameTextInput"
@@ -421,10 +420,10 @@
                             <TextBox.InputBindings>
                                 <KeyBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
                                             CommandParameter="True"
-                                            Key="Enter"/>
+                                            Key="Enter" />
                                 <KeyBinding Command="{x:Static local:MainWindow.ExitRenameMode}"
                                             CommandParameter="True"
-                                            Key="Return"/>
+                                            Key="Return" />
                             </TextBox.InputBindings>
                         </TextBox>
 
@@ -434,7 +433,7 @@
                                 Content="{StaticResource tickIconGeometry}"
                                 Margin="5"
                                 Command="{x:Static local:MainWindow.ExitRenameMode}"
-                                CommandParameter="True"/>
+                                CommandParameter="True" />
 
                         <Button Grid.Row="1" Grid.Column="1"
                                 Height="30"
@@ -442,7 +441,7 @@
                                 Content="{StaticResource crossIconGeometry}"
                                 Margin="5"
                                 Command="{x:Static local:MainWindow.ExitRenameMode}"
-                                CommandParameter="False"/>
+                                CommandParameter="False" />
                     </Grid>
                 </Border>
             </Border>

@@ -7,48 +7,52 @@ namespace GW2BuildLibrary
     /// </summary>
     public static class TemplateHelper
     {
-        public const byte Core = 0b0000;
-        public const byte HeartOfThorns = 0b0001;
-        public const byte PathOfFire = 0b0010;
-        public const byte EndOfDragons = 0b0011;
+        #region Fields
 
+        /// <summary>
+        /// <see cref="HashSet{T}"/> of the specializations available in End of Dragons.
+        /// </summary>
+        private static readonly HashSet<Specialization> EndOfDragonsSpecs = new HashSet<Specialization>();
+
+        /// <summary>
+        /// <see cref="HashSet{T}"/> of the specializations available in Heart of Thorns.
+        /// </summary>
         private static readonly HashSet<Specialization> HeartOfThornsSpecs = new HashSet<Specialization>()
         { Specialization.Dragonhunter, Specialization.Berserker, Specialization.Scrapper, Specialization.Druid,
             Specialization.Daredevil, Specialization.Tempest, Specialization.Chronomancer, Specialization.Reaper,
             Specialization.Herald };
 
+        /// <summary>
+        /// <see cref="HashSet{T}"/> of the specializations available in Path of Fire.
+        /// </summary>
         private static readonly HashSet<Specialization> PathOfFireSpecs = new HashSet<Specialization>()
         { Specialization.Firebrand, Specialization.Spellbreaker, Specialization.Holosmith, Specialization.Soulbeast,
             Specialization.Deadeye, Specialization.Weaver, Specialization.Mirage, Specialization.Scourge,
             Specialization.Renegade };
 
-        private static readonly HashSet<Specialization> EndOfDragonsSpecs = new HashSet<Specialization>();
-
-        #region Specialization Methods
+        /// <summary>
+        /// <see cref="byte"/> that represents core professions/specializations.
+        /// </summary>
+        public const byte Core = 0b0000;
 
         /// <summary>
-        /// Gets the byte that represents the set of elite specializations required
-        /// for the specializations provided.
+        /// <see cref="byte"/> that represents EoD professions/specializations.
         /// </summary>
-        /// <param name="specialization">The third specialization.</param>
-        /// <returns></returns>
-        public static byte GetSetByte(in Specialization specialization)
-        {
-            if (HeartOfThornsSpecs.Contains(specialization))
-                return HeartOfThorns;
+        public const byte EndOfDragons = 0b0011;
 
-            if (PathOfFireSpecs.Contains(specialization))
-                return PathOfFire;
+        /// <summary>
+        /// <see cref="byte"/> that represents HoT professions/specializations.
+        /// </summary>
+        public const byte HeartOfThorns = 0b0001;
 
-            if (EndOfDragonsSpecs.Contains(specialization))
-                return EndOfDragons;
+        /// <summary>
+        /// <see cref="byte"/> that represents PoF professions/specializations.
+        /// </summary>
+        public const byte PathOfFire = 0b0010;
 
-            return Core;
-        }
+        #endregion Fields
 
-        #endregion
-
-        #region Profession Methods
+        #region Methods
 
         /// <summary>
         /// Generates a profession enum based on the provided profession byte and third specialization.
@@ -78,6 +82,25 @@ namespace GW2BuildLibrary
         }
 
         /// <summary>
+        /// Gets the byte that represents the set of elite specializations required for the specializations provided.
+        /// </summary>
+        /// <param name="specialization">The third specialization.</param>
+        /// <returns></returns>
+        public static byte GetSetByte(in Specialization specialization)
+        {
+            if (HeartOfThornsSpecs.Contains(specialization))
+                return HeartOfThorns;
+
+            if (PathOfFireSpecs.Contains(specialization))
+                return PathOfFire;
+
+            if (EndOfDragonsSpecs.Contains(specialization))
+                return EndOfDragons;
+
+            return Core;
+        }
+
+        /// <summary>
         /// Gets whether the profession is based off of the check provided.
         /// </summary>
         /// <param name="profession">The profession.</param>
@@ -88,6 +111,6 @@ namespace GW2BuildLibrary
             return ((byte)profession & 0b00001111) == (byte)check;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

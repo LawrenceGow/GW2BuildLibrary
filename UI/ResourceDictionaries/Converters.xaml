@@ -3,13 +3,13 @@
                     xmlns:converters="clr-namespace:GW2BuildLibrary.UI.Converters"
                     xmlns:local="clr-namespace:GW2BuildLibrary.UI.ResourceDictionaries">
 
-    <converters:ProfessionToIconUriConverter x:Key="professionIconConverter"/>
+    <converters:ProfessionToIconUriConverter x:Key="professionIconConverter" />
 
-    <converters:SpecializationToIconUriConverter x:Key="specializationIconConverter"/>
+    <converters:SpecializationToIconUriConverter x:Key="specializationIconConverter" />
 
-    <converters:MultiEqualityConverter x:Key="equalityConverter"/>
+    <converters:MultiEqualityConverter x:Key="equalityConverter" />
 
-    <converters:BoolToVisibilityConverter x:Key="boolToVisConverter"/>
+    <converters:BoolToVisibilityConverter x:Key="boolToVisConverter" />
 
-    <converters:InverseBoolToVisibilityConverter x:Key="inverseBoolToVisConverter"/>
+    <converters:InverseBoolToVisibilityConverter x:Key="inverseBoolToVisConverter" />
 </ResourceDictionary>
