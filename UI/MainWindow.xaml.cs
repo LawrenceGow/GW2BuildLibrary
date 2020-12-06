@@ -313,8 +313,9 @@ namespace GW2BuildLibrary
             int pageOffset = BuildTemplateItems.ItemCount * (CurrentPage - 1);
             if (ProfessionFilter == Profession.None)
             {
-                // No filter applied so just show the builds as is All models are used and blank ones allow for storing
-                // more builds
+                /* No filter applied so just show the builds as they are
+                 * All models are used and empty ones allow for storing more builds
+                 */
                 for (int modelIndex = 0; modelIndex < BuildTemplateItems.ItemCount; modelIndex++)
                 {
                     BuildTemplateViewModel model = BuildTemplateModels[modelIndex];
@@ -341,10 +342,22 @@ namespace GW2BuildLibrary
                     model.IsHidden = false;
                 }
 
+                // Ensure there is an empty slot after the filtered results if there is room
+                if (modelIndex < BuildTemplateModels.Count)
+                {
+                    BuildTemplateViewModel model = BuildTemplateModels[modelIndex];
+                    model.BuildTemplate = null;
+                    model.Index = BuildLibrary.GetNextFreeIndex();
+                    model.IsHidden = false;
+                    modelIndex++;
+                }
+
                 // Instead of deleting models, tell them to hide
                 for (; modelIndex < BuildTemplateItems.ItemCount; modelIndex++)
                 {
-                    BuildTemplateModels[modelIndex].IsHidden = true;
+                    BuildTemplateViewModel model = BuildTemplateModels[modelIndex];
+                    model.IsHidden = true;
+                    model.BuildTemplate = null;
                 }
             }
         }
