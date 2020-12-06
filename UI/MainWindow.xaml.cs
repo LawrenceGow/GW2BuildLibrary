@@ -165,7 +165,7 @@ namespace GW2BuildLibrary
         #region Methods
 
         /// <summary>
-        /// Handles the ItemCountChanged from <see cref="BuildTemplateItems"/>.
+        /// Handles the ItemCountChanged event from <see cref="BuildTemplateItems"/>.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -174,6 +174,11 @@ namespace GW2BuildLibrary
             SyncModels();
         }
 
+        /// <summary>
+        /// Logic for the <see cref="ClearBuildTemplate"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void ClearBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.Assert(e.Parameter is BuildTemplateViewModel);
@@ -185,9 +190,18 @@ namespace GW2BuildLibrary
             }
         }
 
-        private void CloseApplication_Executed(object sender, ExecutedRoutedEventArgs e) =>
-                    Close();
+        /// <summary>
+        /// Logic for the <see cref="CloseApplication"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
+        private void CloseApplication_Executed(object sender, ExecutedRoutedEventArgs e) => Close();
 
+        /// <summary>
+        /// Logic for the <see cref="EnterRenameMode"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void EnterRenameMode_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.Assert(e.Parameter is BuildTemplateViewModel);
@@ -202,6 +216,11 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Logic for the <see cref="ExitRenameMode"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void ExitRenameMode_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (renameTarget != null && bool.TryParse(e.Parameter as string, out bool setName))
@@ -214,6 +233,11 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Logic for the <see cref="NextPage"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void NextPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CurrentPage < 255)
@@ -223,6 +247,11 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Logic for the <see cref="PrevPage"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void PrevPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (CurrentPage > 1)
@@ -232,6 +261,11 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Logic for the <see cref="StoreOrRecallBuildTemplate"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void StoreOrRecallBuildTemplate_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is BuildTemplateViewModel model)
@@ -315,6 +349,11 @@ namespace GW2BuildLibrary
             }
         }
 
+        /// <summary>
+        /// Logic for the <see cref="ToggleFilter"/> command.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The execution arguments.</param>
         private void ToggleFilter_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Debug.Assert(e.Parameter is Profession);
