@@ -9,21 +9,45 @@ namespace GW2BuildLibrary
     {
         #region Fields
 
+        /// <summary>
+        /// <see cref="HashSet{T}"/> of the specializations available in End of Dragons.
+        /// </summary>
         private static readonly HashSet<Specialization> EndOfDragonsSpecs = new HashSet<Specialization>();
 
+        /// <summary>
+        /// <see cref="HashSet{T}"/> of the specializations available in Heart of Thorns.
+        /// </summary>
         private static readonly HashSet<Specialization> HeartOfThornsSpecs = new HashSet<Specialization>()
         { Specialization.Dragonhunter, Specialization.Berserker, Specialization.Scrapper, Specialization.Druid,
             Specialization.Daredevil, Specialization.Tempest, Specialization.Chronomancer, Specialization.Reaper,
             Specialization.Herald };
 
+        /// <summary>
+        /// <see cref="HashSet{T}"/> of the specializations available in Path of Fire.
+        /// </summary>
         private static readonly HashSet<Specialization> PathOfFireSpecs = new HashSet<Specialization>()
         { Specialization.Firebrand, Specialization.Spellbreaker, Specialization.Holosmith, Specialization.Soulbeast,
             Specialization.Deadeye, Specialization.Weaver, Specialization.Mirage, Specialization.Scourge,
             Specialization.Renegade };
 
+        /// <summary>
+        /// <see cref="byte"/> that represents core professions/specializations.
+        /// </summary>
         public const byte Core = 0b0000;
+
+        /// <summary>
+        /// <see cref="byte"/> that represents EoD professions/specializations.
+        /// </summary>
         public const byte EndOfDragons = 0b0011;
+
+        /// <summary>
+        /// <see cref="byte"/> that represents HoT professions/specializations.
+        /// </summary>
         public const byte HeartOfThorns = 0b0001;
+
+        /// <summary>
+        /// <see cref="byte"/> that represents PoF professions/specializations.
+        /// </summary>
         public const byte PathOfFire = 0b0010;
 
         #endregion Fields
