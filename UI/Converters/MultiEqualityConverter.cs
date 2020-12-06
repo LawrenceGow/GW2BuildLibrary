@@ -10,6 +10,8 @@ namespace GW2BuildLibrary.UI.Converters
     /// </summary>
     public class MultiEqualityConverter : IMultiValueConverter
     {
+        #region Methods
+
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             object value = values[0];
@@ -26,5 +28,7 @@ namespace GW2BuildLibrary.UI.Converters
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
+
+        #endregion Methods
     }
 }

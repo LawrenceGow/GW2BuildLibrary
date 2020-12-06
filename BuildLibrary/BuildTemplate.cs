@@ -9,36 +9,12 @@ namespace GW2BuildLibrary
     /// </summary>
     public class BuildTemplate
     {
+        #region Fields
+
         /// <summary>
         /// The name of this element in XML.
         /// </summary>
         public const string XmlNodeName = "BuildTemplate";
-
-        #region Properties
-
-        /// <summary>
-        /// The index of the slot the build is in.
-        /// </summary>
-        public int Index
-        { get; set; } = -1;
-
-        /// <summary>
-        /// The name of the build.
-        /// </summary>
-        public string Name
-        { get; protected set; } = string.Empty;
-
-        /// <summary>
-        /// The raw build data string.
-        /// </summary>
-        public string BuildData
-        { get; protected set; } = string.Empty;
-
-        /// <summary>
-        /// The profession the build is for.
-        /// </summary>
-        public Profession Profession
-        { get; set; } = Profession.None;
 
         /// <summary>
         /// The first specialization slot.
@@ -55,7 +31,50 @@ namespace GW2BuildLibrary
         /// </summary>
         public readonly SpecializationSlot Slot3 = new SpecializationSlot();
 
-        #endregion
+        /// <summary>
+        /// Fired when the build has been updated in some way.
+        /// </summary>
+        public EventHandler Updated;
+
+        #endregion Fields
+
+        #region Properties
+
+        /// <summary>
+        /// The raw build data string.
+        /// </summary>
+        public string BuildData
+        { get; protected set; } = string.Empty;
+
+        /// <summary>
+        /// The index of the slot the build is in.
+        /// </summary>
+        public int Index
+        { get; set; } = -1;
+
+        /// <summary>
+        /// Checks whether the build is in a valid state.
+        /// </summary>
+        public bool IsValid
+        {
+            get { return Index < 0 | string.IsNullOrEmpty(BuildData); }
+        }
+
+        /// <summary>
+        /// The name of the build.
+        /// </summary>
+        public string Name
+        { get; protected set; } = string.Empty;
+
+        /// <summary>
+        /// The profession the build is for.
+        /// </summary>
+        public Profession Profession
+        { get; set; } = Profession.None;
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Loads the build from the provided node.
@@ -88,31 +107,11 @@ namespace GW2BuildLibrary
         }
 
         /// <summary>
-        /// Fired when the build has been updated in some way.
-        /// </summary>
-        public EventHandler Updated;
-
-        /// <summary>
-        /// Set the name of the build.
-        /// </summary>
-        /// <param name="name">The name to set.</param>
-        public void SetName(in string name)
-        {
-            if (name != Name)
-            {
-                Name = name;
-                Updated?.Invoke(this, null);
-            }
-        }
-
-        /// <summary>
         /// Sets the raw build data.
         /// </summary>
         /// <param name="index">The index of the slot the build is in.</param>
         /// <param name="data">The raw build data.</param>
-        /// <returns>
-        /// <c>True</c> if the data was considered valid and has been set, otherwise <c>false</c>.
-        /// </returns>
+        /// <returns><c>True</c> if the data was considered valid and has been set, otherwise <c>false</c>.</returns>
         public bool SetBuildData(in int index, in string data)
         {
             if (string.IsNullOrEmpty(data) || !data.StartsWith("[&") || !data.EndsWith("]"))
@@ -124,8 +123,8 @@ namespace GW2BuildLibrary
                 {
                     byte[] raw = Convert.FromBase64String(data.Substring(2, data.Length - 3));
                     // For how the chat-link is built
-                    // See: https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
-                    // Build templates are always 44 bytes long
+                    // See: https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link Build templates are
+                    // always 44 bytes long
                     if (raw.Length == 44
                         // Build templates have a link type of 13
                         && raw[0] == 13)
@@ -153,11 +152,18 @@ namespace GW2BuildLibrary
         }
 
         /// <summary>
-        /// Checks whether the build is in a valid state.
+        /// Set the name of the build.
         /// </summary>
-        public bool IsValid
+        /// <param name="name">The name to set.</param>
+        public void SetName(in string name)
         {
-            get { return Index < 0 | string.IsNullOrEmpty(BuildData); }
+            if (name != Name)
+            {
+                Name = name;
+                Updated?.Invoke(this, null);
+            }
         }
+
+        #endregion Methods
     }
 }

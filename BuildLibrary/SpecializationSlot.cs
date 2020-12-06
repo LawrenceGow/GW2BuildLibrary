@@ -5,16 +5,22 @@
     /// </summary>
     public class SpecializationSlot
     {
-        /// <summary>
-        /// The specialization in this slot.
-        /// </summary>
-        public Specialization Specialization
-        { get; set; }
+        #region Fields
 
         /// <summary>
         /// The trait choices.
         /// </summary>
         public byte[] Traits = new byte[3];
+
+        #endregion Fields
+
+        #region Properties
+
+        /// <summary>
+        /// The specialization in this slot.
+        /// </summary>
+        public Specialization Specialization
+        { get; set; }
 
         /// <summary>
         /// The first trait choice.
@@ -34,14 +40,17 @@
         public byte Trait3
         { get => Traits[2]; }
 
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Loads this <see cref="SpecializationSlot"/> from the provided bytes.
         /// </summary>
         /// <param name="specializationByte">The byte for the specialization.</param>
         /// <param name="traitsByte">The byte for the trait choices.</param>
         /// <remarks>
-        /// See: https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link
-        /// for details on how the data is loaded.
+        /// See: https://wiki.guildwars2.com/wiki/Chat_link_format#Build_templates_link for details on how the data is loaded.
         /// </remarks>
         public void LoadFromBytes(in byte specializationByte, in byte traitsByte)
         {
@@ -54,9 +63,9 @@
         /// <summary>
         /// Gets a <see cref="string"/> representation of this <see cref="SpecializationSlot"/> instance.
         /// </summary>
-        /// <returns>
-        /// A <see cref="string"/> that represents this <see cref="SpecializationSlot"/> instance.
-        /// </returns>
+        /// <returns>A <see cref="string"/> that represents this <see cref="SpecializationSlot"/> instance.</returns>
         public override string ToString() => $"{Specialization} - {Trait1}|{Trait2}|{Trait3}";
+
+        #endregion Methods
     }
 }

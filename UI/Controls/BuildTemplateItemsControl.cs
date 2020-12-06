@@ -6,18 +6,31 @@ namespace GW2BuildLibrary.UI.Controls
 {
     public class BuildTemplateItemsControl : ItemsControl
     {
-        /// <summary>
-        /// Gets or sets the number of rows we are displaying the templates on.
-        /// </summary>
-        public int Rows
-        {
-            get { return (int)GetValue(RowsProperty); }
-            set { SetValue(RowsProperty, value); }
-        }
+        #region Fields
 
-        // Using a DependencyProperty as the backing store for Rows.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for Columns. This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ColumnsProperty =
+            DependencyProperty.Register("Columns", typeof(int), typeof(BuildTemplateItemsControl), new PropertyMetadata(2));
+
+        // Using a DependencyProperty as the backing store for Rows. This enables animation, styling, binding, etc...
         public static readonly DependencyProperty RowsProperty =
             DependencyProperty.Register("Rows", typeof(int), typeof(BuildTemplateItemsControl), new PropertyMetadata(16));
+
+        // Using a DependencyProperty as the backing store for TargetItemHeight. This enables animation, styling,
+        // binding, etc...
+        public static readonly DependencyProperty TargetItemHeightProperty =
+            DependencyProperty.Register("TargetItemHeight", typeof(double), typeof(BuildTemplateItemsControl), new PropertyMetadata(30d));
+
+        // Using a DependencyProperty as the backing store for TargetItemWidth. This enables animation, styling,
+        // binding, etc...
+        public static readonly DependencyProperty TargetItemWidthProperty =
+            DependencyProperty.Register("TargetItemWidth", typeof(double), typeof(BuildTemplateItemsControl), new PropertyMetadata(260d));
+
+        public EventHandler ItemCountChanged;
+
+        #endregion Fields
+
+        #region Properties
 
         /// <summary>
         /// Gets or sets the number of columns we are displaying the templates on.
@@ -28,9 +41,20 @@ namespace GW2BuildLibrary.UI.Controls
             set { SetValue(ColumnsProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Columns.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ColumnsProperty =
-            DependencyProperty.Register("Columns", typeof(int), typeof(BuildTemplateItemsControl), new PropertyMetadata(2));
+        /// <summary>
+        /// Gets the maximum number of items that currently can be displayed.
+        /// </summary>
+        public int ItemCount
+        { get; set; } = 32;
+
+        /// <summary>
+        /// Gets or sets the number of rows we are displaying the templates on.
+        /// </summary>
+        public int Rows
+        {
+            get { return (int)GetValue(RowsProperty); }
+            set { SetValue(RowsProperty, value); }
+        }
 
         /// <summary>
         /// Gets or sets the target item height.
@@ -41,10 +65,6 @@ namespace GW2BuildLibrary.UI.Controls
             set { SetValue(TargetItemHeightProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for TargetItemHeight.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TargetItemHeightProperty =
-            DependencyProperty.Register("TargetItemHeight", typeof(double), typeof(BuildTemplateItemsControl), new PropertyMetadata(30d));
-
         /// <summary>
         /// Gets or sets the target item width.
         /// </summary>
@@ -54,17 +74,9 @@ namespace GW2BuildLibrary.UI.Controls
             set { SetValue(TargetItemWidthProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for TargetItemWidth.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TargetItemWidthProperty =
-            DependencyProperty.Register("TargetItemWidth", typeof(double), typeof(BuildTemplateItemsControl), new PropertyMetadata(260d));
+        #endregion Properties
 
-        /// <summary>
-        /// Gets the maximum number of items that currently can be displayed.
-        /// </summary>
-        public int ItemCount
-        { get; set; } = 32;
-
-        public EventHandler ItemCountChanged;
+        #region Methods
 
         /// <summary>
         /// Called to remeasure a control.
@@ -84,5 +96,7 @@ namespace GW2BuildLibrary.UI.Controls
             }
             return base.MeasureOverride(constraint);
         }
+
+        #endregion Methods
     }
 }

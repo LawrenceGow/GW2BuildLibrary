@@ -11,7 +11,16 @@ namespace GW2BuildLibrary
     /// </summary>
     public partial class App : Application
     {
+        #region Fields
+
+        private OptionSet options;
         public static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+        #endregion Fields
+
+        #region Properties
+
+        private bool ShowHelp { get; set; } = false;
 
         /// <summary>
         /// Reference to the <see cref="GW2BuildLibrary.BuildLibrary"/> instance.
@@ -19,7 +28,54 @@ namespace GW2BuildLibrary
         public static BuildLibrary BuildLibrary
         { get; private set; } = null;
 
-        private OptionSet options;
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Parses the profession filter from what was passed into the application.
+        /// </summary>
+        /// <param name="value">The value that was passed into the application.</param>
+        private Profession ParseProfessionFilter(string value)
+        {
+            if (Enum.TryParse(value, out Profession profession))
+                return profession;
+
+            return Profession.None;
+        }
+
+        /// <summary>
+        /// Shows the help message and provides the user with the option to open the README file.
+        /// </summary>
+        private void ShowHelpMessage()
+        {
+            string optionText;
+            using (StringWriter writer = new StringWriter())
+            {
+                options.WriteOptionDescriptions(writer);
+                optionText = writer.ToString();
+            }
+
+            if (MessageBox.Show($"USAGE\n{optionText}\n\n" +
+                $"Would you like to open the GitHub page to view the README?",
+                "Help",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Information) == MessageBoxResult.Yes)
+            {
+                // Open the GitHub page at the README file
+                Process.Start(Path.Combine(@"https://github.com/LawrenceGow/GW2BuildLibrary#what-is-gw2buildlibrary"));
+            }
+        }
+
+        /// <summary>
+        /// Raises the System.Windows.Application.Exit event.
+        /// </summary>
+        /// <param name="e">An System.Windows.ExitEventArgs that contains the event data.</param>
+        protected override void OnExit(ExitEventArgs e)
+        {
+            BuildLibrary?.Save();
+            base.OnExit(e);
+        }
 
         /// <summary>
         /// Raises the System.Windows.Application.Startup event.
@@ -123,8 +179,7 @@ namespace GW2BuildLibrary
 
             if (!string.IsNullOrEmpty(exportLocation))
             {
-                // Save the library without window data to the specified location
-                // then shutdown the application
+                // Save the library without window data to the specified location then shutdown the application
                 BuildLibrary.Save(exportLocation, saveWindowState: false);
                 shutdown = true;
             }
@@ -135,51 +190,6 @@ namespace GW2BuildLibrary
                 base.OnStartup(e);
         }
 
-        /// <summary>
-        /// Parses the profession filter from what was passed into the application.
-        /// </summary>
-        /// <param name="value">The value that was passed into the application.</param>
-        private Profession ParseProfessionFilter(string value)
-        {
-            if (Enum.TryParse(value, out Profession profession))
-                return profession;
-
-            return Profession.None;
-        }
-
-        private bool ShowHelp { get; set; } = false;
-
-        /// <summary>
-        /// Shows the help message and provides the user with the option to open the README file.
-        /// </summary>
-        private void ShowHelpMessage()
-        {
-            string optionText;
-            using (StringWriter writer = new StringWriter())
-            {
-                options.WriteOptionDescriptions(writer);
-                optionText = writer.ToString();
-            }
-
-            if (MessageBox.Show($"USAGE\n{optionText}\n\n" +
-                $"Would you like to open the GitHub page to view the README?",
-                "Help",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Information) == MessageBoxResult.Yes)
-            {
-                // Open the GitHub page at the README file
-                Process.Start(Path.Combine(@"https://github.com/LawrenceGow/GW2BuildLibrary#what-is-gw2buildlibrary"));
-            }
-        }
-
-        /// <summary>
-        /// Raises the System.Windows.Application.Exit event.
-        /// </summary>
-        /// <param name="e">An System.Windows.ExitEventArgs that contains the event data.</param>
-        protected override void OnExit(ExitEventArgs e)
-        {
-            BuildLibrary?.Save();
-            base.OnExit(e);
-        }
+        #endregion Methods
     }
 }

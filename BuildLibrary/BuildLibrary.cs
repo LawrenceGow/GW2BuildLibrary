@@ -10,8 +10,7 @@ using System.Xml.XPath;
 namespace GW2BuildLibrary
 {
     /// <summary>
-    /// The build library.
-    /// Holds information on all templates in the library and provides methods to interface with them.
+    /// The build library. Holds information on all templates in the library and provides methods to interface with them.
     /// </summary>
     public class BuildLibrary
     {

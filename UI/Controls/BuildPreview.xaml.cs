@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GW2BuildLibrary.UI.Controls
 {
@@ -20,10 +8,41 @@ namespace GW2BuildLibrary.UI.Controls
     /// </summary>
     public partial class BuildPreview : UserControl
     {
+        #region Fields
+
+        /// <summary>
+        /// Backing <see cref="DependencyProperty"/> for <see cref="Slot1"/>.
+        /// </summary>
+        public static readonly DependencyProperty Slot1Property =
+            DependencyProperty.Register(nameof(Slot1), typeof(SpecializationSlot), typeof(BuildPreview), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Backing <see cref="DependencyProperty"/> for <see cref="Slot2"/>.
+        /// </summary>
+        public static readonly DependencyProperty Slot2Property =
+            DependencyProperty.Register(nameof(Slot2), typeof(SpecializationSlot), typeof(BuildPreview), new PropertyMetadata(null));
+
+        /// <summary>
+        /// Backing <see cref="DependencyProperty"/> for <see cref="Slot3"/>.
+        /// </summary>
+        public static readonly DependencyProperty Slot3Property =
+            DependencyProperty.Register(nameof(Slot3), typeof(SpecializationSlot), typeof(BuildPreview), new PropertyMetadata(null));
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new <see cref="BuildPreview"/> instance.
+        /// </summary>
         public BuildPreview()
         {
             InitializeComponent();
         }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// The first specialization slot.
@@ -34,9 +53,6 @@ namespace GW2BuildLibrary.UI.Controls
             set { SetValue(Slot1Property, value); }
         }
 
-        public static readonly DependencyProperty Slot1Property =
-            DependencyProperty.Register("Slot1", typeof(SpecializationSlot), typeof(BuildPreview), new PropertyMetadata(null));
-
         /// <summary>
         /// The second specialization slot.
         /// </summary>
@@ -45,9 +61,6 @@ namespace GW2BuildLibrary.UI.Controls
             get { return (SpecializationSlot)GetValue(Slot2Property); }
             set { SetValue(Slot2Property, value); }
         }
-
-        public static readonly DependencyProperty Slot2Property =
-            DependencyProperty.Register("Slot2", typeof(SpecializationSlot), typeof(BuildPreview), new PropertyMetadata(null));
 
         /// <summary>
         /// The third specialization slot.
@@ -58,7 +71,6 @@ namespace GW2BuildLibrary.UI.Controls
             set { SetValue(Slot3Property, value); }
         }
 
-        public static readonly DependencyProperty Slot3Property =
-            DependencyProperty.Register("Slot3", typeof(SpecializationSlot), typeof(BuildPreview), new PropertyMetadata(null));
+        #endregion Properties
     }
 }

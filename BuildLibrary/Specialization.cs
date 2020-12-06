@@ -9,6 +9,7 @@
 
         // Guardian
         Valor = 13,
+
         Radiance = 16,
         Dragonhunter = 27,
         Zeal = 42,
@@ -18,6 +19,7 @@
 
         // Warrior
         Strength = 4,
+
         Tactics = 11,
         Berserker = 18,
         Defense = 22,
@@ -27,6 +29,7 @@
 
         // Engineer
         Explosives = 6,
+
         Tools = 21,
         Alchemy = 29,
         Firearms = 38,
@@ -36,6 +39,7 @@
 
         // Ranger
         Druid = 5,
+
         Marksmanship = 8,
         NatureMagic = 25,
         Skirmishing = 30,
@@ -45,6 +49,7 @@
 
         // Thief
         Daredevil = 7,
+
         ShadowArts = 20,
         DeadlyArts = 28,
         CriticalStrikes = 35,
@@ -54,6 +59,7 @@
 
         // Elementalist
         Water = 17,
+
         Earth = 26,
         Fire = 31,
         Arcane = 37,
@@ -63,6 +69,7 @@
 
         // Mesmer
         Dueling = 1,
+
         Domination = 10,
         Inspiration = 23,
         Illusions = 24,
@@ -72,6 +79,7 @@
 
         // Necromancer
         DeathMagic = 2,
+
         BloodMagic = 19,
         Reaper = 34,
         Curses = 39,
@@ -81,6 +89,7 @@
 
         // Revenant
         Invocation = 3,
+
         Retribution = 9,
         Salvation = 12,
         Corruption = 14,

@@ -9,6 +9,8 @@ namespace GW2BuildLibrary.UI.Converters
     /// </summary>
     public class ProfessionToIconUriConverter : IValueConverter
     {
+        #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Profession profession = (Profession)value;
@@ -22,5 +24,7 @@ namespace GW2BuildLibrary.UI.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
+
+        #endregion Methods
     }
 }

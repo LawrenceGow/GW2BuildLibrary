@@ -8,11 +8,11 @@ namespace GW2BuildLibrary.UI.Converters
     /// <summary>
     /// Converter used to convert a <see cref="bool"/> into a <see cref="Visibility"/>.
     /// </summary>
-    /// <remarks>
-    /// An input of <c>true</c> produces <c>Collapsed</c>, <c>false</c> produces <c>Visible</c>.
-    /// </remarks>
+    /// <remarks>An input of <c>true</c> produces <c>Collapsed</c>, <c>false</c> produces <c>Visible</c>.</remarks>
     public class InverseBoolToVisibilityConverter : IValueConverter
     {
+        #region Methods
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool boolValue = (bool)value;
@@ -22,5 +22,7 @@ namespace GW2BuildLibrary.UI.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
+
+        #endregion Methods
     }
 }
