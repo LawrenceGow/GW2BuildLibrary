@@ -14,6 +14,8 @@ namespace GW2BuildLibrary
     /// </summary>
     public class BuildLibrary
     {
+        #region Fields
+
         /// <summary>
         /// The current version of the XML file.
         /// </summary>
@@ -25,9 +27,38 @@ namespace GW2BuildLibrary
         private readonly string DefaultSaveLocation = Path.Combine(App.BaseDirectory, "BuildLibrary.xml");
 
         /// <summary>
+        /// The state of the window containing the build library
+        /// </summary>
+        private WindowState windowState = WindowState.Normal;
+
+        /// <summary>
         /// The settings for the <see cref="BuildLibrary"/>.
         /// </summary>
         public readonly BuildLibrarySettings Settings;
+
+        /// <summary>
+        /// The height of the window containing the build library.
+        /// </summary>
+        public double Height = 0;
+
+        /// <summary>
+        /// The left offset of the window containing the build library.
+        /// </summary>
+        public double Left = 0;
+
+        /// <summary>
+        /// The top offset of the window containing the build library.
+        /// </summary>
+        public double Top = 0;
+
+        /// <summary>
+        /// The width of the window containing the build library.
+        /// </summary>
+        public double Width = 0;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initialises a new <see cref="BuildLibrary"/> instance.
@@ -41,11 +72,72 @@ namespace GW2BuildLibrary
             Load();
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Map of all the build templates in the library.
         /// </summary>
         private Dictionary<int, BuildTemplate> BuildTemplates
         { get; set; } = new Dictionary<int, BuildTemplate>();
+
+        /// <summary>
+        /// The window state.
+        /// </summary>
+        public WindowState WindowState
+        {
+            get => Settings.FullScreenMode ? WindowState.Maximized : windowState;
+            set => windowState = value;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Creates a new build template.
+        /// </summary>
+        /// <param name="index">The new templates index.</param>
+        /// <param name="data">The build template data.</param>
+        public void CreateBuildTemplate(in int index, in string data)
+        {
+            BuildTemplate build = new BuildTemplate();
+            if (build.SetBuildData(index, data))
+            {
+                BuildTemplates[build.Index] = build;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the build template.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public void DeleteBuildTemplate(in int index) =>
+            BuildTemplates.Remove(index);
+
+        /// <summary>
+        /// Gets all the build templates for the provided profession.
+        /// </summary>
+        /// <param name="professionFilter">The profession.</param>
+        /// <returns></returns>
+        public IEnumerable<BuildTemplate> GetAllBuildTemplates(Profession professionFilter)
+        {
+            return BuildTemplates.Values
+                .Where(b => b.Profession.IsBasedOn(professionFilter)
+                            || b.Profession == professionFilter);
+        }
+
+        /// <summary>
+        /// Gets the build template at the specified location.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The build template that was at the index, or null.</returns>
+        public BuildTemplate GetBuildTemplate(in int index)
+        {
+            BuildTemplates.TryGetValue(index, out BuildTemplate build);
+            return build;
+        }
 
         /// <summary>
         /// Loads the build library.
@@ -120,14 +212,6 @@ namespace GW2BuildLibrary
         /// <param name="saveWindowState"><c>True</c> to also save the window state, otherwise <c>false</c>.</param>
         public void Save(string location, bool saveWindowState)
         {
-#if DEBUG
-            if (MessageBox.Show($"Save to {location}?",
-                                "Save?",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Question,
-                                MessageBoxResult.Yes) != MessageBoxResult.Yes)
-                return;
-#endif
             try
             {
                 File.Delete(location);
@@ -162,18 +246,13 @@ namespace GW2BuildLibrary
             }
         }
 
-        private WindowState windowState = WindowState.Normal;
-
         /// <summary>
-        /// The window state.
+        /// Sets the name of the build template at the specified index.
         /// </summary>
-        public WindowState WindowState
-        {
-            get => Settings.FullScreenMode ? WindowState.Maximized : windowState;
-            set => windowState = value;
-        }
-
-        public double Width = 0, Height = 0, Left = 0, Top = 0;
+        /// <param name="index">The index.</param>
+        /// <param name="name">The new name of the template.</param>
+        public void SetBuildTemplateName(in int index, in string name) =>
+            GetBuildTemplate(index)?.SetName(name);
 
         /// <summary>
         /// Updates the current state of the window, so that it can be saved in the XML.
@@ -197,56 +276,6 @@ namespace GW2BuildLibrary
             }
         }
 
-        /// <summary>
-        /// Creates a new build template.
-        /// </summary>
-        /// <param name="index">The new templates index.</param>
-        /// <param name="data">The build template data.</param>
-        public void CreateBuildTemplate(in int index, in string data)
-        {
-            BuildTemplate build = new BuildTemplate();
-            if (build.SetBuildData(index, data))
-            {
-                BuildTemplates[build.Index] = build;
-            }
-        }
-
-        /// <summary>
-        /// Deletes the build template.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        public void DeleteBuildTemplate(in int index) =>
-            BuildTemplates.Remove(index);
-
-        /// <summary>
-        /// Gets the build template at the specified location.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns>The build template that was at the index, or null.</returns>
-        public BuildTemplate GetBuildTemplate(in int index)
-        {
-            BuildTemplates.TryGetValue(index, out BuildTemplate build);
-            return build;
-        }
-
-        /// <summary>
-        /// Gets all the build templates for the provided profession.
-        /// </summary>
-        /// <param name="professionFilter">The profession.</param>
-        /// <returns></returns>
-        public IEnumerable<BuildTemplate> GetAllBuildTemplates(Profession professionFilter)
-        {
-            return BuildTemplates.Values
-                .Where(b => b.Profession.IsBasedOn(professionFilter)
-                            || b.Profession == professionFilter);
-        }
-
-        /// <summary>
-        /// Sets the name of the build template at the specified index.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="name">The new name of the template.</param>
-        public void SetBuildTemplateName(in int index, in string name) =>
-            GetBuildTemplate(index)?.SetName(name);
+        #endregion Methods
     }
 }
