@@ -33,7 +33,12 @@ namespace ApiDataGenerator
         /// <summary>
         /// The file path for the generated specialization enum file.
         /// </summary>
-        private static readonly string specsFilePath = Path.Combine(apiOutputDir, "Specialization.txt");
+        private static readonly string specsCSharpFilePath = Path.Combine(apiOutputDir, "Specialization.cs");
+
+        /// <summary>
+        /// The file path for the generated specialization js file.
+        /// </summary>
+        private static readonly string specsJSFilePath = Path.Combine(apiOutputDir, "specializations.js");
 
         #endregion Fields
 
@@ -58,18 +63,19 @@ namespace ApiDataGenerator
                 // Get the specializations
                 JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all"));
 
-                File.Delete(specsFilePath);
-                using (StreamWriter specFile = new StreamWriter(specsFilePath, false))
+                File.Delete(specsCSharpFilePath);
+                using (StreamWriter specCSFile = new StreamWriter(specsCSharpFilePath, false))
                 {
                     foreach (JToken profession in professions)
-                        await WriteSpecializationsForProfession(profession["name"].ToString(), specs, specFile);
+                        await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, specCSFile);
+                }
+
+                File.Delete(specsJSFilePath);
+                using (StreamWriter specJSFile = new StreamWriter(specsJSFilePath, false))
+                {
+                    await WriteSpecializations_JS(specs, specJSFile);
                 }
             }
-
-            Console.WriteLine("DONE! Press any key to exit.");
-            Console.ReadKey();
-            // Open the output folder
-            Process.Start(apiOutputDir);
         }
 
         /// <summary>
@@ -120,7 +126,7 @@ namespace ApiDataGenerator
         /// <param name="specs">The collection of specialization JSON objects.</param>
         /// <param name="specFile">The <see cref="StreamWriter"/> to write to.</param>
         /// <returns></returns>
-        private static async Task WriteSpecializationsForProfession(string professionName, JArray specs, StreamWriter specFile)
+        private static async Task WriteSpecializationsForProfession_CS(string professionName, JArray specs, StreamWriter specFile)
         {
             specFile.WriteLine($"// {professionName}");
             foreach (JToken spec in specs.Where(s => s["profession"].ToString() == professionName))
@@ -130,6 +136,25 @@ namespace ApiDataGenerator
                 await SaveSpecializationImage(specName, spec);
             }
             specFile.WriteLine();
+        }
+
+        /// <summary>
+        /// Writes the specializations with the given <see cref="StreamWriter"/>.
+        /// </summary>
+        /// <param name="profs">The collection of specialization JSON objects.</param>
+        /// <param name="profFile">The <see cref="StreamWriter"/> to write to.</param>
+        /// <returns></returns>
+        private static async Task WriteSpecializations_JS(JArray specs, StreamWriter specFile)
+        {
+            specFile.WriteLine("/**\n * The available specializations\n */");
+            specFile.WriteLine("exports.specializations = Object.freeze({");
+            foreach (JToken spec in specs)
+            {
+                string specName = spec["name"].ToString().Replace(" ", "");
+                specFile.WriteLine($"  {spec["id"]}: '{specName}',");
+                specFile.WriteLine($"  {specName}: {spec["id"]},");
+            }
+            specFile.WriteLine("});");
         }
 
         /// <summary>
