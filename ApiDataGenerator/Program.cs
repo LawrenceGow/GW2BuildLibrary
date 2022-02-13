@@ -145,6 +145,12 @@ namespace ApiDataGenerator
                 }
             }
 
+            // TODO Literally handle Revenants manually
+            // Revenants are a unique beast in that they use the same skill palettes for every legend:
+            // 4572 for heal, 4614/4651/4564 for utilities, 4554 for elite.
+            // Annoyingly we can't use the API to generate this info, so we need to manually look
+            // these up and hard code the values to use.
+
             using (HttpClient client = new HttpClient())
             {
                 for (int i = 0; i < skillPaletteMap.Count; i += 100)
