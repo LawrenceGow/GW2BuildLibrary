@@ -89,17 +89,17 @@ namespace ApiDataGenerator
                 using (StreamWriter specCSFile = new StreamWriter(specsCSharpFilePath, false))
                 {
                     foreach (JToken profession in professions)
-                        await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, specCSFile);
+                        await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, specCSFile).ConfigureAwait(false);
                 }
 
                 File.Delete(specsJSFilePath);
                 using (StreamWriter specJSFile = new StreamWriter(specsJSFilePath, false))
                 {
-                    await WriteSpecializations_JS(specs, specJSFile);
+                    await WriteSpecializations_JS(specs, specJSFile).ConfigureAwait(false);
                 }
 
-                await profIcons;
-                await skillIcons;
+                await profIcons.ConfigureAwait(false);
+                await skillIcons.ConfigureAwait(false);
             }
 
             Console.WriteLine("Complete!");
@@ -132,30 +132,49 @@ namespace ApiDataGenerator
         /// <returns></returns>
         private static async Task SaveProfessionSkillIcons(JArray professions)
         {
-            Dictionary<int, short> skillPaletteMap = new Dictionary<int, short>();
+            Dictionary<int, string> skillPaletteFileNameMap = new Dictionary<int, string>();
             foreach (JToken profession in professions)
             {
+                // We have revs by themselves
+                if (profession["code"].Value<int>() == 9)
+                    continue;
+
                 // Build the skill id collection
                 foreach (JArray pair in profession["skills_by_palette"]
                     .Select(v => JArray.Parse(v.ToString())))
                 {
                     int skillId = pair[1].Value<int>();
                     short paletteId = pair[0].Value<short>();
-                    skillPaletteMap[skillId] = paletteId;
+                    skillPaletteFileNameMap[skillId] = $"0_{paletteId}.png";
                 }
             }
 
-            // TODO Literally handle Revenants manually
-            // Revenants are a unique beast in that they use the same skill palettes for every legend:
-            // 4572 for heal, 4614/4651/4564 for utilities, 4554 for elite.
-            // Annoyingly we can't use the API to generate this info, so we need to manually look
-            // these up and hard code the values to use.
-
             using (HttpClient client = new HttpClient())
             {
-                for (int i = 0; i < skillPaletteMap.Count; i += 100)
+                // Revenants are a unique beast in that they use the same skill palettes for every
+                // legend: 4572 for heal, 4614/4651/4564 for utilities, 4554 for elite.
+
+                // We'll get around this by having the filenames be '<LegendCode>_<PaletteId>.png'
+                JArray legends = JArray.Parse(await client.GetStringAsync($"{apiURL}/Legends?ids=all&{apiVersion}"));
+
+                IEnumerable<(int, int, int)> heals = legends
+                    .Select(l => (l["code"].Value<int>(), l["heal"].Value<int>(), 4572));
+                IEnumerable<(int, int, int)> elites = legends
+                    .Select(l => (l["code"].Value<int>(), l["elite"].Value<int>(), 4554));
+                IEnumerable<(int, int, int)> util1s = legends
+                    .Select(l => (l["code"].Value<int>(), JArray.Parse(l["utilities"].ToString())[0].Value<int>(), 4614));
+                IEnumerable<(int, int, int)> util2s = legends
+                    .Select(l => (l["code"].Value<int>(), JArray.Parse(l["utilities"].ToString())[1].Value<int>(), 4651));
+                IEnumerable<(int, int, int)> util3s = legends
+                    .Select(l => (l["code"].Value<int>(), JArray.Parse(l["utilities"].ToString())[2].Value<int>(), 4564));
+
+                // Add rev skills into the map
+                foreach ((int, int, int) item in heals.Concat(util1s).Concat(util2s).Concat(util3s).Concat(elites))
+                    skillPaletteFileNameMap[item.Item2] = $"{item.Item1}_{item.Item3}.png";
+
+                for (int i = 0; i < skillPaletteFileNameMap.Count; i += 100)
                 {
-                    string ids = string.Join(",", skillPaletteMap.Keys.Skip(i).Take(100));
+                    string ids = string.Join(",", skillPaletteFileNameMap.Keys.Skip(i).Take(100));
                     string skillsUrl = $"{apiURL}/skills?ids={ids}";
                     JArray skills = JArray.Parse(await client.GetStringAsync(skillsUrl));
                     foreach (JToken skill in skills)
@@ -166,7 +185,7 @@ namespace ApiDataGenerator
 
                         string iconURL = skill["icon"].ToString();
                         WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                            Path.Combine(iconsDir, $"{skillPaletteMap[skill["id"].Value<int>()]}.png"));
+                            Path.Combine(iconsDir, skillPaletteFileNameMap[skill["id"].Value<int>()]));
                     }
                 }
             }
