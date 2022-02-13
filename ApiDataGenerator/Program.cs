@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -26,9 +27,19 @@ namespace ApiDataGenerator
         private static readonly string apiOutputDir = Path.Combine(@"D:\Temp\GW2BuildLibrary");
 
         /// <summary>
+        /// The version of the api to query
+        /// </summary>
+        private static readonly string apiVersion = "v=2022-01-01T00:00:00Z";
+
+        /// <summary>
         /// The directory to place all the gathered icons.
         /// </summary>
         private static readonly string iconsDir = Path.Combine(apiOutputDir, "Icons");
+
+        /// <summary>
+        /// The file path for the generated skill palettes js file.
+        /// </summary>
+        private static readonly string skillPaletteJSFilePath = Path.Combine(apiOutputDir, "skillPalettes.js");
 
         /// <summary>
         /// The file path for the generated specialization enum file.
@@ -61,15 +72,18 @@ namespace ApiDataGenerator
             Directory.CreateDirectory(apiOutputDir);
             Directory.CreateDirectory(iconsDir);
 
+            // Build skill palette lookup
+            File.Delete(skillPaletteJSFilePath);
+
             using (HttpClient client = new HttpClient())
             {
                 // Get the professions
-                JArray professions = JArray.Parse(await client.GetStringAsync($"{apiURL}/professions?ids=all"));
-                var profIcons = SaveProfessionIcons(professions);
-                var skillIcons = SaveProfessionSkillIcons(professions);
+                JArray professions = JArray.Parse(await client.GetStringAsync($"{apiURL}/professions?ids=all&{apiVersion}"));
+                Task profIcons = SaveProfessionIcons(professions);
+                Task skillIcons = SaveProfessionSkillIcons(professions);
 
                 // Get the specializations
-                JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all"));
+                JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all&{apiVersion}"));
 
                 File.Delete(specsCSharpFilePath);
                 using (StreamWriter specCSFile = new StreamWriter(specsCSharpFilePath, false))
@@ -118,24 +132,35 @@ namespace ApiDataGenerator
         /// <returns></returns>
         private static async Task SaveProfessionSkillIcons(JArray professions)
         {
+            Dictionary<int, short> skillPaletteMap = new Dictionary<int, short>();
             foreach (JToken profession in professions)
             {
                 // Build the skill id collection
-                var skillIds = profession["skills"]
-                    .Where(s => s["type"].ToString() == "Utility"
-                        || s["type"].ToString() == "Heal"
-                        || s["type"].ToString() == "Elite")
-                    .Select(s => s["id"].Value<int>());
-
-                using (HttpClient client = new HttpClient())
+                foreach (JArray pair in profession["skills_by_palette"]
+                    .Select(v => JArray.Parse(v.ToString())))
                 {
-                    string skillsUrl = $"{apiURL}/skills?ids={string.Join(",", skillIds)}";
+                    int skillId = pair[1].Value<int>();
+                    short paletteId = pair[0].Value<short>();
+                    skillPaletteMap[skillId] = paletteId;
+                }
+            }
+
+            using (HttpClient client = new HttpClient())
+            {
+                for (int i = 0; i < skillPaletteMap.Count; i += 100)
+                {
+                    string ids = string.Join(",", skillPaletteMap.Keys.Skip(i).Take(100));
+                    string skillsUrl = $"{apiURL}/skills?ids={ids}";
                     JArray skills = JArray.Parse(await client.GetStringAsync(skillsUrl));
                     foreach (JToken skill in skills)
                     {
+                        string type = skill["type"].ToString();
+                        if (type != "Utility" && type != "Heal" && type != "Elite")
+                            continue;
+
                         string iconURL = skill["icon"].ToString();
                         WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                            Path.Combine(iconsDir, $"{skill["id"]}.png"));
+                            Path.Combine(iconsDir, $"{skillPaletteMap[skill["id"].Value<int>()]}.png"));
                     }
                 }
             }
@@ -170,20 +195,17 @@ namespace ApiDataGenerator
         /// <param name="profs">The collection of specialization JSON objects.</param>
         /// <param name="profFile">The <see cref="StreamWriter"/> to write to.</param>
         /// <returns></returns>
-        private static Task WriteSpecializations_JS(JArray specs, StreamWriter specFile)
+        private static async Task WriteSpecializations_JS(JArray specs, StreamWriter specFile)
         {
-            return Task.Run(() =>
+            specFile.WriteLine("/**\n * The available specializations\n */");
+            specFile.WriteLine("exports.specializations = Object.freeze({");
+            foreach (JToken spec in specs)
             {
-                specFile.WriteLine("/**\n * The available specializations\n */");
-                specFile.WriteLine("exports.specializations = Object.freeze({");
-                foreach (JToken spec in specs)
-                {
-                    string specName = spec["name"].ToString().Replace(" ", "");
-                    specFile.WriteLine($"  {spec["id"]}: '{specName}',");
-                    specFile.WriteLine($"  {specName}: {spec["id"]},");
-                }
-                specFile.WriteLine("});");
-            });
+                string specName = spec["name"].ToString().Replace(" ", "");
+                specFile.WriteLine($"  {spec["id"]}: '{specName}',");
+                specFile.WriteLine($"  {specName}: {spec["id"]},");
+            }
+            specFile.WriteLine("});");
         }
 
         /// <summary>
