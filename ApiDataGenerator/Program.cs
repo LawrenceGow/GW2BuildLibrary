@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -107,7 +108,7 @@ namespace ApiDataGenerator
                         await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, specCSFile).ConfigureAwait(false);
                 }
 
-                Task specIcons = ResizeImages(iconsDirSpecs, 0.5);
+                Task specIcons = ResizeImages(iconsDirSpecs, 1.0);
 
                 File.Delete(specsJSFilePath);
                 using (StreamWriter specJSFile = new StreamWriter(specsJSFilePath, false))
@@ -133,6 +134,9 @@ namespace ApiDataGenerator
         /// <returns></returns>
         private static async Task ResizeImages(string inputPath, double scaleFactor)
         {
+            if (scaleFactor == 1.0)
+                return;
+
             string outputPath = inputPath + "_s";
             Directory.CreateDirectory(outputPath);
             foreach (FileInfo oldImage in new DirectoryInfo(inputPath).EnumerateFiles())
@@ -144,6 +148,7 @@ namespace ApiDataGenerator
                     using (Bitmap newImage = new Bitmap(newWidth, newHeight))
                     using (Graphics graphics = Graphics.FromImage(newImage))
                     {
+                        graphics.InterpolationMode = InterpolationMode.Bicubic;
                         graphics.DrawImage(srcImage, new Rectangle(0, 0, newWidth, newHeight));
                         newImage.Save(Path.Combine(outputPath, oldImage.Name));
                     }
@@ -238,8 +243,6 @@ namespace ApiDataGenerator
                         }
                         else
                         {
-                            // Mortar kit has two palettes depending on the source you ask Save the
-                            // palette from skills_by_palette
                             WriteStreamToFile(await client.GetStreamAsync(iconURL),
                                 Path.Combine(iconsDirSkills, "0_408.png"));
                             // Save the palette the GW2 client actually uses in its link codes
