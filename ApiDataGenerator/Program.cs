@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -93,7 +94,8 @@ namespace ApiDataGenerator
                 // Get the professions
                 JArray professions = JArray.Parse(await client.GetStringAsync($"{apiURL}/professions?ids=all&{apiVersion}"));
                 Task profIcons = SaveProfessionIcons(professions);
-                Task skillIcons = SaveProfessionSkillIcons(professions);
+                Task skillIcons = SaveProfessionSkillIcons(professions)
+                    .ContinueWith((t) => ResizeImages(iconsDirSkills, 0.25));
 
                 // Get the specializations
                 JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all&{apiVersion}"));
@@ -105,6 +107,8 @@ namespace ApiDataGenerator
                         await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, specCSFile).ConfigureAwait(false);
                 }
 
+                Task specIcons = ResizeImages(iconsDirSpecs, 0.5);
+
                 File.Delete(specsJSFilePath);
                 using (StreamWriter specJSFile = new StreamWriter(specsJSFilePath, false))
                 {
@@ -113,11 +117,40 @@ namespace ApiDataGenerator
 
                 await profIcons.ConfigureAwait(false);
                 await skillIcons.ConfigureAwait(false);
+                await specIcons.ConfigureAwait(false);
             }
 
             Console.WriteLine("Complete!");
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Resizes all the images in the specified path by the given scale factor.
+        /// </summary>
+        /// <param name="inputPath">The input path containing images to resize.</param>
+        /// <param name="scaleFactor">The scale factor to apply to all the images.</param>
+        /// <returns></returns>
+        private static async Task ResizeImages(string inputPath, double scaleFactor)
+        {
+            string outputPath = inputPath + "_s";
+            Directory.CreateDirectory(outputPath);
+            foreach (FileInfo oldImage in new DirectoryInfo(inputPath).EnumerateFiles())
+            {
+                using (Image srcImage = Image.FromFile(oldImage.FullName))
+                {
+                    int newWidth = (int)(srcImage.Width * scaleFactor);
+                    int newHeight = (int)(srcImage.Height * scaleFactor);
+                    using (Bitmap newImage = new Bitmap(newWidth, newHeight))
+                    using (Graphics graphics = Graphics.FromImage(newImage))
+                    {
+                        graphics.DrawImage(srcImage, new Rectangle(0, 0, newWidth, newHeight));
+                        newImage.Save(Path.Combine(outputPath, oldImage.Name));
+                    }
+                }
+            }
+            Directory.Delete(inputPath, true);
+            Directory.Move(outputPath, inputPath);
         }
 
         /// <summary>
