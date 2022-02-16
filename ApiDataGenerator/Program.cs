@@ -241,8 +241,10 @@ namespace ApiDataGenerator
                             WriteStreamToFile(await client.GetStreamAsync(iconURL),
                                 Path.Combine(iconsDirSkills, skillPaletteFileNameMap[skillId]));
                         }
+                        // Mortar kit has two palettes depending on the source you ask
                         else
                         {
+                            // Save the palette from skills_by_palette
                             WriteStreamToFile(await client.GetStreamAsync(iconURL),
                                 Path.Combine(iconsDirSkills, "0_408.png"));
                             // Save the palette the GW2 client actually uses in its link codes
