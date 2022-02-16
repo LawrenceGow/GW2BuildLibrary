@@ -32,9 +32,19 @@ namespace ApiDataGenerator
         private static readonly string apiVersion = "v=2022-01-01T00:00:00Z";
 
         /// <summary>
-        /// The directory to place all the gathered icons.
+        /// The directory to place the gathered profession icons.
         /// </summary>
-        private static readonly string iconsDir = Path.Combine(apiOutputDir, "Icons");
+        private static readonly string iconsDirProfs = Path.Combine(apiOutputDir, "Icons", "Professions");
+
+        /// <summary>
+        /// The directory to place the gathered skill icons.
+        /// </summary>
+        private static readonly string iconsDirSkills = Path.Combine(apiOutputDir, "Icons", "Skills");
+
+        /// <summary>
+        /// The directory to place the gathered specialization icons.
+        /// </summary>
+        private static readonly string iconsDirSpecs = Path.Combine(apiOutputDir, "Icons", "Specializations");
 
         /// <summary>
         /// The file path for the generated skill palettes js file.
@@ -69,8 +79,11 @@ namespace ApiDataGenerator
         /// <returns></returns>
         private static async Task Main(string[] args)
         {
+            // Create output directories
             Directory.CreateDirectory(apiOutputDir);
-            Directory.CreateDirectory(iconsDir);
+            Directory.CreateDirectory(iconsDirProfs);
+            Directory.CreateDirectory(iconsDirSpecs);
+            Directory.CreateDirectory(iconsDirSkills);
 
             // Build skill palette lookup
             File.Delete(skillPaletteJSFilePath);
@@ -120,7 +133,7 @@ namespace ApiDataGenerator
                 {
                     string iconURL = profession["icon"].ToString();
                     WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                        Path.Combine(iconsDir, $"{GetCleanTokenName(profession)}_Profession.png"));
+                        Path.Combine(iconsDirProfs, $"{GetCleanTokenName(profession)}.png"));
                 }
             }
         }
@@ -188,17 +201,17 @@ namespace ApiDataGenerator
                         if (skillId != 30800)
                         {
                             WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                                Path.Combine(iconsDir, skillPaletteFileNameMap[skillId]));
+                                Path.Combine(iconsDirSkills, skillPaletteFileNameMap[skillId]));
                         }
                         else
                         {
-                            // Mortar kit has two palettes depending on the source you ask
-                            // Save the palette from skills_by_palette
+                            // Mortar kit has two palettes depending on the source you ask Save the
+                            // palette from skills_by_palette
                             WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                                Path.Combine(iconsDir, "0_408.png"));
+                                Path.Combine(iconsDirSkills, "0_408.png"));
                             // Save the palette the GW2 client actually uses in its link codes
                             WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                                Path.Combine(iconsDir, "0_4857.png"));
+                                Path.Combine(iconsDirSkills, "0_4857.png"));
                         }
                     }
                 }
@@ -217,13 +230,13 @@ namespace ApiDataGenerator
             {
                 string iconURL = spec["icon"].ToString();
                 WriteStreamToFile(await client.GetStreamAsync(iconURL),
-                    Path.Combine(iconsDir, $"{specName}_Specialization.png"));
+                    Path.Combine(iconsDirSpecs, $"{specName}.png"));
 
                 JToken profIcon = spec["profession_icon"];
                 if (profIcon != null)
                 {
                     WriteStreamToFile(await client.GetStreamAsync(profIcon.ToString()),
-                        Path.Combine(iconsDir, $"{specName}_Profession.png"));
+                        Path.Combine(iconsDirProfs, $"{specName}.png"));
                 }
             }
         }
