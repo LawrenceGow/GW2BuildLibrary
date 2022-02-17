@@ -22,7 +22,8 @@ namespace ApiDataGenerator
 
             int specIconSize = -1,
                 skillIconSize = -1,
-                petIconSize = -1;
+                petIconSize = -1,
+                legendIconSize = -1;
 
             OptionSet options = new OptionSet()
             {
@@ -53,12 +54,19 @@ namespace ApiDataGenerator
                     "Pet Icon Size",
                     (int v) => petIconSize = v
                 },
+
+                // Legend Icon Size
+                {
+                    "ls=",
+                    "Legend Icon Size",
+                    (int v) => legendIconSize = v
+                },
             };
 
             try
             {
                 options.Parse(args);
-                await new ApiTrawler(apiOutputDir).Trawl(specIconSize, skillIconSize, petIconSize);
+                await new ApiTrawler(apiOutputDir).Trawl(specIconSize, skillIconSize, petIconSize, legendIconSize);
             }
             catch (Exception ex)
             {

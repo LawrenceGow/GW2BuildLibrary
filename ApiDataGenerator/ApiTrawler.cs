@@ -23,6 +23,11 @@ namespace ApiDataGenerator
         private const string apiURL = @"https://api.guildwars2.com/v2";
 
         /// <summary>
+        /// The directory to place the gathered legend icons.
+        /// </summary>
+        private readonly string iconsDirLegends;
+
+        /// <summary>
         /// The directory to place the gathered pet icons.
         /// </summary>
         private readonly string iconsDirPets;
@@ -84,6 +89,7 @@ namespace ApiDataGenerator
             iconsDirSkills = Path.Combine(apiOutputDir, "Icons", "Skills");
             iconsDirSpecs = Path.Combine(apiOutputDir, "Icons", "Specializations");
             iconsDirPets = Path.Combine(apiOutputDir, "Icons", "Pets");
+            iconsDirLegends = Path.Combine(apiOutputDir, "Icons", "Legends");
             skillPaletteJSFilePath = Path.Combine(apiOutputDir, "skillPalettes.js");
             specsCSharpFilePath = Path.Combine(apiOutputDir, "Specialization.cs");
             specsJSFilePath = Path.Combine(apiOutputDir, "specializations.js");
@@ -159,6 +165,28 @@ namespace ApiDataGenerator
             }
             Directory.Delete(inputPath, true);
             Directory.Move(outputPath, inputPath);
+        }
+
+        /// <summary>
+        /// Saves the legend icons
+        /// </summary>
+        /// <param name="legends">The legends.</param>
+        /// <returns></returns>
+        private async Task SaveLegendIcons(JArray legends)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                Dictionary<int, string> legendSkillMap = legends
+                    .ToDictionary(l => l["swap"].Value<int>(), l => l["id"].ToString());
+                string ids = string.Join(",", legendSkillMap.Keys);
+                JArray legendSkills = JArray.Parse(await client.GetStringAsync($"{apiURL}/skills?ids={ids}&{apiVersion}"));
+                foreach (JToken legendSkill in legendSkills)
+                {
+                    string iconURL = legendSkill["icon"].ToString();
+                    WriteStreamToFile(await client.GetStreamAsync(iconURL),
+                        Path.Combine(iconsDirLegends, $"{legendSkillMap[legendSkill["id"].Value<int>()]}.png"));
+                }
+            }
         }
 
         /// <summary>
@@ -375,14 +403,16 @@ namespace ApiDataGenerator
         /// <param name="specIconSize">The size to scale the specialization icons to.</param>
         /// <param name="skillIconSize">The size to scale the skill icons to.</param>
         /// <param name="petIconSize">The size to scale the pet icons to.</param>
+        /// <param name="legendIconSize">The size to scale the legend icons to.</param>
         /// <returns></returns>
-        public async Task Trawl(int specIconSize, int skillIconSize, int petIconSize)
+        public async Task Trawl(int specIconSize, int skillIconSize, int petIconSize, int legendIconSize)
         {
             // Create output directories
             Directory.CreateDirectory(iconsDirProfs);
             Directory.CreateDirectory(iconsDirSpecs);
             Directory.CreateDirectory(iconsDirSkills);
             Directory.CreateDirectory(iconsDirPets);
+            Directory.CreateDirectory(iconsDirLegends);
 
             // Build skill palette lookup
             File.Delete(skillPaletteJSFilePath);
@@ -419,6 +449,11 @@ namespace ApiDataGenerator
                     .ContinueWith((t) => CropImages(iconsDirPets, 128, 128))
                     .ContinueWith((t) => ResizeImages(iconsDirPets, petIconSize));
 
+                // Legends
+                JArray legends = JArray.Parse(await client.GetStringAsync($"{apiURL}/legends?ids=all&{apiVersion}"));
+                Task legendIcons = SaveLegendIcons(legends)
+                    .ContinueWith((t) => ResizeImages(iconsDirLegends, legendIconSize));
+
                 File.Delete(petsJSFilePath);
                 using (StreamWriter file = new StreamWriter(petsJSFilePath, false))
                 {
@@ -429,6 +464,7 @@ namespace ApiDataGenerator
                 await skillIcons.ConfigureAwait(false);
                 await specIcons.ConfigureAwait(false);
                 await petIcons.ConfigureAwait(false);
+                await legendIcons.ConfigureAwait(false);
             }
         }
 
