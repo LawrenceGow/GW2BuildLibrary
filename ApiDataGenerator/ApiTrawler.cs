@@ -95,6 +95,36 @@ namespace ApiDataGenerator
         #region Methods
 
         /// <summary>
+        /// Resizes all the images in the specified path by the given scale factor.
+        /// </summary>
+        /// <param name="inputPath">The input path containing images to resize.</param>
+        /// <param name="newWidth">The new width.</param>
+        /// <param name="newHeight">The new height.</param>
+        /// <returns></returns>
+        private async Task CropImages(string inputPath, int newWidth, int newHeight)
+        {
+            string outputPath = inputPath + "_s";
+            Directory.CreateDirectory(outputPath);
+            foreach (FileInfo oldImage in new DirectoryInfo(inputPath).EnumerateFiles())
+            {
+                using (Image srcImage = Image.FromFile(oldImage.FullName))
+                {
+                    using (Bitmap newImage = new Bitmap(newWidth, newHeight))
+                    using (Graphics graphics = Graphics.FromImage(newImage))
+                    {
+                        graphics.InterpolationMode = InterpolationMode.Bicubic;
+                        graphics.SetClip(new Rectangle(0, 0, newWidth, newHeight));
+                        graphics.DrawImage(srcImage, new Rectangle(-(srcImage.Width - newWidth) / 2,
+                            -(srcImage.Height - newHeight) / 2, srcImage.Width, srcImage.Height));
+                        newImage.Save(Path.Combine(outputPath, oldImage.Name));
+                    }
+                }
+            }
+            Directory.Delete(inputPath, true);
+            Directory.Move(outputPath, inputPath);
+        }
+
+        /// <summary>
         /// Cleans the specified tokens name for use in a file.
         /// </summary>
         /// <param name="token">The token.</param>
@@ -387,7 +417,6 @@ namespace ApiDataGenerator
 
                 // Pets
                 JArray pets = JArray.Parse(await client.GetStringAsync($"{apiURL}/pets?ids=all&{apiVersion}"));
-                Task petIcons = SavePetIcons(pets).ContinueWith((t) => ResizeImages(iconsDirPets, petIconScale));
 
                 File.Delete(petsJSFilePath);
                 using (StreamWriter file = new StreamWriter(petsJSFilePath, false))
