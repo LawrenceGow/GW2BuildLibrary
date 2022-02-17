@@ -135,11 +135,11 @@ namespace ApiDataGenerator
         /// Resizes all the images in the specified path by the given scale factor.
         /// </summary>
         /// <param name="inputPath">The input path containing images to resize.</param>
-        /// <param name="scaleFactor">The scale factor to apply to all the images.</param>
+        /// <param name="newSize">The size to set all the images to.</param>
         /// <returns></returns>
-        private async Task ResizeImages(string inputPath, double scaleFactor)
+        private async Task ResizeImages(string inputPath, int newSize)
         {
-            if (scaleFactor == 1.0)
+            if (newSize < 0)
                 return;
 
             string outputPath = inputPath + "_s";
@@ -148,13 +148,11 @@ namespace ApiDataGenerator
             {
                 using (Image srcImage = Image.FromFile(oldImage.FullName))
                 {
-                    int newWidth = (int)(srcImage.Width * scaleFactor);
-                    int newHeight = (int)(srcImage.Height * scaleFactor);
-                    using (Bitmap newImage = new Bitmap(newWidth, newHeight))
+                    using (Bitmap newImage = new Bitmap(newSize, newSize))
                     using (Graphics graphics = Graphics.FromImage(newImage))
                     {
                         graphics.InterpolationMode = InterpolationMode.Bicubic;
-                        graphics.DrawImage(srcImage, new Rectangle(0, 0, newWidth, newHeight));
+                        graphics.DrawImage(srcImage, new Rectangle(0, 0, newSize, newSize));
                         newImage.Save(Path.Combine(outputPath, oldImage.Name));
                     }
                 }
@@ -172,7 +170,7 @@ namespace ApiDataGenerator
         {
             using (HttpClient client = new HttpClient())
             {
-                foreach (var pet in pets)
+                foreach (JToken pet in pets)
                 {
                     string iconURL = pet["icon"].ToString();
                     WriteStreamToFile(await client.GetStreamAsync(iconURL),
@@ -374,11 +372,11 @@ namespace ApiDataGenerator
         /// <summary>
         /// Trawls the API for ids and icons and writes the result to the output for this trawler.
         /// </summary>
-        /// <param name="specIconScale">The scale to apply to specialization icons.</param>
-        /// <param name="skillIconScale">The scale to apply to skill icons.</param>
-        /// <param name="petIconScale">The scale to apply to pet icons.</param>
+        /// <param name="specIconSize">The size to scale the specialization icons to.</param>
+        /// <param name="skillIconSize">The size to scale the skill icons to.</param>
+        /// <param name="petIconSize">The size to scale the pet icons to.</param>
         /// <returns></returns>
-        public async Task Trawl(double specIconScale, double skillIconScale, double petIconScale)
+        public async Task Trawl(int specIconSize, int skillIconSize, int petIconSize)
         {
             // Create output directories
             Directory.CreateDirectory(iconsDirProfs);
@@ -395,7 +393,7 @@ namespace ApiDataGenerator
                 JArray professions = JArray.Parse(await client.GetStringAsync($"{apiURL}/professions?ids=all&{apiVersion}"));
                 Task profIcons = SaveProfessionIcons(professions);
                 Task skillIcons = SaveProfessionSkillIcons(professions)
-                    .ContinueWith((t) => ResizeImages(iconsDirSkills, skillIconScale));
+                    .ContinueWith((t) => ResizeImages(iconsDirSkills, skillIconSize));
 
                 // Get the specializations
                 JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all&{apiVersion}"));
@@ -407,7 +405,7 @@ namespace ApiDataGenerator
                         await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, file).ConfigureAwait(false);
                 }
 
-                Task specIcons = ResizeImages(iconsDirSpecs, specIconScale);
+                Task specIcons = ResizeImages(iconsDirSpecs, specIconSize);
 
                 File.Delete(specsJSFilePath);
                 using (StreamWriter file = new StreamWriter(specsJSFilePath, false))
@@ -417,6 +415,9 @@ namespace ApiDataGenerator
 
                 // Pets
                 JArray pets = JArray.Parse(await client.GetStringAsync($"{apiURL}/pets?ids=all&{apiVersion}"));
+                Task petIcons = SavePetIcons(pets)
+                    .ContinueWith((t) => CropImages(iconsDirPets, 128, 128))
+                    .ContinueWith((t) => ResizeImages(iconsDirPets, petIconSize));
 
                 File.Delete(petsJSFilePath);
                 using (StreamWriter file = new StreamWriter(petsJSFilePath, false))

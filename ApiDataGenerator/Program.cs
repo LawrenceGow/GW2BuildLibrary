@@ -20,9 +20,9 @@ namespace ApiDataGenerator
         {
             string apiOutputDir = "";
 
-            double specIconScale = 1.0,
-                skillIconScale = 1.0,
-                petIconScale = 1.0;
+            int specIconSize = -1,
+                skillIconSize = -1,
+                petIconSize = -1;
 
             OptionSet options = new OptionSet()
             {
@@ -33,32 +33,32 @@ namespace ApiDataGenerator
                     (v) => apiOutputDir = v
                 },
 
-                // Specialization Icon Scale
+                // Specialization Icon Size
                 {
                     "sps=",
-                    "Specialization Icon Scale",
-                    (double v) => specIconScale = v
+                    "Specialization Icon Size",
+                    (int v) => specIconSize = v
                 },
 
-                // Skill Icon Scale
+                // Skill Icon Size
                 {
                     "sks=",
-                    "Skill Icon Scale",
-                    (double v) => skillIconScale = v
+                    "Skill Icon Size",
+                    (int v) => skillIconSize = v
                 },
 
-                // Pet Icon Scale
+                // Pet Icon Size
                 {
                     "ps=",
-                    "Pet Icon Scale",
-                    (double v) => petIconScale = v
+                    "Pet Icon Size",
+                    (int v) => petIconSize = v
                 },
             };
 
             try
             {
                 options.Parse(args);
-                await new ApiTrawler(apiOutputDir).Trawl(specIconScale, skillIconScale, petIconScale);
+                await new ApiTrawler(apiOutputDir).Trawl(specIconSize, skillIconSize, petIconSize);
             }
             catch (Exception ex)
             {
