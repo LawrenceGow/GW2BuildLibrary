@@ -23,6 +23,11 @@ namespace ApiDataGenerator
         private const string apiURL = @"https://api.guildwars2.com/v2";
 
         /// <summary>
+        /// The directory to place the gathered pet icons.
+        /// </summary>
+        private readonly string iconsDirPets;
+
+        /// <summary>
         /// The directory to place the gathered profession icons.
         /// </summary>
         private readonly string iconsDirProfs;
@@ -36,6 +41,11 @@ namespace ApiDataGenerator
         /// The directory to place the gathered specialization icons.
         /// </summary>
         private readonly string iconsDirSpecs;
+
+        /// <summary>
+        /// The file path for the generated pets js file.
+        /// </summary>
+        private readonly string petsJSFilePath;
 
         /// <summary>
         /// The file path for the generated skill palettes js file.
@@ -73,9 +83,11 @@ namespace ApiDataGenerator
             iconsDirProfs = Path.Combine(apiOutputDir, "Icons", "Professions");
             iconsDirSkills = Path.Combine(apiOutputDir, "Icons", "Skills");
             iconsDirSpecs = Path.Combine(apiOutputDir, "Icons", "Specializations");
+            iconsDirPets = Path.Combine(apiOutputDir, "Icons", "Pets");
             skillPaletteJSFilePath = Path.Combine(apiOutputDir, "skillPalettes.js");
             specsCSharpFilePath = Path.Combine(apiOutputDir, "Specialization.cs");
             specsJSFilePath = Path.Combine(apiOutputDir, "specializations.js");
+            petsJSFilePath = Path.Combine(apiOutputDir, "pets.js");
         }
 
         #endregion Constructors
@@ -119,6 +131,24 @@ namespace ApiDataGenerator
             }
             Directory.Delete(inputPath, true);
             Directory.Move(outputPath, inputPath);
+        }
+
+        /// <summary>
+        /// Saves the pet icons
+        /// </summary>
+        /// <param name="pets">The pets.</param>
+        /// <returns></returns>
+        private async Task SavePetIcons(JArray pets)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                foreach (var pet in pets)
+                {
+                    string iconURL = pet["icon"].ToString();
+                    WriteStreamToFile(await client.GetStreamAsync(iconURL),
+                        Path.Combine(iconsDirPets, $"{pet["id"]}.png"));
+                }
+            }
         }
 
         /// <summary>
@@ -243,22 +273,37 @@ namespace ApiDataGenerator
         }
 
         /// <summary>
+        /// Writes the pets with the given <see cref="StreamWriter"/>.
+        /// </summary>
+        /// <param name="pets">The collection of pet JSON objects.</param>
+        /// <param name="file">The <see cref="StreamWriter"/> to write to.</param>
+        /// <returns></returns>
+        private async Task WritePets_JS(JArray pets, StreamWriter file)
+        {
+            file.WriteLine("/**\n * The available pets\n */");
+            file.WriteLine("exports.pets = Object.freeze({");
+            foreach (JToken pet in pets)
+                file.WriteLine($"  {pet["id"]}: '{pet["name"].ToString()}',");
+            file.WriteLine("});");
+        }
+
+        /// <summary>
         /// Writes the specializations with the given <see cref="StreamWriter"/>.
         /// </summary>
-        /// <param name="profs">The collection of specialization JSON objects.</param>
-        /// <param name="profFile">The <see cref="StreamWriter"/> to write to.</param>
+        /// <param name="specs">The collection of specialization JSON objects.</param>
+        /// <param name="file">The <see cref="StreamWriter"/> to write to.</param>
         /// <returns></returns>
-        private async Task WriteSpecializations_JS(JArray specs, StreamWriter specFile)
+        private async Task WriteSpecializations_JS(JArray specs, StreamWriter file)
         {
-            specFile.WriteLine("/**\n * The available specializations\n */");
-            specFile.WriteLine("exports.specializations = Object.freeze({");
+            file.WriteLine("/**\n * The available specializations\n */");
+            file.WriteLine("exports.specializations = Object.freeze({");
             foreach (JToken spec in specs)
             {
                 string specName = spec["name"].ToString().Replace(" ", "");
-                specFile.WriteLine($"  {spec["id"]}: '{specName}',");
-                specFile.WriteLine($"  {specName}: {spec["id"]},");
+                file.WriteLine($"  {spec["id"]}: '{specName}',");
+                file.WriteLine($"  {specName}: {spec["id"]},");
             }
-            specFile.WriteLine("});");
+            file.WriteLine("});");
         }
 
         /// <summary>
@@ -301,13 +346,15 @@ namespace ApiDataGenerator
         /// </summary>
         /// <param name="specIconScale">The scale to apply to specialization icons.</param>
         /// <param name="skillIconScale">The scale to apply to skill icons.</param>
+        /// <param name="petIconScale">The scale to apply to pet icons.</param>
         /// <returns></returns>
-        public async Task Trawl(double specIconScale, double skillIconScale)
+        public async Task Trawl(double specIconScale, double skillIconScale, double petIconScale)
         {
             // Create output directories
             Directory.CreateDirectory(iconsDirProfs);
             Directory.CreateDirectory(iconsDirSpecs);
             Directory.CreateDirectory(iconsDirSkills);
+            Directory.CreateDirectory(iconsDirPets);
 
             // Build skill palette lookup
             File.Delete(skillPaletteJSFilePath);
@@ -324,23 +371,34 @@ namespace ApiDataGenerator
                 JArray specs = JArray.Parse(await client.GetStringAsync($"{apiURL}/specializations?ids=all&{apiVersion}"));
 
                 File.Delete(specsCSharpFilePath);
-                using (StreamWriter specCSFile = new StreamWriter(specsCSharpFilePath, false))
+                using (StreamWriter file = new StreamWriter(specsCSharpFilePath, false))
                 {
                     foreach (JToken profession in professions)
-                        await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, specCSFile).ConfigureAwait(false);
+                        await WriteSpecializationsForProfession_CS(profession["name"].ToString(), specs, file).ConfigureAwait(false);
                 }
 
                 Task specIcons = ResizeImages(iconsDirSpecs, specIconScale);
 
                 File.Delete(specsJSFilePath);
-                using (StreamWriter specJSFile = new StreamWriter(specsJSFilePath, false))
+                using (StreamWriter file = new StreamWriter(specsJSFilePath, false))
                 {
-                    await WriteSpecializations_JS(specs, specJSFile).ConfigureAwait(false);
+                    await WriteSpecializations_JS(specs, file).ConfigureAwait(false);
+                }
+
+                // Pets
+                JArray pets = JArray.Parse(await client.GetStringAsync($"{apiURL}/pets?ids=all&{apiVersion}"));
+                Task petIcons = SavePetIcons(pets).ContinueWith((t) => ResizeImages(iconsDirPets, petIconScale));
+
+                File.Delete(petsJSFilePath);
+                using (StreamWriter file = new StreamWriter(petsJSFilePath, false))
+                {
+                    await WritePets_JS(pets, file).ConfigureAwait(false);
                 }
 
                 await profIcons.ConfigureAwait(false);
                 await skillIcons.ConfigureAwait(false);
                 await specIcons.ConfigureAwait(false);
+                await petIcons.ConfigureAwait(false);
             }
         }
 
